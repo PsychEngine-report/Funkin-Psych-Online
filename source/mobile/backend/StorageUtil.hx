@@ -5,10 +5,6 @@ import sys.io.File;
 import sys.FileSystem;
 #end
 
-/**
- * A storage class for mobile.
- * @author Karim Akra and Homura Akemi (HomuHomu833)
- */
 class StorageUtil {
 	#if sys
 	public static function getStorageDirectory():String
