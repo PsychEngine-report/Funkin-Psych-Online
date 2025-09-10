@@ -94,7 +94,7 @@ class Main extends Sprite
     
 	public static function main():Void
 	{
-		#if !mobile
+		#if android | ios
 		if (Path.normalize(Sys.getCwd()) != Path.normalize(lime.system.System.applicationDirectory)) {
 			Sys.setCwd(lime.system.System.applicationDirectory);
 
@@ -106,7 +106,7 @@ class Main extends Sprite
 					"Invalid Runtime Path!");
 				Sys.exit(1);
 			}
-			#end
+			#else
 	        if (Path.normalize(Sys.getCwd()) != Path.normalize(lime.system.System.applicationDirectory)) {
 			Sys.setCwd(lime.system.System.applicationDirectory);
 
@@ -118,7 +118,9 @@ class Main extends Sprite
 					"Invalid Runtime Path!");
 				Sys.exit(1);
 			}
+			#end
 		
+		}
 		Lib.current.addChild(view3D = new online.away.View3DHandler());
 		Lib.current.addChild(new Main());
 		Lib.current.addChild(new online.gui.sidebar.SideUI());
@@ -371,7 +373,7 @@ class Main extends Sprite
 			online.network.Auth.saveClose();
 		});
 
-        #if !mobile
+        #if android | ios
 		Lib.application.window.onDropFile.add(path -> {
 			if (FileSystem.isDirectory(path))
 				return;
@@ -387,7 +389,7 @@ class Main extends Sprite
 		         });
 		     }
 		});
-		#end
+		#else
 		Lib.application.window.onDropFile.add(path -> {
 			if (FileSystem.isDirectory(path))
 				return;
@@ -403,6 +405,7 @@ class Main extends Sprite
 				});
 			}
 		});
+		#end
 			
 		// clear messages before the current state gets destroyed and replaced with another
 		FlxG.signals.preStateSwitch.add(() -> {
