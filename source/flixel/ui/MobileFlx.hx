@@ -1,5 +1,8 @@
 package flixel.ui;
 
+import flixel.ui.FlxButton;
+import flixel.ui.FlxTypedButton;
+
 #if mobile
 import openfl.events.MouseEvent;
 import flixel.FlxG;
