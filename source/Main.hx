@@ -1,4 +1,4 @@
-²package;
+package;
 
 import online.GameClient;
 import states.MainMenuState;
@@ -359,10 +359,17 @@ class Main extends Sprite
 			online.network.Auth.saveClose();
 		});
 
-        #if (desktop | linux | mac | mobile)
+        #if !mobile
 		Lib.application.window.onDropFile.add(path -> {
 			if (FileSystem.isDirectory(path))
 				return;
+
+			if (path.endsWith(".json") && (path.contains("-chart") || path.contains("-metadata"))) {
+				online.util.vslice.VUtil.convertVSlice(path);
+			}
+			else {
+				online.backend.Thread.run(() -> {
+					online.gui.LoadingScreen.toggle(true);
 					online.mods.OnlineMods.installMod(path);
 					online.gui.LoadingScreen.toggle(false);
 				});
