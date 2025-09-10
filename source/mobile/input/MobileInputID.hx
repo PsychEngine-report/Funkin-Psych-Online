@@ -2,11 +2,6 @@ package mobile.input;
 
 import flixel.system.macros.FlxMacroUtil;
 
-/**
- * A high-level list of unique values for mobile input buttons.
- * Maps enum values and strings to unique integer codes
- * @author Karim Akra
- */
 @:runtimeValue
 enum abstract MobileInputID(Int) from Int to Int {
 	public static var fromStringMap(default, null):Map<String, MobileInputID> = FlxMacroUtil.buildMap("mobile.input.MobileInputID");
