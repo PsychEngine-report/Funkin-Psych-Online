@@ -106,7 +106,18 @@ class Main extends Sprite
 					"Invalid Runtime Path!");
 				Sys.exit(1);
 			}
-			#end		
+			#end
+	        if (Path.normalize(Sys.getCwd()) != Path.normalize(lime.system.System.applicationDirectory)) {
+			Sys.setCwd(lime.system.System.applicationDirectory);
+
+			if (Path.normalize(Sys.getCwd()) != Path.normalize(lime.system.System.applicationDirectory)) {
+				Lib.application.window.alert("Your path is either not run from the game directory,\nor contains illegal UTF-8 characters!\n\nRun from: "
+					+ Sys.getCwd()
+					+ "\nExpected path: "
+					+ lime.system.System.applicationDirectory,
+					"Invalid Runtime Path!");
+				Sys.exit(1);
+			}
 		
 		Lib.current.addChild(view3D = new online.away.View3DHandler());
 		Lib.current.addChild(new Main());
@@ -373,10 +384,25 @@ class Main extends Sprite
 					online.gui.LoadingScreen.toggle(true);
 					online.mods.OnlineMods.installMod(path);
 					online.gui.LoadingScreen.toggle(false);
+		         });
+		     }
+		});
+		#end
+		Lib.application.window.onDropFile.add(path -> {
+			if (FileSystem.isDirectory(path))
+				return;
+
+			if (path.endsWith(".json") && (path.contains("-chart") || path.contains("-metadata"))) {
+				online.util.vslice.VUtil.convertVSlice(path);
+			}
+			else {
+				online.backend.Thread.run(() -> {
+					online.gui.LoadingScreen.toggle(true);
+					online.mods.OnlineMods.installMod(path);
+					online.gui.LoadingScreen.toggle(false);
 				});
 			}
 		});
-		#end
 			
 		// clear messages before the current state gets destroyed and replaced with another
 		FlxG.signals.preStateSwitch.add(() -> {
