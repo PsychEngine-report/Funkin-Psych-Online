@@ -3,10 +3,6 @@ package mobile.input;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 import haxe.ds.Map;
 
-/**
- * A TouchButton group with functions for input handling
- * @author Karim Akra
- */
 class MobileInputManager extends FlxTypedSpriteGroup<TouchButton> {
 	/**
 	 * A map to keep track of all the buttons using it's ID
