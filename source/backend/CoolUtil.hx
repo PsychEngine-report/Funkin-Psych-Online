@@ -9,7 +9,7 @@ import lime.utils.Assets as LimeAssets;
 
 #if sys
 import sys.io.File;
-import sys.FileSystem;
+import sys.io.FileSystem;
 #end
 
 class CoolUtil
