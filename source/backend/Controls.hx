@@ -93,7 +93,9 @@ class Controls
 	//Gamepad & Keyboard stuff
 	public var keyboardBinds:Map<String, Array<FlxKey>>;
 	public var gamepadBinds:Map<String, Array<FlxGamepadInputID>>;
+	#if mobile
 	public var mobileBinds:Map<String, Array<MobileInputID>>;
+	#end
 	public function justPressed(key:String)
 	{
 		if (moodyBlues != null && ReplayRecorder.REGISTER_BINDS.contains(key)) {
@@ -103,7 +105,13 @@ class Controls
 		var result:Bool = (FlxG.keys.anyJustPressed(keyboardBinds[key]) == true);
 		if(result) controllerMode = false;
 
-		return result || _myGamepadJustPressed(gamepadBinds[key]) || hitboxJustPressed(mobileBinds[key]) == true || touchPadJustPressed(mobileBinds[key]) == true;
+		 result = result || _myGamepadJustPressed(gamepadBinds[key]);
+
+         #if mobile
+         result = result || hitboxJustPressed(mobileBinds[key]) || touchPadJustPressed(mobileBinds[key]);
+         #end
+
+    return result;
 	}
 
 	public function pressed(key:String)
@@ -116,7 +124,13 @@ class Controls
 		var result:Bool = (FlxG.keys.anyPressed(keyboardBinds[key]) == true);
 		if(result) controllerMode = false;
 
-		return result || _myGamepadPressed(gamepadBinds[key]) == true || hitboxPressed(mobileBinds[key]) == true || touchPadPressed(mobileBinds[key]) == true;
+		result = result || _myGamepadJustPressed(gamepadBinds[key]);
+
+         #if mobile
+         result = result || hitboxJustPressed(mobileBinds[key]) || touchPadJustPressed(mobileBinds[key]);
+         #end
+
+    return result;
 	}
 
 	public function justReleased(key:String)
@@ -129,7 +143,13 @@ class Controls
 		var result:Bool = (FlxG.keys.anyJustReleased(keyboardBinds[key]) == true);
 		if(result) controllerMode = false;
 
-		return result || _myGamepadPressed(gamepadBinds[key]) == true || hitboxPressed(mobileBinds[key]) == true || touchPadPressed(mobileBinds[key]) == true;
+		result = result || _myGamepadJustPressed(gamepadBinds[key]);
+
+         #if mobile
+         result = result || hitboxJustPressed(mobileBinds[key]) || touchPadJustPressed(mobileBinds[key]);
+         #end
+
+    return result;
 	}
 
 	public var controllerMode:Bool = false;
@@ -181,6 +201,7 @@ class Controls
 
 	public var moodyBlues:ReplayPlayer;
 
+	#if mobile
 	public var isInSubstate:Bool = false; // don't worry about this it becomes true and false on it's own in MusicBeatSubstate
 	public var requestedInstance(get, default):Dynamic; // is set to MusicBeatState or MusicBeatSubstate when the constructor is called
 	public var requestedHitbox(get, default):Hitbox; // for PlayState and EditorPlayState
@@ -263,12 +284,15 @@ class Controls
 		else
 			return false;
 	}
+	#end
 
 	// IGNORE THESE
 	public static var instance:Controls;
 	public function new()
 	{
+		#if mobile
 		mobileBinds = ClientPrefs.mobileBinds;
+		#end
 		keyboardBinds = ClientPrefs.keyBinds;
 		gamepadBinds = ClientPrefs.gamepadBinds;
 	}
