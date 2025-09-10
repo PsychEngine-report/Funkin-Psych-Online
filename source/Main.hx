@@ -91,7 +91,7 @@ class Main extends Sprite
 	public static var view3D:online.away.View3DHandler;
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
-    #if (mobile | desktop | mac | linux)
+    #if !mobile
 	public static function main():Void
 	{
 		if (Path.normalize(Sys.getCwd()) != Path.normalize(lime.system.System.applicationDirectory)) {
@@ -359,7 +359,7 @@ class Main extends Sprite
 			online.network.Auth.saveClose();
 		});
 
-        #if (desktop | linux | mac | mobile)
+        #if !mobile
 		Lib.application.window.onDropFile.add(path -> {
 			if (FileSystem.isDirectory(path))
 				return;
@@ -373,10 +373,7 @@ class Main extends Sprite
 					online.mods.OnlineMods.installMod(path);
 					online.gui.LoadingScreen.toggle(false);
 				});
-			}
-		});
-		#end
-
+			    #end
 		// clear messages before the current state gets destroyed and replaced with another
 		FlxG.signals.preStateSwitch.add(() -> {
 			GameClient.clearOnMessage();
