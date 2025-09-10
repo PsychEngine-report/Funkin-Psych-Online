@@ -6,8 +6,10 @@ import flixel.util.FlxSave;
 
 import openfl.utils.Assets;
 import lime.utils.Assets as LimeAssets;
+#if sys
 import sys.io.File;
-import sys.io.Process;
+import sys.FileSystem;
+#end
 
 class CoolUtil
 {
