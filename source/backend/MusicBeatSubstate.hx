@@ -29,6 +29,7 @@ class MusicBeatSubstate extends FlxSubState
 	inline function get_controls():Controls
 		return Controls.instance;
 
+	#if mobile
 	public var touchPad:TouchPad;
 	public var touchPadCam:FlxCamera;
 	public var hitbox:Hitbox;
@@ -106,6 +107,7 @@ class MusicBeatSubstate extends FlxSubState
 		
 		super.destroy();
 	}
+	#end
 
 	override function update(elapsed:Float)
 	{
