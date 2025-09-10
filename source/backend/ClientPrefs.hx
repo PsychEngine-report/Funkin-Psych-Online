@@ -12,6 +12,7 @@ import states.TitleState;
 
 // Add a variable here and it will get automatically saved
 class SaveVariables {
+	#if mobile
 	public var extraHints:String = "NONE";
 	public var hitboxPos:Bool = true;
 	public var dynamicColors:Bool = true;
@@ -21,6 +22,7 @@ class SaveVariables {
 	public var hitboxType:String = "Gradient";
 	public var vsync:Bool = false;
 	public var disableOnlineShaders:Bool = false;
+	#end
 	
 	public var downScroll:Bool = false;
 	public var middleScroll:Bool = false;
@@ -175,6 +177,7 @@ class ClientPrefs {
 		'sidebar'		=> [],
 		'fav'			=> [Y]
 	];
+	#if mobile
 	public static var mobileBinds:Map<String, Array<MobileInputID>> = [
 		'note_up'		=> [NOTE_UP],
 		'note_left'		=> [NOTE_LEFT],
@@ -192,7 +195,10 @@ class ClientPrefs {
 		'reset'			=> [NONE],
 		'taunt'			=> [T]
 	];
+	#end
+	#if mobile
 	public static var defaultMobileBinds:Map<String, Array<MobileInputID>> = null;
+	#end
 	public static var defaultKeys:Map<String, Array<FlxKey>> = null;
 	public static var defaultButtons:Map<String, Array<FlxGamepadInputID>> = null;
 
@@ -219,10 +225,14 @@ class ClientPrefs {
 	public static function clearInvalidKeys(key:String) {
 		var keyBind:Array<FlxKey> = keyBinds.get(key);
 		var gamepadBind:Array<FlxGamepadInputID> = gamepadBinds.get(key);
+		#if mobile
 		var mobileBind:Array<MobileInputID> = mobileBinds.get(key);
+		#end
 		while(keyBind != null && keyBind.contains(NONE)) keyBind.remove(NONE);
 		while(gamepadBind != null && gamepadBind.contains(NONE)) gamepadBind.remove(NONE);
+		#if mobile
 		while(mobileBind != null && mobileBind.contains(NONE)) mobileBind.remove(NONE);
+		#end
 	}
 
 	public static function loadDefaultKeys() {
@@ -315,11 +325,13 @@ class ClientPrefs {
 					if(gamepadBinds.exists(control)) gamepadBinds.set(control, keys);
 				}
 			}
+			#if mobile
 			if(save.data.mobile != null) {
 				var loadedControls:Map<String, Array<MobileInputID>> = save.data.mobile;
 				for (control => keys in loadedControls)
 					if(mobileBinds.exists(control)) mobileBinds.set(control, keys);
 			}
+			#end
 			reloadVolumeKeys();
 		}
 
