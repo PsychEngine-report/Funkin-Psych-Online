@@ -185,6 +185,17 @@
 	<haxedef name="HXCPP_CATCH_SEGV" />
 	<haxedef name="HXCPP_DEBUG_LINK" />
 
+	<certificate path="key.keystore" password="psychonline" alias="psychonlineport" alias-password="psychonline" if="android" unless="debug" />
+
+	<!-- Category Type for Apple Systems -->
+	<config:ios category_type="public.app-category.music-games" />
+	<config:mac category_type="public.app-category.music-games" />
+
+	<!-- Allow Access to Engine Files in mobile -->
+	<haxedef name="SHARE_MOBILE_FILES" if="mobile" />
+
+	<haxedef name="message.reporting" value="pretty" />
+
 	<!-- <haxedef name="message.reporting" value="pretty" /> -->
 	<haxedef name='no-deprecation-warnings' />
 
@@ -206,6 +217,8 @@
 		<haxeflag name="--macro" value="addGlobalMetadata('psychlua', '@:build(online.backend.MonitorMacro.build())')" />
 		<haxeflag name="--macro" value="addGlobalMetadata('llua', '@:build(online.backend.MonitorMacro.build())')" />
 	</section>
+
+	<define name="mobile" if="android || ios" />
 
 	<!-- _________________________________ Custom _______________________________ -->
 
