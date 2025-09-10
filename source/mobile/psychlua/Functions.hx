@@ -8,10 +8,6 @@ import psychlua.LuaUtils;
 import mobile.backend.TouchUtil;
 #if android import mobile.backend.PsychJNI; #end
 
-/**
- * ...
- * @author: Karim Akra and Homura Akemi (HomuHomu833)
- */
 class MobileFunctions {
 	public static function implement(funk:FunkinLua) {
 		var lua:State = funk.lua;
