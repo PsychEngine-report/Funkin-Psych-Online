@@ -94,7 +94,7 @@ class Main extends Sprite
     
 	public static function main():Void
 	{
-		#if android | ios
+		#if (android || ios)
 		if (Path.normalize(Sys.getCwd()) != Path.normalize(lime.system.System.applicationDirectory)) {
 			Sys.setCwd(lime.system.System.applicationDirectory);
 
@@ -373,7 +373,7 @@ class Main extends Sprite
 			online.network.Auth.saveClose();
 		});
 
-        #if android | ios
+        #if (android || ios)
 		Lib.application.window.onDropFile.add(path -> {
 			if (FileSystem.isDirectory(path))
 				return;
