@@ -12,6 +12,16 @@ import states.TitleState;
 
 // Add a variable here and it will get automatically saved
 class SaveVariables {
+	public var extraHints:String = "NONE";
+	public var hitboxPos:Bool = true;
+	public var dynamicColors:Bool = true;
+	public var controlsAlpha:Float = FlxG.onMobile ? 0.6 : 0;
+	public var screensaver:Bool = false;
+	public var wideScreen:Bool = false;
+	public var hitboxType:String = "Gradient";
+	public var vsync:Bool = false;
+	public var disableOnlineShaders:Bool = false;
+	
 	public var downScroll:Bool = false;
 	public var middleScroll:Bool = false;
 	public var opponentStrums:Bool = true;
@@ -165,6 +175,24 @@ class ClientPrefs {
 		'sidebar'		=> [],
 		'fav'			=> [Y]
 	];
+	public static var mobileBinds:Map<String, Array<MobileInputID>> = [
+		'note_up'		=> [NOTE_UP],
+		'note_left'		=> [NOTE_LEFT],
+		'note_down'		=> [NOTE_DOWN],
+		'note_right'	=> [NOTE_RIGHT],
+
+		'ui_up'			=> [UP],
+		'ui_left'		=> [LEFT],
+		'ui_down'		=> [DOWN],
+		'ui_right'		=> [RIGHT],
+
+		'accept'		=> [A],
+		'back'			=> [B],
+		'pause'			=> [#if android NONE #else P #end],
+		'reset'			=> [NONE],
+		'taunt'			=> [T]
+	];
+	public static var defaultMobileBinds:Map<String, Array<MobileInputID>> = null;
 	public static var defaultKeys:Map<String, Array<FlxKey>> = null;
 	public static var defaultButtons:Map<String, Array<FlxGamepadInputID>> = null;
 
@@ -191,13 +219,16 @@ class ClientPrefs {
 	public static function clearInvalidKeys(key:String) {
 		var keyBind:Array<FlxKey> = keyBinds.get(key);
 		var gamepadBind:Array<FlxGamepadInputID> = gamepadBinds.get(key);
+		var mobileBind:Array<MobileInputID> = mobileBinds.get(key);
 		while(keyBind != null && keyBind.contains(NONE)) keyBind.remove(NONE);
 		while(gamepadBind != null && gamepadBind.contains(NONE)) gamepadBind.remove(NONE);
+		while(mobileBind != null && mobileBind.contains(NONE)) mobileBind.remove(NONE);
 	}
 
 	public static function loadDefaultKeys() {
 		defaultKeys = keyBinds.copy();
 		defaultButtons = gamepadBinds.copy();
+		defaultMobileBinds = mobileBinds.copy();
 	}
 
 	public static function saveSettings() {
@@ -283,6 +314,11 @@ class ClientPrefs {
 				for (control => keys in loadedControls) {
 					if(gamepadBinds.exists(control)) gamepadBinds.set(control, keys);
 				}
+			}
+			if(save.data.mobile != null) {
+				var loadedControls:Map<String, Array<MobileInputID>> = save.data.mobile;
+				for (control => keys in loadedControls)
+					if(mobileBinds.exists(control)) mobileBinds.set(control, keys);
 			}
 			reloadVolumeKeys();
 		}
