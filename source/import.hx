@@ -18,7 +18,7 @@ import backend.Achievements;
 import flxanimate.FlxAnimate;
 #end
 
-// Mobile Controls
+#if mobile
 import mobile.objects.Hitbox;
 import mobile.objects.TouchPad;
 import mobile.objects.TouchButton;
@@ -26,7 +26,8 @@ import mobile.input.MobileInputID;
 import mobile.backend.MobileData;
 import mobile.input.MobileInputManager;
 import mobile.backend.TouchUtil;
-
+#end
+  
 #if lumod
 import lumod.Lumod;
 #end
@@ -81,7 +82,9 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.group.FlxSpriteGroup;
 import flixel.group.FlxGroup.FlxTypedGroup;
+#if mobile
 import shaders.flixel.system.FlxShader;
+#end
 import online.backend.Deflection;
 
 using StringTools;
