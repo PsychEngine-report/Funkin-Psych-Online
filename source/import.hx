@@ -85,11 +85,7 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 #if mobile
 import shaders.flixel.system.FlxShader;
 #end
-#if mobile
-import flixel.ui.MobileFlx as FlxButton;
-#else
-import flixel.ui.Flxbutton;
-#end
+#if mobile import flixel.ui.MobileFlx as FlxButton; #end
 import online.backend.Deflection;
 
 using StringTools;
