@@ -1,4 +1,4 @@
-package;
+²package;
 
 import online.GameClient;
 import states.MainMenuState;
@@ -359,21 +359,17 @@ class Main extends Sprite
 			online.network.Auth.saveClose();
 		});
 
-        #if !mobile
+        #if (desktop | linux | mac | mobile)
 		Lib.application.window.onDropFile.add(path -> {
 			if (FileSystem.isDirectory(path))
 				return;
-
-			if (path.endsWith(".json") && (path.contains("-chart") || path.contains("-metadata"))) {
-				online.util.vslice.VUtil.convertVSlice(path);
-			}
-			else {
-				online.backend.Thread.run(() -> {
-					online.gui.LoadingScreen.toggle(true);
 					online.mods.OnlineMods.installMod(path);
 					online.gui.LoadingScreen.toggle(false);
 				});
-			    #end
+			}
+		});
+		#end
+			
 		// clear messages before the current state gets destroyed and replaced with another
 		FlxG.signals.preStateSwitch.add(() -> {
 			GameClient.clearOnMessage();
