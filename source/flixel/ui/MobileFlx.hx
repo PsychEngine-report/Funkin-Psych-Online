@@ -22,7 +22,7 @@ import flixel.input.touch.FlxTouch;
 /**
  * A simple button class that calls a function when clicked by the mouse.
  */
-class FlxButton extends FlxTypedButton<FlxText>
+class MobileFlx extends FlxTypedButton<FlxText>
 {
 	/**
 	 * Used with public variable status, means not highlighted or pressed.
