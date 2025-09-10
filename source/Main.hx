@@ -16,6 +16,12 @@ import openfl.events.Event;
 import openfl.display.StageScaleMode;
 import lime.app.Application;
 import states.TitleState;
+#if COPYSTATE_ALLOWED
+import states.CopyState;
+#end
+#if mobile
+import mobile.backend.MobileScaleMode;
+#end
 
 #if linux
 import lime.graphics.Image;
@@ -29,6 +35,21 @@ import haxe.CallStack;
 import haxe.io.Path;
 import sys.io.File;
 import sys.io.Process;
+
+#if windows
+@:buildXml('
+<target id="haxe">
+	<lib name="wininet.lib" if="windows" />
+	<lib name="dwmapi.lib" if="windows" />
+</target>
+')
+@:cppFileCode('
+#include <windows.h>
+#include <winuser.h>
+#pragma comment(lib, "Shell32.lib")
+extern "C" HRESULT WINAPI SetCurrentProcessExplicitAppUserModelID(PCWSTR AppID);
+')
+#end
 
 class Main extends Sprite
 {
@@ -44,6 +65,8 @@ class Main extends Sprite
 
 	public static var fpsVar:FPS;
 
+	public static final platform:String = #if mobile "Phones" #else "PCs" #end;
+
 	public static final PSYCH_ONLINE_VERSION:String = "0.12.4";
 	public static final CLIENT_PROTOCOL:Float = 9;
 	public static final NETWORK_PROTOCOL:Float = 8;
@@ -58,7 +81,7 @@ class Main extends Sprite
 	 * 
 	 * ! ! ! ! ! !
 	 */
-	public static var UNOFFICIAL_BUILD:Bool = false;
+	public static var UNOFFICIAL_BUILD:Bool = true;
 
 	public static var wankyUpdate:String = null;
 	public static var updatePageURL:String = '';
@@ -68,7 +91,7 @@ class Main extends Sprite
 	public static var view3D:online.away.View3DHandler;
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
-
+    #if (mobile || desktop || mac || linux)
 	public static function main():Void
 	{
 		if (Path.normalize(Sys.getCwd()) != Path.normalize(lime.system.System.applicationDirectory)) {
@@ -94,6 +117,30 @@ class Main extends Sprite
 	public function new()
 	{
 		super();
+		#if mobile
+		#if android
+		StorageUtil.requestPermissions();
+		#end
+		Sys.setCwd(StorageUtil.getStorageDirectory());
+		#end
+		backend.CrashHandler.init();
+
+		#if windows
+		// DPI Scaling fix for windows 
+		// this shouldn't be needed for other systems
+		// Credit to YoshiCrafter29 for finding this function
+		untyped __cpp__("SetProcessDPIAware();");
+
+		var display = lime.system.System.getDisplay(0);
+		if (display != null) {
+			var dpiScale:Float = display.dpi / 96;
+			Application.current.window.width = Std.int(game.width * dpiScale);
+			Application.current.window.height = Std.int(game.height * dpiScale);
+
+			Application.current.window.x = Std.int((Application.current.window.display.bounds.width - Application.current.window.width) / 2);
+			Application.current.window.y = Std.int((Application.current.window.display.bounds.height - Application.current.window.height) / 2);
+		}
+		#end
 
 		if (stage != null)
 		{
@@ -156,6 +203,8 @@ class Main extends Sprite
 		ClientPrefs.loadDefaultKeys();
 		addChild(new FlxGame(game.width, game.height, game.initialState, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate, game.skipSplash, game.startFullscreen));
 
+		#if android FlxG.android.preventDefaultKeys = [BACK]; #end
+
 		#if !mobile
 		fpsVar = new FPS(10, 3, 0xFFFFFF);
 		addChild(fpsVar);
@@ -164,6 +213,11 @@ class Main extends Sprite
 		if(fpsVar != null) {
 			fpsVar.visible = ClientPrefs.data.showFPS;
 		}
+		#end
+
+		#if mobile
+		lime.system.System.allowScreenTimeout = ClientPrefs.data.screensaver; 		
+		FlxG.scaleMode = new MobileScaleMode();
 		#end
 
 		#if linux
@@ -206,12 +260,12 @@ class Main extends Sprite
 		if (ClientPrefs.data.checkForUpdates) {
 			trace('checking for update');
 			// should've done that earlier
-			var response = new online.http.HTTPClient("https://api.github.com/repos/Snirozu/Funkin-Psych-Online/releases/latest").request();
+			var response = new online.http.HTTPClient("https://github.com/PsychEngine-report/Funkin-Psych-Online/releases/latest").request();
 			Main.repoHost = 'github';
 
 			if (response.isFailed()) {
-				response = new online.http.HTTPClient("https://codeberg.org/api/v1/repos/Snirozu/Funkin-Psych-Online/releases/latest").request();
-				Main.repoHost = 'codeberg';
+				response = new online.http.HTTPClient("https://github.com/PsychEngine-report/Funkin-Psych-Online/releases/latest").request();
+				Main.repoHost = 'github';
 			}
 
 			if (!response.isFailed()) {
@@ -305,6 +359,7 @@ class Main extends Sprite
 			online.network.Auth.saveClose();
 		});
 
+        #if (desktop || linux || mac || mobile)
 		Lib.application.window.onDropFile.add(path -> {
 			if (FileSystem.isDirectory(path))
 				return;
@@ -320,6 +375,7 @@ class Main extends Sprite
 				});
 			}
 		});
+		#end
 
 		// clear messages before the current state gets destroyed and replaced with another
 		FlxG.signals.preStateSwitch.add(() -> {
