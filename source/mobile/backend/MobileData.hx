@@ -6,13 +6,10 @@ import haxe.io.Path;
 import openfl.utils.Assets;
 import flixel.math.FlxPoint;
 import flixel.util.FlxSave;
-import backend.io.PsychFile as File;
-import backend.io.PsychFileSystem as FileSystem;
+import sys.io.File;
+import sys.io.FileSystem;
 
-/**
- * ...
- * @author: Karim Akra
- */
+
 class MobileData {
 	public static var actionModes:Map<String, TouchButtonsData> = new Map();
 	public static var dpadModes:Map<String, TouchButtonsData> = new Map();
