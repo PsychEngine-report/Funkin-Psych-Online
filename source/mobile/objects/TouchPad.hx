@@ -3,10 +3,6 @@ package mobile.objects;
 import flixel.math.FlxPoint;
 import flixel.util.FlxSignal;
 
-/**
- * ...
- * @author: Karim Akra and Homura Akemi (HomuHomu833)
- */
 @:access(mobile.objects.TouchButton)
 class TouchPad extends MobileInputManager {
 	public var buttonLeft:TouchButton = new TouchButton(0, 0, [MobileInputID.LEFT]);
