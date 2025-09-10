@@ -1,5 +1,6 @@
 package flixel.ui;
 
+#if mobile
 import openfl.events.MouseEvent;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -684,3 +685,4 @@ private class FlxButtonEvent implements IFlxDestroyable
 		#end
 	}
 }
+#end
