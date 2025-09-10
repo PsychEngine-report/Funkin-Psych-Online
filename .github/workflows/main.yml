@@ -208,12 +208,11 @@ jobs:
      - name: Create Version Tag
        run: echo "${{github.run_id}}" > VERSION
      - name: Compile
-       run: haxelib run lime build Project.xml android -final -D HXCPP_M64 --app-version="4.0.0-${{ github.run_id}}"
+       run: haxelib run lime build Project.xml android -final -D HXCPP_M64 -D officialBuild --app-version="4.0.0-${{ github.run_id}}"
      - name: Publish Artifact
-       uses: actions/upload-artifact@v4
+       uses: actions/upload-artifact@main
        with:
          name: androidBuild (experimental)
-         path: 'export/release/android/bin/app/build/outputs/*.apk'
   # smh: code signing shit
   # buildiOS:
   #   runs-on: macos-latest
@@ -279,6 +278,7 @@ jobs:
         zip -r windowsBuild.zip windowsBuild/
         zip -r linuxBuild.zip linuxBuild/
         zip -r macBuild.zip macBuild/
+        mv /home/runner/PsychEngine-release.apk /home/runner/PsychEngine-Android.apk
         zip -r androidBuild.zip androidBuild/
 
     - name: Upload Windows build to the release
