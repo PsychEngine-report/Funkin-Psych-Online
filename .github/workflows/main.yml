@@ -213,42 +213,78 @@ jobs:
        uses: actions/upload-artifact@v4
        with:
          name: androidBuild (experimental)
-         path: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
+         path: "export/release/android/bin/app/build/outputs/apk/release/PsychOnline.apk"
   # smh: code signing shit
-  # buildiOS:
-  #   runs-on: macos-latest
+  buildiOS:
+    runs-on: macos-latest
 
-  #   steps:
+    steps:
   #     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-  #     - uses: actions/checkout@v2
+     - uses: actions/checkout@v2
 
-  #     - name: Retrieve Cache
-  #       uses: actions/cache@v4
-  #       with:
-  #         path: |
-  #           export/release/ios/haxe
-  #           export/release/ios/obj
-  #         key: ${{ runner.os }}-cache
+     - name: Retrieve Cache
+       uses: actions/cache@v4
+       with:
+            path: |
+              export/release/ios/haxe
+              export/release/ios/obj
+            key: ${{ runner.os }}-cache
 
-  #     - uses: krdlab/setup-haxe@master
-  #       with:
-  #         haxe-version: 4.3.2
+     - uses: krdlab/setup-haxe@master
+       with:
+            haxe-version: 4.3.7
   #     # Runs a set of commands using the runners shell
-  #     - name: Install Haxelib
-  #       run: |
-  #         haxelib setup ~/haxelib
-  #         haxelib install hxcpp > /dev/null --quiet
-  #         haxelib install hmm --quiet
-  #         haxelib run hmm install
-  #     - name: Create Version Tag
-  #       run: echo "${{github.run_id}}" > VERSION
-  #     - name: Compile
-  #       run: haxelib run lime build ios --app-version="4.0.0-${{ github.run_id}}"
-  #     - name: Publish Artifact
-  #       uses: actions/upload-artifact@v4
-  #       with:
-  #         name: iOSBuild (experimental)
-  #         path: export/release/ios/build/
+     - name: Install Haxelib
+       run: |
+            haxelib setup ~/haxelib
+            haxelib git hxcpp https://github.com/kittycathy233/hxcpp --quiet
+            haxelib git lime https://github.com/kittycathy233/lime --quiet
+            haxelib install openfl 9.4.1 --quiet
+            haxelib install flixel 5.8.0 --quiet
+            haxelib install flixel-addons 3.3.2 --quiet
+            haxelib install flixel-tools 1.5.1 --quiet
+            haxelib install flixel-ui 2.5.0 --quiet
+            haxelib install hscript-iris 1.1.3 --quiet
+            haxelib install hscript 2.6.0 --quiet
+            haxelib install tjson 1.4.0 --quiet
+            haxelib git SScript https://github.com/Snirozu/SScript-7.7.0 --quiet
+            haxelib set SScript git
+            haxelib git flxanimate https://github.com/Dot-Stuff/flxanimate 768740a56b26aa0c072720e0d1236b94afe68e3e --quiet
+            haxelib git linc_luajit https://github.com/kittycathy233/linc_luajit --quiet
+            haxelib install colyseus 0.15.2 --quiet
+            haxelib install HtmlParser 3.4.0 --quiet
+            haxelib install UnRAR 1.0.0 --quiet
+            haxelib install away3d 5.0.9 --quiet
+            haxelib git away3d https://github.com/Snirozu/away3d master --quiet
+            haxelib install json2object 3.11.0 --quiet
+            haxelib install hxjsonast 1.1.0 --quiet
+            haxelib install lumod 2.1.0 --qquiet
+            haxelib install actuate 1.9.0 --quiet
+            haxelib install compiletime 2.8.0 --quiet
+            haxelib install hxdiscord_rpc --quiet --skip-dependencies
+            haxelib install hxvlc 2.0.1 --quiet --skip-dependencies
+            haxelib git funkin.vis https://github.com/FunkinCrew/funkVis 22b1ce089dd924f15cdc4632397ef3504d464e90 --quiet --skip-dependencies
+            haxelib git grig.audio https://github.com/Snirozu/grig.audio 162f924bdde427fc84af5b51961d2faef51f6955 --quiet
+            haxelib install yagp 1.1.4 --quiet
+     - name: Create Version Tag
+       run: echo "${{github.run_id}}" > VERSION
+     - name: Compile
+       run: haxelib run lime build ios -final -nosign --app-version="4.0.0-${{ github.run_id}}"
+     - name: Make IPA
+       if: inputs.name == 'iOS'
+       run: |
+          brew install ldid
+          cd export/release/ios/build/Release-iphoneos/PsychOnline.app
+          ldid -S../../../PsychOnline/PsychOnline.entitlements PsychOnline
+          cd ..
+          mkdir Payload
+          mv PsychOnline.app Payload
+          zip -r PsychOnline.ipa Payload
+     - name: Publish Artifact
+       uses: actions/upload-artifact@v4
+       with:
+            name: iOSBuild
+            path: "export/release/ios/build/Release-iphoneos/PsychOnline.ipa"
   release:
     if: github.ref_type == 'tag'
     needs:
@@ -256,6 +292,7 @@ jobs:
       - buildMac
       - buildWindows
       - buildAndroid
+      - buildiOS
     
     runs-on: ubuntu-latest
 
@@ -280,6 +317,7 @@ jobs:
         zip -r linuxBuild.zip linuxBuild/
         zip -r macBuild.zip macBuild/
         zip -r androidBuild.zip androidBuild/
+        zip -r iosBuild.zip iosBuild/
 
     - name: Upload Windows build to the release
       uses: actions/upload-release-asset@v1.0.1
@@ -311,7 +349,7 @@ jobs:
         asset_name: macBuild.zip
         asset_content_type: application/zip
 
-    - name: Upload Android build to the release
+    - name: Upload Android Build to the release
       uses: actions/upload-release-asset@v1.0.1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -319,4 +357,15 @@ jobs:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: androidBuild.zip
         asset_name: androidBuild.zip
+        asset_content_type: application/zip  
+      
+    - name: Upload iOS Build to the release
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: iosBuild.zip
+        asset_name: iosBuild.zip
         asset_content_type: application/zip
+        
