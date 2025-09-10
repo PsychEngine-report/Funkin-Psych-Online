@@ -6,8 +6,10 @@ import haxe.io.Path;
 import openfl.utils.Assets;
 import flixel.math.FlxPoint;
 import flixel.util.FlxSave;
+#if sys
 import sys.io.File;
-import sys.io.Process;
+import sys.FileSystem;
+#end
 
 
 class MobileData {
