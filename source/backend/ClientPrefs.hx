@@ -238,7 +238,9 @@ class ClientPrefs {
 	public static function loadDefaultKeys() {
 		defaultKeys = keyBinds.copy();
 		defaultButtons = gamepadBinds.copy();
+		#if mobile
 		defaultMobileBinds = mobileBinds.copy();
+		#end
 	}
 
 	public static function saveSettings() {
