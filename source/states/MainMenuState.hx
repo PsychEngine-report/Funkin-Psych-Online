@@ -179,8 +179,14 @@ class MainMenuState extends MusicBeatState
 			online.backend.DateEvent.isHalloween = true;
 		}
 
+		#if mobile
+	    addTouchPad('UP_DOWN', 'A_B_E');
+	    #end
+
 		super.create();
 	}
+
+	
 
 	var selectedSomethin:Bool = false;
 
@@ -295,6 +301,12 @@ class MainMenuState extends MusicBeatState
 			}
 			#if desktop
 			else if (controls.justPressed('debug_1'))
+			{
+				selectedSomethin = true;
+				FlxG.switchState(() -> new MasterEditorMenu());
+			}
+			#else
+			else if (touchPad.buttonE.justPressed || controls.justPressed('debug_1'))
 			{
 				selectedSomethin = true;
 				FlxG.switchState(() -> new MasterEditorMenu());
