@@ -49,6 +49,9 @@ class Paths
 		'assets/shared/music/tea-time.$SOUND_EXT',
 		'assets/images/bf1.png',
 		'assets/images/bf2.png',
+		#if mobile
+		'assets/mobile/touchpad/bg.png',
+		#end
 	];
 	/// haya I love you for the base cache dump I took to the max
 	public static function clearUnusedMemory() {
@@ -118,6 +121,9 @@ class Paths
 			if(FileSystem.exists(modded)) return modded;
 		}
 		#end
+
+		if(library == "mobile")
+			return getPreloadPath('mobile/$file');
 
 		if (library != null)
 			return getLibraryPath(file, library);
