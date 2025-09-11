@@ -213,7 +213,7 @@ jobs:
        uses: actions/upload-artifact@v4
        with:
          name: androidBuild
-         path: export/release/android/bin/app/build/outputs/*.apk
+         path: 'export/release/android/bin/app/build/outputs/*.apk'
   # smh: code signing shit
   buildiOS:
     runs-on: macos-13
