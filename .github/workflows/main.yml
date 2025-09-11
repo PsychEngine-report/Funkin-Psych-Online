@@ -96,7 +96,7 @@ jobs:
           name: windowsBuild
           path: export/release/windows/bin
   buildMac:
-    runs-on: macos-15
+    runs-on: macos-13
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -212,7 +212,7 @@ jobs:
      - name: Publish Artifact
        uses: actions/upload-artifact@v4
        with:
-         name: androidBuild (experimental)
+         name: androidBuild
          path: "export/release/android/bin/app/build/outputs/apk/release/PsychOnline.apk"
   # smh: code signing shit
   buildiOS:
@@ -271,7 +271,7 @@ jobs:
      - name: Compile
        run: haxelib run lime build ios -final -nosign --app-version="4.0.0-${{ github.run_id}}"
      - name: Make IPA
-       if: inputs.name == 'iOS'
+       if: inputs.name == 'macos'
        run: |
           brew install ldid
           cd export/release/ios/build/Release-iphoneos/PsychOnline.app
