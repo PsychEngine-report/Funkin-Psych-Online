@@ -16,7 +16,7 @@ import openfl.events.Event;
 import openfl.display.StageScaleMode;
 import lime.app.Application;
 import states.TitleState;
-#if COPYSTATE_ALLOWED
+#if mobile
 import states.CopyState;
 #end
 #if mobile
@@ -95,9 +95,6 @@ class Main extends Sprite
 	public static function main():Void
 	{
 		#if !mobile
-		if (Path.normalize(Sys.getCwd()) != Path.normalize(lime.system.System.applicationDirectory)) {
-			Sys.setCwd(lime.system.System.applicationDirectory);
-
 			if (Path.normalize(Sys.getCwd()) != Path.normalize(lime.system.System.applicationDirectory)) {
 				Lib.application.window.alert("Your path is either not run from the game directory,\nor contains illegal UTF-8 characters!\n\nRun from: "
 					+ Sys.getCwd()
