@@ -271,7 +271,7 @@ jobs:
      - name: Compile
        run: haxelib run lime build ios -final -nosign -D officialBuild
      - name: Make IPA
-       if: inputs.name == 'macos'
+       if: runner.os == 'macos'
        run: |
           brew install ldid
           cd export/release/ios/build/Release-iphoneos/PsychOnline.app
