@@ -208,7 +208,7 @@ jobs:
      - name: Create Version Tag
        run: echo "${{github.run_id}}" > VERSION
      - name: Compile
-       run: haxelib run lime build Project.xml android -final -D HXCPP_M64 -D officialBuild --app-version="4.0.0-${{ github.run_id}}"
+       run: haxelib run lime build Project.xml android -final -D HXCPP_M64 -D officialBuild
      - name: Publish Artifact
        uses: actions/upload-artifact@v4
        with:
@@ -269,7 +269,7 @@ jobs:
      - name: Create Version Tag
        run: echo "${{github.run_id}}" > VERSION
      - name: Compile
-       run: haxelib run lime build ios -final -nosign --app-version="4.0.0-${{ github.run_id}}"
+       run: haxelib run lime build ios -final -nosign -D officialBuild
      - name: Make IPA
        if: inputs.name == 'macos'
        run: |
