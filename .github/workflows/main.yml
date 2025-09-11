@@ -213,7 +213,7 @@ jobs:
        uses: actions/upload-artifact@v4
        with:
          name: androidBuild
-         path: "export/release/android/bin/app/build/outputs/apk/release/PsychOnline.apk"
+         path: "export/release/android/bin/app/build/outputs/apk/release/PsychEngine.apk"
   # smh: code signing shit
   buildiOS:
     runs-on: macos-13
@@ -274,17 +274,17 @@ jobs:
        if: runner.os == 'macos'
        run: |
           brew install ldid
-          cd export/release/ios/build/Release-iphoneos/PsychOnline.app
-          ldid -S../../../PsychOnline/PsychOnline.entitlements PsychOnline
+          cd export/release/ios/build/Release-iphoneos/PsychEngine.app
+          ldid -S../../../PsychEngine/PsychEngine.entitlements PsychEngine
           cd ..
           mkdir Payload
-          mv PsychOnline.app Payload
-          zip -r PsychOnline.ipa Payload
+          mv PsychEngine.app Payload
+          zip -r PsychEngine.ipa Payload
      - name: Publish Artifact
        uses: actions/upload-artifact@v4
        with:
             name: iOSBuild
-            path: "export/release/ios/build/Release-iphoneos/PsychOnline.ipa"
+            path: "export/release/ios/build/Release-iphoneos/PsychEngine.ipa"
   release:
     if: github.ref_type == 'tag'
     needs:
