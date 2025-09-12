@@ -103,6 +103,11 @@ class DownloadAlerts extends Sprite {
 			alert.cancelBg.scaleX = alert.cancelText.textWidth;
 			alert.cancelBg.scaleY = alert.cancelText.textHeight + 5;
 
+			#if mobile
+			if (Controls.instance.mobileC && alert.cancelBg.getBounds(FlxG.stage).contains(FlxG.stage.mouseX, FlxG.stage.mouseY) && FlxG.mouse.justPressed)
+				downloader.client.cancel();
+			#end
+
 			prevAlert = alert;
 			i++;
 		}
