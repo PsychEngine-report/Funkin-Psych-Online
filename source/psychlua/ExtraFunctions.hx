@@ -153,6 +153,7 @@ class ExtraFunctions
 			return Reflect.getProperty(controller.justReleased, name) == true;
 		});
 
+		#if desktop
 		Lua_helper.add_callback(lua, "keyJustPressed", function(name:String = '') {
 			name = name.toLowerCase();
 			switch(name) {
@@ -164,6 +165,25 @@ class ExtraFunctions
 			}
 			return false;
 		});
+		#else
+		Lua_helper.add_callback(lua, "keyJustPressed", function(name:String = '') {
+			name = name.toLowerCase();
+			switch(name) {
+				case 'left': return PlayState.instance.controls.NOTE_LEFT_P;
+				case 'down': return PlayState.instance.controls.NOTE_DOWN_P;
+				case 'up': return PlayState.instance.controls.NOTE_UP_P;
+				case 'right': return PlayState.instance.controls.NOTE_RIGHT_P;
+				case 'space':
+					var mobileShit:Bool = false;
+					if (Controls.instance.mobileC)
+						mobileShit = MusicBeatState.getState().hitbox?.buttonExtra?.justPressed == true;
+					return PlayState.instance.controls.justPressed('space') || mobileShit;
+				default: return PlayState.instance.controls.justPressed(name);
+			}
+			return false;
+		});
+		#end
+		#if desktop
 		Lua_helper.add_callback(lua, "keyPressed", function(name:String = '') {
 			name = name.toLowerCase();
 			switch(name) {
@@ -175,6 +195,25 @@ class ExtraFunctions
 			}
 			return false;
 		});
+		#else
+		Lua_helper.add_callback(lua, "keyPressed", function(name:String = '') {
+			name = name.toLowerCase();
+			switch(name) {
+				case 'left': return PlayState.instance.controls.NOTE_LEFT;
+				case 'down': return PlayState.instance.controls.NOTE_DOWN;
+				case 'up': return PlayState.instance.controls.NOTE_UP;
+				case 'right': return PlayState.instance.controls.NOTE_RIGHT;
+				case 'space':
+					var mobileShit:Bool = false;
+					if (Controls.instance.mobileC)
+						mobileShit = MusicBeatState.getState().hitbox?.buttonExtra?.pressed == true;
+					return PlayState.instance.controls.pressed('space') || mobileShit;
+				default: return PlayState.instance.controls.pressed(name);
+			}
+			return false;
+		});
+		#end
+		#if desktop
 		Lua_helper.add_callback(lua, "keyReleased", function(name:String = '') {
 			name = name.toLowerCase();
 			switch(name) {
@@ -186,6 +225,24 @@ class ExtraFunctions
 			}
 			return false;
 		});
+		#else
+		Lua_helper.add_callback(lua, "keyReleased", function(name:String = '') {
+			name = name.toLowerCase();
+			switch(name) {
+				case 'left': return PlayState.instance.controls.NOTE_LEFT_R;
+				case 'down': return PlayState.instance.controls.NOTE_DOWN_R;
+				case 'up': return PlayState.instance.controls.NOTE_UP_R;
+				case 'right': return PlayState.instance.controls.NOTE_RIGHT_R;
+				case 'space':
+					var mobileShit:Bool = false;
+					if (Controls.instance.mobileC)
+						mobileShit = MusicBeatState.getState().hitbox?.buttonExtra?.justReleased == true;
+					return PlayState.instance.controls.justReleased('space') || mobileShit;
+				default: return PlayState.instance.controls.justReleased(name);
+			}
+			return false;
+		});
+		#end
 
 		// Save data management
 		Lua_helper.add_callback(lua, "initSaveData", function(name:String, ?folder:String = 'psychenginemods') {
