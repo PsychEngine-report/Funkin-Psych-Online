@@ -27,7 +27,11 @@ import mobile.backend.MobileScaleMode;
 import lime.graphics.Image;
 #end
 
+#if desktop
 import sys.FileSystem;
+#else
+import backend.io.PsychFileSystem as FileSystem;
+#end
 
 //crash handler stuff
 import openfl.events.UncaughtErrorEvent;
