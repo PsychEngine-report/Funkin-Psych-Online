@@ -290,10 +290,11 @@ class Controls
 	public static var instance:Controls;
 	public function new()
 	{
-		#if mobile
-		mobileBinds = ClientPrefs.mobileBinds;
-		#end
+        #if desktop
 		keyboardBinds = ClientPrefs.keyBinds;
 		gamepadBinds = ClientPrefs.gamepadBinds;
+		#else
+		mobileBinds = ClientPrefs.mobileBinds;
+		#end
 	}
 }
