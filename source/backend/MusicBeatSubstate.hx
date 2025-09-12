@@ -32,8 +32,8 @@ class MusicBeatSubstate extends FlxSubState
 	#if mobile
 	public var touchPad:TouchPad;
 	public var touchPadCam:FlxCamera;
-	public var hitbox:Hitbox;
-	public var hitboxCam:FlxCamera;
+	public var mobileControls:IMobileControls;
+	public var mobileControlsCam:FlxCamera;
 
 	public function addTouchPad(DPad:String, Action:String)
 	{
@@ -56,35 +56,45 @@ class MusicBeatSubstate extends FlxSubState
 		}
 	}
 
-	public function addHitbox(defaultDrawTarget:Bool = false):Void
+	public function addMobileControls(defaultDrawTarget:Bool = false):Void
 	{
-		final extraMode = MobileData.extraActions.get(ClientPrefs.data.extraHints);
+		var extraMode = MobileData.extraActions.get(ClientPrefs.data.extraButtons);
 
-		hitbox = new Hitbox(extraMode);
-		//hitbox.instance = MobileData.setButtonsColors(hitbox.instance);
-		hitbox.visible = false;
-
-		hitboxCam = new FlxCamera();
-		hitboxCam.bgColor.alpha = 0;
-		FlxG.cameras.add(hitboxCam, defaultDrawTarget);
-		hitbox.cameras = [hitboxCam];
-
-		add(hitbox);
-	}
-
-	public function removeHitbox()
-	{
-		if (hitbox != null)
+		switch (MobileData.mode)
 		{
-			remove(hitbox);
-			hitbox = FlxDestroyUtil.destroy(hitbox);
-			hitbox = null;
+			case 0: // RIGHT_FULL
+				mobileControls = new TouchPad('RIGHT_FULL', 'NONE', extraMode);
+			case 1: // LEFT_FULL
+				mobileControls = new TouchPad('LEFT_FULL', 'NONE', extraMode);
+			case 2: // CUSTOM
+				mobileControls = MobileData.getTouchPadCustom(new TouchPad('RIGHT_FULL', 'NONE', extraMode));
+			case 3: // HITBOX
+				mobileControls = new Hitbox(extraMode);
 		}
 
-		if (hitboxCam != null)
+		mobileControls.instance = MobileData.setButtonsColors(mobileControls.instance);
+		mobileControlsCam = new FlxCamera();
+		mobileControlsCam.bgColor.alpha = 0;
+		FlxG.cameras.add(mobileControlsCam, defaultDrawTarget);
+
+		mobileControls.instance.cameras = [mobileControlsCam];
+		mobileControls.instance.visible = false;
+		add(mobileControls.instance);
+	}
+
+	public function removeMobileControls()
+	{
+		if (mobileControls != null)
 		{
-			FlxG.cameras.remove(hitboxCam);
-			hitboxCam = FlxDestroyUtil.destroy(hitboxCam);
+			remove(mobileControls.instance);
+			mobileControls.instance = FlxDestroyUtil.destroy(mobileControls.instance);
+			mobileControls = null;
+		}
+
+		if (mobileControlsCam != null)
+		{
+			FlxG.cameras.remove(mobileControlsCam);
+			mobileControlsCam = FlxDestroyUtil.destroy(mobileControlsCam);
 		}
 	}
 
@@ -98,15 +108,15 @@ class MusicBeatSubstate extends FlxSubState
 			touchPad.cameras = [touchPadCam];
 		}
 	}
-	#else
-    }
-    #end
+	#end
 
 	override function destroy()
 	{
 		//controls.isInSubstate = false;
+		#if mobile
 		removeTouchPad();
-		removeHitbox();
+		removeMobileControls();
+		#end
 		
 		super.destroy();
 	}
