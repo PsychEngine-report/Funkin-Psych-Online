@@ -168,6 +168,7 @@ class OnlineState extends MusicBeatState {
 		items.screenCenter(Y);
         add(items);
 
+		#desktop
 		discord = new FlxSprite();
 		discord.antialiasing = ClientPrefs.data.antialiasing;
 		discord.frames = Paths.getSparrowAtlas('online_discord');
@@ -224,7 +225,60 @@ class OnlineState extends MusicBeatState {
 			if (!Main.UNOFFICIAL_BUILD)
 				add(twitter);
 		}
-		
+		#else
+		discord = new FlxSprite();
+		discord.antialiasing = ClientPrefs.data.antialiasing;
+		discord.frames = Paths.getSparrowAtlas('online_discord');
+		discord.animation.addByPrefix('idle', "idle", 24);
+		discord.animation.addByPrefix('active', "active", 24);
+		discord.animation.play('idle');
+		//discord.scale.set(0.5, 0.5);
+		discord.updateHitbox();
+		discord.x = 30;
+		discord.y = FlxG.height - discord.height - 30;
+		discord.alpha = 0.8;
+		add(discord);
+
+		github = new FlxSprite();
+		github.antialiasing = ClientPrefs.data.antialiasing;
+		github.frames = Paths.getSparrowAtlas('online_github');
+		github.animation.addByPrefix('idle', "idle", 24);
+		github.animation.addByPrefix('active', "active", 24);
+		github.animation.play('idle');
+		// github.scale.set(0.5, 0.5);
+		github.updateHitbox();
+		github.x = discord.x + discord.width + 20;
+		github.y = FlxG.height - github.height - 28;
+		github.alpha = 0.8;
+		add(github);
+
+		if (twitterIsDead) {
+			bsky = new FlxSprite();
+			bsky.antialiasing = ClientPrefs.data.antialiasing;
+			bsky.frames = Paths.getSparrowAtlas('online_bsky');
+			bsky.animation.addByPrefix('idle', "idle", 24);
+			bsky.animation.addByPrefix('active', "active", 24);
+			bsky.animation.play('idle');
+			bsky.updateHitbox();
+			bsky.x = github.x + github.width + 20;
+			bsky.y = FlxG.height - bsky.height - 28;
+			bsky.alpha = 0.8;
+			add(bsky);
+		}
+		else {
+			twitter = new FlxSprite();
+			twitter.antialiasing = ClientPrefs.data.antialiasing;
+			twitter.frames = Paths.getSparrowAtlas('online_twitter');
+			twitter.animation.addByPrefix('idle', "idle", 24);
+			twitter.animation.addByPrefix('active', "active", 24);
+			twitter.animation.play('idle');
+			twitter.updateHitbox();
+			twitter.x = github.x + github.width + 20;
+			twitter.y = FlxG.height - twitter.height - 28;
+			twitter.alpha = 0.8;
+			add(twitter);
+		}
+		#end
 
 		itemDesc = new FlxText(0, FlxG.height - 170);
 		itemDesc.setFormat("VCR OSD Mono", 25, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -302,6 +356,10 @@ class OnlineState extends MusicBeatState {
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 
 		FlxG.mouse.visible = true;
+
+        #if mobile
+		addTouchPad('NONE', 'B');
+        #end
     }
 
 	override function destroy() {
