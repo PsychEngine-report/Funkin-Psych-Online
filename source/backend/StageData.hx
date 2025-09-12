@@ -2,7 +2,7 @@ package backend;
 
 import psychlua.ModchartSprite;
 import json2object.JsonParser;
-#if MODS_ALLOWED
+#if desktop
 import sys.io.File;
 import sys.FileSystem;
 #else
