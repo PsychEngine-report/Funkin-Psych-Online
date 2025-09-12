@@ -1,9 +1,9 @@
 package backend;
 
-#if desktop
+#if sys
 import sys.io.File;
 import sys.FileSystem;
-#else
+#elseif mobile
 import backend.io.PsychFile as File;
 import backend.io.PsychFileSystem as FileSystem;
 #end
