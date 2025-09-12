@@ -279,6 +279,10 @@ class OnlineOptionsState extends MusicBeatState {
 		add(items);
 
         changeSelection(0);
+
+        #if mobile
+		addTouchPad('UP_DOWN', 'A_B');
+        #end
     }
 
     override function update(elapsed) {
@@ -298,6 +302,7 @@ class OnlineOptionsState extends MusicBeatState {
 			else if (controls.UI_DOWN_P || FlxG.mouse.wheel == -1)
 				changeSelection(1);
 
+			#if desktop
 			if (FlxG.mouse.deltaScreenX != 0 || FlxG.mouse.deltaScreenY != 0 || FlxG.mouse.justPressed) {
                 curSelected = -1;
                 var i = 0;
@@ -308,6 +313,18 @@ class OnlineOptionsState extends MusicBeatState {
                     }
                     i++;
                 }
+			#else
+			if (!controls.mobileC && (FlxG.mouse.deltaScreenX != 0 || FlxG.mouse.deltaScreenY != 0 || FlxG.mouse.justPressed)) {
+                curSelected = -1;
+                var i = 0;
+                 for (item in items) {
+                    if (!controls.mobileC && FlxG.mouse.overlaps(item, camera)) {
+                        curSelected = i;
+                        break;
+                    }
+                    i++;
+                }
+			#end
                 updateOptions();
             }
         }
