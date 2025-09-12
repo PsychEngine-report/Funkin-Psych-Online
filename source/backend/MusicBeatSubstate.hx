@@ -98,6 +98,9 @@ class MusicBeatSubstate extends FlxSubState
 			touchPad.cameras = [touchPadCam];
 		}
 	}
+	#else
+    }
+    #end
 
 	override function destroy()
 	{
@@ -107,7 +110,6 @@ class MusicBeatSubstate extends FlxSubState
 		
 		super.destroy();
 	}
-	#end
 
 	override function update(elapsed:Float)
 	{
