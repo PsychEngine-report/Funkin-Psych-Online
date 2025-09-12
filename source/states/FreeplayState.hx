@@ -47,7 +47,7 @@ import substates.GameplayChangersSubstate;
 import substates.ResetScoreSubState;
 
 #if MODS_ALLOWED
-import sys.FileSystem;
+import backend.io.PsychFileSystem as FileSystem;
 #end
 
 class FreeplayState extends MusicBeatState
