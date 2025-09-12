@@ -2,9 +2,12 @@ package backend;
 
 import openfl.utils.Assets;
 
-#if sys
+#if desktop
 import sys.io.File;
 import sys.FileSystem;
+#else
+import backend.io.PsychFile as File;
+import backend.io.PsychFileSystem as FileSystem;
 #end
 
 class NoteSkinData {
