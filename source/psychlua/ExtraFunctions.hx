@@ -1,8 +1,11 @@
 package psychlua;
 
-#if sys
+#if desktop
 import sys.FileSystem;
 import sys.io.File;
+#else
+import backend.io.PsychFileSystem as FileSystem;
+import backend.io.PsychFile as File;
 #end
 
 import flixel.util.FlxSave;
@@ -24,6 +27,47 @@ class ExtraFunctions
 		var lua:State = funk.lua;
 		
 		// Keyboard & Gamepads
+		#if mobile
+		funk.set("keyboardJustPressed", function(name:String) {
+			switch (name.toUpperCase()) {
+				case 'SPACE':
+					var space = Reflect.getProperty(FlxG.keys.justPressed, 'SPACE');
+					var mobileShit:Bool = false;
+					if (Controls.instance.mobileC)
+						mobileShit = MusicBeatState.getState().hitbox?.buttonExtra?.justPressed == true;
+					return space || mobileShit;
+
+				default:
+					return Reflect.getProperty(FlxG.keys.justPressed, name.toUpperCase());
+			}
+		});
+		funk.set("keyboardPressed", function(name:String) {
+			switch (name.toUpperCase()) {
+				case 'SPACE':
+					var space = Reflect.getProperty(FlxG.keys.pressed, 'SPACE');
+					var mobileShit:Bool = false;
+					if (Controls.instance.mobileC)
+						mobileShit = MusicBeatState.getState().hitbox?.buttonExtra?.pressed == true;
+					return space || mobileShit;
+
+				default:
+					return Reflect.getProperty(FlxG.keys.pressed, name.toUpperCase());
+			}
+		});
+		funk.set("keyboardReleased", function(name:String) {
+			switch (name.toUpperCase()) {
+				case 'SPACE':
+					var space = Reflect.getProperty(FlxG.keys.justReleased, 'SPACE');
+					var mobileShit:Bool = false;
+					if (Controls.instance.mobileC)
+						mobileShit = MusicBeatState.getState().hitbox?.buttonExtra?.justReleased == true;
+					return space || mobileShit;
+
+				default:
+					return Reflect.getProperty(FlxG.keys.justReleased, name.toUpperCase());
+			}
+		});
+		#end
 		Lua_helper.add_callback(lua, "keyboardJustPressed", luaJustPressed = function(name:String)
 		{
 			if (Controls.instance?.moodyBlues != null && Controls.instance.moodyBlues.pressedKeys.get('KEY:' + name) == JUST_PRESSED) {
