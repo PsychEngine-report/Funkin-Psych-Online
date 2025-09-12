@@ -6,7 +6,7 @@ import sys.FileSystem;
 #end
 
 class StorageUtil {
-	#if sys
+	#if (sys || mobile)
 	public static function getStorageDirectory():String
 		return #if android haxe.io.Path.addTrailingSlash(AndroidContext.getExternalFilesDir()) #elseif ios lime.system.System.documentsDirectory #else Sys.getCwd() #end;
 
