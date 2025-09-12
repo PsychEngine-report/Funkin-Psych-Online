@@ -1,8 +1,11 @@
 package backend;
 
-#if MODS_ALLOWED
+#if desktop
 import sys.io.File;
 import sys.FileSystem;
+#else
+import backend.io.PsychFile as File;
+import backend.io.PsychFileSystem as FileSystem;
 #end
 import lime.utils.Assets;
 import openfl.utils.Assets as OpenFlAssets;
