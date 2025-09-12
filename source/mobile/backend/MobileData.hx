@@ -6,10 +6,8 @@ import haxe.io.Path;
 import openfl.utils.Assets;
 import flixel.math.FlxPoint;
 import flixel.util.FlxSave;
-#if sys
-import sys.io.File;
-import sys.FileSystem;
-#end
+import backend.io.PsychFile as File;
+import backend.io.PsychFileSystem as FileSystem;
 
 
 class MobileData {
