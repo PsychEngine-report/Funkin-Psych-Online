@@ -6442,8 +6442,7 @@ class PlayState extends MusicBeatState
 		}
 		return false;
 	}
-}
-#end
+    #end
 
 @:publicFields
 class PlayStatePlayer {
