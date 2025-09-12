@@ -5,12 +5,11 @@ import json2object.JsonParser;
 #if desktop
 import sys.io.File;
 import sys.FileSystem;
-#else
+#elseif mobile
 import backend.io.PsychFile as File;
 import backend.io.PsychFileSystem as FileSystem;
 #else
 import openfl.utils.Assets;
-#end
 #end
 import tjson.TJSON as Json;
 import backend.Song;
