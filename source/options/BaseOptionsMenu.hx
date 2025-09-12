@@ -221,6 +221,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 				}
 			}
 
+			#if desktop
 			if(controls.RESET)
 			{
 				var leOption:Option = optionsArray[curSelected];
@@ -235,6 +236,22 @@ class BaseOptionsMenu extends MusicBeatSubstate
 				reloadCheckboxes();
 			}
 		}
+		#else
+		if(touchPad.buttonC.justPressed || controls.RESET)
+			{
+				var leOption:Option = optionsArray[curSelected];
+				leOption.setValue(leOption.defaultValue);
+				if(leOption.type != 'bool')
+				{
+					if(leOption.type == 'string') leOption.curOption = leOption.options.indexOf(leOption.getValue());
+					updateTextFrom(leOption);
+				}
+				leOption.change();
+				FlxG.sound.play(Paths.sound('cancelMenu'));
+				reloadCheckboxes();
+			}
+		}
+	    #end
 
 		if(nextAccept > 0) {
 			nextAccept -= 1;
