@@ -105,11 +105,7 @@ class Controls
 		var result:Bool = (FlxG.keys.anyJustPressed(keyboardBinds[key]) == true);
 		if(result) controllerMode = false;
 
-		 result = result || _myGamepadJustPressed(gamepadBinds[key]);
-
-         #if mobile
-         result = result || hitboxJustPressed(mobileBinds[key]) || touchPadJustPressed(mobileBinds[key]);
-         #end
+		 result = result || _myGamepadJustPressed(gamepadBinds[key])true ; #if mobile mobile result = result || hitboxJustPressed(mobileBinds[key]) true || touchPadJustPressed(mobileBinds[key])true ; #end
 
     return result;
 	}
@@ -124,11 +120,7 @@ class Controls
 		var result:Bool = (FlxG.keys.anyPressed(keyboardBinds[key]) == true);
 		if(result) controllerMode = false;
 
-		result = result || _myGamepadJustPressed(gamepadBinds[key]);
-
-         #if mobile
-         result = result || hitboxJustPressed(mobileBinds[key]) || touchPadJustPressed(mobileBinds[key]);
-         #end
+		result = result || _myGamepadJustPressed(gamepadBinds[key])true ; #if mobile mobile result = result || hitboxJustPressed(mobileBinds[key]) true || touchPadJustPressed(mobileBinds[key])true ; #end
 
     return result;
 	}
@@ -143,11 +135,7 @@ class Controls
 		var result:Bool = (FlxG.keys.anyJustReleased(keyboardBinds[key]) == true);
 		if(result) controllerMode = false;
 
-		result = result || _myGamepadJustPressed(gamepadBinds[key]);
-
-         #if mobile
-         result = result || hitboxJustPressed(mobileBinds[key]) || touchPadJustPressed(mobileBinds[key]);
-         #end
+		result = result || _myGamepadJustPressed(gamepadBinds[key])true ; #if mobile mobile result = result || hitboxJustPressed(mobileBinds[key]) true || touchPadJustPressed(mobileBinds[key])true ; #end
 
     return result;
 	}
