@@ -6,8 +6,10 @@ import lime.utils.Assets;
 #if sys
 import sys.io.File;
 import sys.FileSystem;
+#else
+import backend.io.PsychFile as File;
+import backend.io.PsychFileSystem as FileSystem;
 #end
-
 import backend.Section;
 
 typedef SwagSong =
