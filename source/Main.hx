@@ -5,7 +5,7 @@ import states.MainMenuState;
 import externs.WinAPI;
 import haxe.Exception;
 import flixel.graphics.FlxGraphic;
-
+import haxe.io.Path;
 import flixel.FlxGame;
 import flixel.FlxState;
 import openfl.Assets;
