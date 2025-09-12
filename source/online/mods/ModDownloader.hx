@@ -166,7 +166,7 @@ class ModDownloader {
 				downloader.client.cancel();
 		}
 	}
-    #desktop
+    #if desktop
 	public static function checkDeleteDlDir() {
 		if (FileSystem.exists(downloadDir)) {
 			FileUtils.removeFiles(downloadDir);
