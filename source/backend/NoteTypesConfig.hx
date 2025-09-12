@@ -2,11 +2,6 @@ package backend;
 
 import objects.Note;
 
-#if mobile
-import backend.io.PsychFile as File;
-import backend.io.PsychFileSystem as FileSystem;
-#end
-
 typedef NoteTypeProperty = {
 	property:Array<String>,
 	value:Dynamic
