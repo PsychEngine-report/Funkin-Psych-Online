@@ -20,9 +20,12 @@ import openfl.geom.Rectangle;
 import lime.utils.Assets;
 import openfl.media.Sound;
 
-#if sys
+#if desktop
 import sys.io.File;
 import sys.FileSystem;
+#else
+import backend.io.PsychFile as File;
+import backend.io.PsychFileSystem as FileSystem;
 #end
 import tjson.TJSON as Json;
 
