@@ -6,9 +6,12 @@ import flixel.util.FlxSave;
 
 import openfl.utils.Assets;
 import lime.utils.Assets as LimeAssets;
-#if sys
+#if desktop
 import sys.io.File;
 import sys.FileSystem;
+#else
+import backend.io.PsychFile as File;
+import backend.io.PsychFileSystem as FileSystem;
 #end
 
 class CoolUtil
