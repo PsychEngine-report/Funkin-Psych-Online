@@ -1,8 +1,12 @@
 package online.util;
-
-import sys.io.File;
 import haxe.io.Path;
+#if desktop
+import sys.io.File;
 import sys.FileSystem;
+#else
+import backend.io.PsychFile as File;
+import backend.io.PsychFileSystem as FileSystem;
+#end
 
 // can haxe have useful classes like in java please this language is BORING AND UNNERVING
 class FileUtils {
