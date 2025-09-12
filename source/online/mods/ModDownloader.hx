@@ -166,12 +166,21 @@ class ModDownloader {
 				downloader.client.cancel();
 		}
 	}
-
+    #desktop
 	public static function checkDeleteDlDir() {
 		if (FileSystem.exists(downloadDir)) {
 			FileUtils.removeFiles(downloadDir);
 		}
 	}
+    #else
+	public static function checkDeleteDlDir() {
+		#if !mobile
+		if (FileSystem.exists(downloadDir)) {
+			FileUtils.removeFiles(downloadDir);
+		}
+		#end
+	}
+    #end
 }
 
 enum DownloaderStatus {
