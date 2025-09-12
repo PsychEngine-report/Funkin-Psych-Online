@@ -117,7 +117,6 @@ class Main extends Sprite
 			}
 			#end
 		
-		}
 		Lib.current.addChild(view3D = new online.away.View3DHandler());
 		Lib.current.addChild(new Main());
 		Lib.current.addChild(new online.gui.sidebar.SideUI());
