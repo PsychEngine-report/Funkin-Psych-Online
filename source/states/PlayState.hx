@@ -6347,6 +6347,7 @@ class PlayState extends MusicBeatState
 		return camGame.scroll.y = value - FlxG.height / 2;
 	}
 
+    #if mobile
     public function makeLuaTouchPad(DPadMode:String, ActionMode:String) {
 		if(members.contains(luaTouchPad)) return;
 
@@ -6442,6 +6443,7 @@ class PlayState extends MusicBeatState
 		return false;
 	}
 }
+#end
 
 @:publicFields
 class PlayStatePlayer {
