@@ -207,6 +207,11 @@ class GameOverSubstate extends MusicBeatSubstate
 		add(camFollow);
 
 		add(new online.objects.DebugPosHelper());
+
+		#if mobile
+		addTouchPad('NONE', 'A_B');
+		addTouchPadCamera();
+		#end
 	}
 
 	public var startedDeath:Bool = false;
