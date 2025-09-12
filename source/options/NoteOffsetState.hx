@@ -664,6 +664,11 @@ class NoteOffsetState extends MusicBeatState
 			controllerPointer.visible = controls.controllerMode;
 		}
 
+		#if mobile
+		removeTouchPad();
+        #end
+
+		#if desktop
 		var str:String;
 		var str2:String;
 		if(onComboMenu)
@@ -675,6 +680,26 @@ class NoteOffsetState extends MusicBeatState
 			str2 = '(Press Accept to Switch)';
 		else
 			str2 = '(Press Start to Switch)';
+		#else
+		var str:String;
+		var str2:String;
+		if(onComboMenu) {
+			str = 'Combo Offset';
+			addTouchPad('NONE', 'A_B_C');
+			addTouchPadCamera();
+		} else {
+			str = 'Note/Beat Delay';
+			addTouchPad('LEFT_FULL', 'A_B_C');
+			addTouchPadCamera();
+		}
+
+		if(controls.mobileC)
+			str2 = '(Press A to Switch)';
+		else if(!controls.controllerMode)
+			str2 = '(Press Accept to Switch)';
+		else
+			str2 = '(Press Start to Switch)';
+		#end
 
 		changeModeText.text = '< ${str.toUpperCase()} ${str2.toUpperCase()} >';
 	}
