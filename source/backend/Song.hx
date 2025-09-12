@@ -3,10 +3,10 @@ package backend;
 import tjson.TJSON as Json;
 import lime.utils.Assets;
 
-#if sys
+#if MODS_ALLOWED
 import sys.io.File;
 import sys.FileSystem;
-#else
+#elseif mobile
 import backend.io.PsychFile as File;
 import backend.io.PsychFileSystem as FileSystem;
 #end
