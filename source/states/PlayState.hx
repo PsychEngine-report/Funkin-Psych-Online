@@ -1436,10 +1436,7 @@ class PlayState extends MusicBeatState
 					button.deadZones.push(touchPad.buttonP);
 		});
 		#end
-
-		super.create();
-	}
-
+			
 		orderOffset = 2;
 
 		super.create();
