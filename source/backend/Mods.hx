@@ -1,10 +1,15 @@
 package backend;
 
-#if sys
+#if desktop
 import sys.FileSystem;
 import sys.io.File;
 #else
+#if sys
+import backend.io.PsychFileSystem as FileSystem;
+import backend.io.PsychFile as File;
+#else
 import lime.utils.Assets;
+#end
 #end
 import tjson.TJSON as Json;
 
