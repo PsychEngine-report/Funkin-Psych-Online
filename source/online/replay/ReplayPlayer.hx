@@ -40,7 +40,11 @@ class ReplayPlayer extends FlxBasic {
 
     var _key:String = null;
     override function update(elapsed:Float) {
+		#if desktop
         var shiftMult = FlxG.keys.pressed.SHIFT ? 3 : 1;
+		#else
+		var shiftMult = (state.touchPad?.buttonY?.pressed == true || FlxG.keys.pressed.SHIFT) ? 3 : 1;
+		#end
         if (state.controls.UI_LEFT) {
 			if (state.playbackRate - elapsed * 0.25 * shiftMult > 0)
 				state.playbackRate -= elapsed * 0.25 * shiftMult;
