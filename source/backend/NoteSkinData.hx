@@ -2,7 +2,7 @@ package backend;
 
 import openfl.utils.Assets;
 
-#if desktop
+#if sys
 import sys.io.File;
 import sys.FileSystem;
 #elseif mobile
