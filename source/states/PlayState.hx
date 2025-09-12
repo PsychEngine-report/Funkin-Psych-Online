@@ -496,10 +496,6 @@ class PlayState extends MusicBeatState
 	@:unreflective
 	public static var redditMod:Bool = false;
 
-	#if mobile
-	public var luaTouchPad:TouchPad;
-	#end
-
 	var forcePause = false;
 
 	var noteUnderlays:FlxTypedGroup<FlxSprite>;
@@ -507,6 +503,10 @@ class PlayState extends MusicBeatState
 	public var playOtherSide:Bool = false;
 
 	var nameplates:FlxTypedGroup<FlxText> = new FlxTypedGroup<FlxText>();
+
+	#if mobile
+	public var luaTouchPad:TouchPad;
+	#end
 
 	override public function create()
 	{
