@@ -100,15 +100,18 @@ class MusicBeatState extends FlxUIState
 			touchPad.cameras = [touchPadCam];
 		}
 	}
-
+	#end
+		
 	override function destroy()
 	{
+		#if mobile
 		removeTouchPad();
 		removeMobileControls();
+		#end
 		
 		super.destroy();
 	}
-	#end
+
 
 
 	public static var camBeat:FlxCamera;
