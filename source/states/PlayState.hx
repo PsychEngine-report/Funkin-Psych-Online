@@ -1256,6 +1256,7 @@ class PlayState extends MusicBeatState
 		});
 		#end
 
+		#if desktop
 		if (GameClient.isConnected()) {
 			preloadTasks.push(() -> {
 				waitReadySpr = new Alphabet(0, 0, "PRESS ACCEPT TO START", true);
@@ -1265,6 +1266,18 @@ class PlayState extends MusicBeatState
 				waitReadySpr.screenCenter(Y);
 			});
 		}
+		#else
+		if (GameClient.isConnected()) {
+			preloadTasks.push(() -> {
+				waitReadySpr = new Alphabet(0, 0, controls.mobileC ? "TOUCH YOUR SCREEN TO START", true);
+				waitReadySpr.cameras = [camOther];
+				waitReadySpr.alpha = 0;
+				waitReadySpr.alignment = CENTERED;
+				waitReadySpr.x = FlxG.width / 2;
+				waitReadySpr.screenCenter(Y);
+			});
+		}
+        #end
 
 		preloadTasks.push(() -> {
 			updateScoreSelf();
@@ -2915,6 +2928,7 @@ class PlayState extends MusicBeatState
 			// 	endSong();
 			// }
 
+			#if desktop
 			if (!isReady && controls.ACCEPT && !inCutscene && canStart && canInput()) {
 				isReady = true;
 				FlxG.sound.play(Paths.sound('confirmMenu'), 0.5);
@@ -2922,6 +2936,15 @@ class PlayState extends MusicBeatState
 					freakyFlicker = FlxFlicker.flicker(waitReadySpr, 0.5, 0.05, true, false, _ -> waitReadySpr.text = "waiting for other player...");
 				GameClient.send("playerReady");
 			}
+			#else
+			if (canStart && !isReady && (controls.mobileC && FlxG.mouse.justPressed || controls.ACCEPT) && canInput()) {
+				isReady = true;
+				FlxG.sound.play(Paths.sound('confirmMenu'), 0.5);
+				if (ClientPrefs.data.flashing)
+					freakyFlicker = FlxFlicker.flicker(waitReadySpr, 0.5, 0.05, true, false, _ -> waitReadySpr.text = "waiting for other player...");
+				GameClient.send("playerReady");
+			}
+			#end
 
 			if (waitReady) {
 				paused = true;
@@ -4836,6 +4859,30 @@ class PlayState extends MusicBeatState
 		return -1;
 	}
 
+    #if mobile
+	private function onButtonPress(button:TouchButton, ids:Array<MobileInputID>):Void
+	{
+		if (ids.filter(id -> id.toString().startsWith("EXTRA")).length > 0 || ids.filter(id -> id.toString().startsWith("TAUNT")).length > 0)
+			return;
+
+		var buttonCode:Int = (ids[0].toString().startsWith('NOTE')) ? ids[0] : ids[1];
+		callOnScripts('onButtonPressPre', [buttonCode]);
+		if (button.justPressed) keyPressed(buttonCode);
+		callOnScripts('onButtonPress', [buttonCode]);
+	}
+
+	private function onButtonRelease(button:TouchButton, ids:Array<MobileInputID>):Void
+	{
+		if (ids.filter(id -> id.toString().startsWith("EXTRA")).length > 0 || ids.filter(id -> id.toString().startsWith("TAUNT")).length > 0)
+			return;
+
+		var buttonCode:Int = (ids[0].toString().startsWith('NOTE')) ? ids[0] : ids[1];
+		callOnScripts('onButtonReleasePre', [buttonCode]);
+		if(buttonCode > -1) keyReleased(buttonCode);
+		callOnScripts('onButtonRelease', [buttonCode]);
+	}
+    #end
+
 	// Hold notes
 	@:unreflective
 	private function keysCheck():Void
@@ -6339,7 +6386,7 @@ class PlayState extends MusicBeatState
 			if(Std.isOfType(button, String))
 				return luaTouchPad.buttonPressed(MobileInputID.fromString(button));
 			else if(Std.isOfType(button, Array)){
-				var FUCK:Array<String> = button; // haxe said "You Can't Iterate On A Dyanmic Value Please Specificy Iterator or Iterable *insert nerd emoji*" so that's the only i foud to fix
+				var FUCK:Array<String> = button;
 				var idArray:Array<MobileInputID> = [];
 				for(strId in FUCK)
 					idArray.push(MobileInputID.fromString(strId));
