@@ -71,6 +71,10 @@ class FindRoomState extends MusicBeatState {
 		emptyMessage.screenCenter();
 		emptyMessage.visible = false;
 		add(emptyMessage);
+
+		#if mobile
+		addTouchPad('UP_DOWN', 'B_C');
+		#end
     }
 
     override function update(elapsed) {
@@ -79,10 +83,17 @@ class FindRoomState extends MusicBeatState {
 		else if (controls.UI_DOWN_P)
 			selected++;
 
+		#if desktop
         if (FlxG.keys.justPressed.R) {
 			@:privateAccess refreshTimer._timeCounter = 0;
 			refreshRooms();
         }
+		#else
+		if (touchPad.buttonC.justPressed || FlxG.keys.justPressed.R) {
+			@:privateAccess refreshTimer._timeCounter = 0;
+			refreshRooms();
+        }
+		#end
 		else if (controls.BACK) {
 			refreshTimer.cancel();
             LoadingScreen.toggle(false);
