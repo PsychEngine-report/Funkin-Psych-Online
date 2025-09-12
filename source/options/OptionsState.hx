@@ -72,6 +72,10 @@ class OptionsState extends MusicBeatState
 		changeSelection();
 		ClientPrefs.saveSettings();
 
+		#if mobile
+		addTouchPad('UP_DOWN', 'A_B');
+		#end
+
 		super.create();
 
 		online.GameClient.send("status", "In the Game Options");
