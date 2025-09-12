@@ -53,7 +53,7 @@ class MusicBeatState extends FlxUIState
 		final extraMode = MobileData.extraActions.get(ClientPrefs.data.extraHints);
 
 		hitbox = new Hitbox(extraMode);
-		//hitbox.instance = MobileData.setButtonsColors(hitbox.instance);
+		//hitbox = MobileData.setButtonsColors(hitbox.instance);
 		hitbox.visible = false;
 
 		hitboxCam = new FlxCamera();
