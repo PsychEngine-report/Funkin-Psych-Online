@@ -126,6 +126,10 @@ class DownloaderState extends MusicBeatState {
 		FlxG.sound.music.fadeIn(1, 1, 0.5);
 
 		loadNextPage(true);
+
+        #if mobile
+		addTouchPad('LEFT_RIGHT', 'B');
+        #end
     }
 
 	function loadNextPage(?value:Int = 0, ?newSearch:Bool = false) {
@@ -298,6 +302,7 @@ class DownloaderState extends MusicBeatState {
 				LoadingScreen.loading = false;
 			}
 
+			#if desktop
 			if (!LoadingScreen.loading) {
 				if (FlxG.mouse.wheel == 1 || FlxG.keys.justPressed.Q) {
 					loadNextPage(-1);
@@ -323,6 +328,33 @@ class DownloaderState extends MusicBeatState {
 				if (controls.UI_DOWN_P) {
 					changeSelection(5);
 				}
+				#else
+				if (!LoadingScreen.loading) {
+				if (FlxG.mouse.wheel == 1 || (touchPad.buttonLeft.justPressed || FlxG.keys.justPressed.Q)) {
+					loadNextPage(-1);
+				}
+				if (FlxG.mouse.wheel == -1 || (touchPad.buttonRight.justPressed || FlxG.keys.justPressed.E)) {
+					loadNextPage(1);
+				}
+				
+				if (!controls.mobileC && controls.UI_RIGHT_P) {
+					changeSelection(1);
+				}
+				if (!controls.mobileC && controls.UI_LEFT_P) {
+					changeSelection(-1);
+				}
+				if (!controls.mobileC && controls.UI_UP_P) {
+					if (curSelected - 5 < 0) {
+						curSelected = -1;
+					}
+					else {
+						changeSelection(-5);
+					}
+				}
+				if (!controls.mobileC && controls.UI_DOWN_P) {
+					changeSelection(5);
+				}
+                #end
 
 				if (FlxG.mouse.justMoved || FlxG.mouse.justPressed) {
 					curSelected = -2;
