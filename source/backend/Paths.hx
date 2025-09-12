@@ -20,7 +20,7 @@ import openfl.geom.Rectangle;
 import lime.utils.Assets;
 import openfl.media.Sound;
 
-#if desktop
+#if sys
 import sys.io.File;
 import sys.FileSystem;
 #elseif mobile
