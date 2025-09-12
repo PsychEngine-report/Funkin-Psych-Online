@@ -7,6 +7,7 @@ import openfl.events.KeyboardEvent;
 import lime.system.Clipboard;
 
 class ChatBox extends FlxTypedSpriteGroup<FlxSprite> {
+	#if desktop
 	public static var instance:ChatBox;
 	var prevMouseVisibility:Bool = false;
     public var focused(default, set):Bool = false;
@@ -30,6 +31,33 @@ class ChatBox extends FlxTypedSpriteGroup<FlxSprite> {
 		targetAlpha = v ? 3 : 0;
 		return focused = v;
 	}
+	#else
+	public static var instance:ChatBox;
+	final accept:String = Controls.instance.mobileC ? "RETURN" : "ACCEPT";
+	final tab:String = Controls.instance.mobileC ? "C" : "TAB";
+	var prevMouseVisibility:Bool = false;
+    public var focused(default, set):Bool = false;
+	function set_focused(v) {
+		if (v) {
+			prevMouseVisibility = FlxG.mouse.visible;
+			FlxG.mouse.visible = true;
+			typeTextHint.text = "(Type something to input the message, " + accept + " to send)";
+			typeBg.colorTransform.alphaOffset = 0;
+			typeBg.scale.x = FlxG.width;
+			ClientPrefs.toggleVolumeKeys(false);
+		}
+		else {
+			FlxG.mouse.visible = prevMouseVisibility;
+			typeTextHint.text = '(Press $tab to open chat!)';
+			typeBg.colorTransform.alphaOffset = -100;
+			typeBg.scale.x = Std.int(bg.width);
+			ClientPrefs.toggleVolumeKeys(true);
+		}
+		typeBg.updateHitbox();
+		targetAlpha = v ? 3 : 0;
+		return focused = v;
+	}
+	#end
 	var bg:FlxSprite;
 	var chatGroup:FlxTypedSpriteGroup<ChatMessage> = new FlxTypedSpriteGroup<ChatMessage>();
 	var typeBg:FlxSprite;
