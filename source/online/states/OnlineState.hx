@@ -168,7 +168,7 @@ class OnlineState extends MusicBeatState {
 		items.screenCenter(Y);
         add(items);
 
-		#desktop
+		#if desktop
 		discord = new FlxSprite();
 		discord.antialiasing = ClientPrefs.data.antialiasing;
 		discord.frames = Paths.getSparrowAtlas('online_discord');
