@@ -452,6 +452,7 @@ class NoteOffsetState extends MusicBeatState
 				}
 			}
 
+			#if desktop
 			if(controls.RESET)
 			{
 				for (i in 0...getComboOffset().length)
@@ -461,6 +462,17 @@ class NoteOffsetState extends MusicBeatState
 				repositionCombo();
 			}
 		}
+		#else
+		if(touchPad.buttonC.justPressed || controls.RESET)
+			{
+				for (i in 0...getComboOffset().length)
+				{
+					getComboOffset()[i] = 0;
+				}
+				repositionCombo();
+			}
+		}
+	    #end
 		else
 		{
 			if(controls.UI_LEFT_P)
