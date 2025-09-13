@@ -63,7 +63,7 @@ class CustomSubstate extends MusicBeatSubstate
 		return false;
 	}
 	
-	#if !mobile
+	#if mobile
 	public static function insertLuaTpad(?pos:Int = -1)
 	{
 		if(instance != null)
