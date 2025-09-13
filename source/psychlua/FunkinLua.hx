@@ -1498,6 +1498,10 @@ class FunkinLua {
 		ShaderFunctions.implement(this);
 		DeprecatedFunctions.implement(this);
 		online.backend.OnlineScriptFunctions.implement(this);
+		#if mobile
+		MobileFunctions.implement(this);
+		#if android AndroidFunctions.implement(this); #end
+		#end
 		
 		try{
 			var result:Dynamic = LuaL.dofile(lua, scriptName);
