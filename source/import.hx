@@ -43,7 +43,9 @@ import backend.Conductor;
 import backend.BaseStage;
 import backend.Difficulty;
 import backend.Mods;
+#if mobile
 import mobile.backend.StorageUtil;
+#end
 
 //Android
 #if android
