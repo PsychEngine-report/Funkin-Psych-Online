@@ -18,9 +18,11 @@ import flixel.addons.display.FlxRuntimeShader;
 
 #if sys
 import sys.FileSystem;
-import sys.io.File;
+import sys.FileStat;
+#elseif mobile
+import backend.io.PsychFileSystem as FileSystem;
+import backend.io.PsychFile as File;
 #end
-
 import cutscenes.DialogueBoxPsych;
 
 import objects.StrumNote;
