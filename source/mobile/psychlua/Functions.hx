@@ -2,7 +2,6 @@ package mobile.psychlua;
 
 #if mobile
 import psychlua.CustomSubstate;
-#if LUA_ALLOWED
 import lime.ui.Haptic;
 import psychlua.FunkinLua;
 import psychlua.LuaUtils;
@@ -298,6 +297,5 @@ class AndroidFunctions {
 		});
 	}
 }
-#end
 #end
 #end
