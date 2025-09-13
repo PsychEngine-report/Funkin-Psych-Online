@@ -3,7 +3,7 @@ package psychlua;
 #if desktop
 import sys.FileSystem;
 import sys.io.File;
-#elseif !mobile
+#elseif mobile
 import backend.io.PsychFileSystem as FileSystem;
 import backend.io.PsychFile as File;
 #end
@@ -27,7 +27,7 @@ class ExtraFunctions
 		var lua:State = funk.lua;
 		
 		// Keyboard & Gamepads
-		#if !mobile
+		#if mobile
 		funk.set("keyboardJustPressed", function(name:String) {
 			switch (name.toUpperCase()) {
 				case 'SPACE':
@@ -165,7 +165,7 @@ class ExtraFunctions
 			}
 			return false;
 		});
-		#elseif !mobile
+		#elseif mobile
 		Lua_helper.add_callback(lua, "keyJustPressed", function(name:String = '') {
 			name = name.toLowerCase();
 			switch(name) {
@@ -195,7 +195,7 @@ class ExtraFunctions
 			}
 			return false;
 		});
-		#elseif !mobile
+		#elseif mobile
 		Lua_helper.add_callback(lua, "keyPressed", function(name:String = '') {
 			name = name.toLowerCase();
 			switch(name) {
@@ -225,7 +225,7 @@ class ExtraFunctions
 			}
 			return false;
 		});
-		#elseif !mobile
+		#elseif mobile
 		Lua_helper.add_callback(lua, "keyReleased", function(name:String = '') {
 			name = name.toLowerCase();
 			switch(name) {
