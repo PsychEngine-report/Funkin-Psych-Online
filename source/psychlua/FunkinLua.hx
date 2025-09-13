@@ -19,7 +19,7 @@ import flixel.addons.display.FlxRuntimeShader;
 #if sys
 import sys.FileSystem;
 import sys.FileStat;
-#elseif mobile
+#elseif !mobile
 import backend.io.PsychFileSystem as FileSystem;
 import backend.io.PsychFile as File;
 #end
@@ -1630,6 +1630,8 @@ class FunkinLua {
 		return 'ios';
 		#elseif switch
 		return 'switch';
+		#elseif mobile
+		return 'android,ios';
 		#else
 		return 'unknown';
 		#end
