@@ -19,7 +19,7 @@ import flixel.addons.display.FlxRuntimeShader;
 #if sys
 import sys.FileSystem;
 import sys.FileStat;
-#elseif !mobile
+#elseif mobile
 import backend.io.PsychFileSystem as FileSystem;
 import backend.io.PsychFile as File;
 #end
