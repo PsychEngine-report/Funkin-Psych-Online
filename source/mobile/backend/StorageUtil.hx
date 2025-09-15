@@ -4,6 +4,10 @@ import lime.system.System;
 import haxe.io.Path;
 import haxe.Exception;
 
+#if sys
+import sys.FileSystem;
+import sys.io.File;
+#end
 
 class StorageUtil
 {
