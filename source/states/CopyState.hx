@@ -9,10 +9,6 @@ import haxe.io.Path;
 import flixel.ui.FlxBar;
 import flixel.ui.FlxBar.FlxBarFillDirection;
 import lime.system.ThreadPool;
-#if sys
-import backend.io.PsychFile as File;
-import backend.io.PsychFileSystem as FileSystem;
-#end
 
 class CopyState extends MusicBeatState
 {
