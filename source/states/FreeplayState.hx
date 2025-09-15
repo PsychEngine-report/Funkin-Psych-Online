@@ -46,7 +46,7 @@ import states.editors.ChartingState;
 import substates.GameplayChangersSubstate;
 import substates.ResetScoreSubState;
 
-#if (MODS_ALLOWED && and desktop)
+#if (MODS_ALLOWED && desktop)
 import sys.FileSystem;
 #elseif (MODS_ALLOWED && mobile)
 import backend.io.PsychFileSystem as FileSystem;
