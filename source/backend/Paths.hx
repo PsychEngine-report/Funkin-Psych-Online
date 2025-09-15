@@ -468,9 +468,15 @@ class Paths
 	}
 
 	#if MODS_ALLOWED
+	#if desktop
 	inline static public function mods(key:String = '') {
 		return 'mods/' + key;
 	}
+    #elseif mobile
+	inline static public function mods(key:String = '') {
+		return #if mobile Sys.getCwd() + #end 'mods/' + key;
+	}
+    #end
 
 	inline static public function modsFont(key:String) {
 		return modFolders('fonts/' + key);
@@ -527,7 +533,11 @@ class Paths
 			if(FileSystem.exists(fileToCheck))
 				return fileToCheck;
 		}
+		#if desktop
 		return 'mods/' + key;
+		#elseif mobile
+		return #if mobile Sys.getCwd() + #end 'mods/' + key;
+		#end
 	}
 	#end
 
