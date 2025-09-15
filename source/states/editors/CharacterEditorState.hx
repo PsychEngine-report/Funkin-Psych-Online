@@ -21,7 +21,7 @@ import tjson.TJSON as Json;
 import objects.Character;
 import objects.HealthIcon;
 import objects.HealthBar;
-#if (MODS_ALLOWED && and desktop)
+#if (MODS_ALLOWED && desktop)
 import sys.FileSystem;
 #elseif (MODS_ALLOWED && mobile)
 import backend.io.PsychFileSystem as FileSystem;
