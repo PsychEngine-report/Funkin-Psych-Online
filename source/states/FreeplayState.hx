@@ -182,6 +182,7 @@ class FreeplayState extends MusicBeatState
 
 	var curSkin:Array<String> = [null, null];
 
+	static var buttonS = "";
 	override function create()
 	{
 		instance = this;
@@ -808,6 +809,8 @@ class FreeplayState extends MusicBeatState
 	public static var vocals:FlxSound = null;
 	public static var opponentVocals:FlxSound = null;
 	var holdTime:Float = 0;
+    var doSongReset:Bool = false;
+	var resetTotalHeld:Float = 0;
 	override function update(elapsed:Float)
 	{
 		Conductor.songPosition = FlxG.sound.music.time;
