@@ -1,8 +1,11 @@
 package states;
 
-#if MODS_ALLOWED
+#if (MODS_ALLOWED && and desktop)
 import sys.FileSystem;
 import sys.io.File;
+#elseif (MODS_ALLOWED && mobile)
+import backend.io.PsychFileSystem as FileSystem;
+import backend.io.PsychFile as File;
 #end
 
 import objects.AttachedSprite;
@@ -131,6 +134,9 @@ class CreditsState extends MusicBeatState
 		bg.color = CoolUtil.colorFromString(creditsStuff[curSelected][4]);
 		intendedColor = bg.color;
 		changeSelection();
+		#if mobile
+		addTouchPad('UP_DOWN', 'A_B');
+		#end
 		super.create();
 	}
 
