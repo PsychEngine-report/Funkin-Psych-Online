@@ -1224,6 +1224,7 @@ class CharacterEditorState extends MusicBeatState {
 		#end
 	}
 
+	var overlapsToButton:Bool = false;
 	override function update(elapsed:Float) {
 		MusicBeatState.camBeat = FlxG.camera;
 		if (char.animationsArray[curAnim] != null) {
