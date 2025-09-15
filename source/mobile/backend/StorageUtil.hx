@@ -5,8 +5,8 @@ import haxe.io.Path;
 import haxe.Exception;
 
 #if sys
-import sys.File;
-import sys.io.FileSystem;
+import sys.*;
+import sys.io.*;
 #end
 
 class StorageUtil
