@@ -20,9 +20,12 @@ import shaders.ColorSwap;
 import states.StoryMenuState;
 import states.MainMenuState;
 
-#if MODS_ALLOWED
+#if (MODS_ALLOWED && and desktop)
 import sys.FileSystem;
 import sys.io.File;
+#elseif (MODS_ALLOWED && mobile)
+import backend.io.PsychFileSystem as FileSystem;
+import backend.io.PsychFile as File;
 #end
 
 typedef TitleData =
