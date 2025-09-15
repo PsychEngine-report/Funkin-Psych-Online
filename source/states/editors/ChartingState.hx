@@ -40,7 +40,11 @@ import objects.Character;
 import substates.Prompt;
 
 
-#if sys
+#if (sys && desktop)
+import openfl.media.Sound;
+import sys.FileSystem;
+import sys.io.File;
+#elseif (sys && mobile)
 import openfl.media.Sound;
 import backend.io.PsychFileSystem as FileSystem;
 import backend.io.PsychFile as File;
