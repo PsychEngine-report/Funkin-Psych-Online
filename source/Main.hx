@@ -16,7 +16,7 @@ import openfl.events.Event;
 import openfl.display.StageScaleMode;
 import lime.app.Application;
 import states.TitleState;
-#if mobile
+#if (COPYSTATE_ALLOWED && mobile)
 import states.CopyState;
 #end
 #if mobile
