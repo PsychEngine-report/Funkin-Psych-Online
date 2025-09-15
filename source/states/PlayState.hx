@@ -324,6 +324,9 @@ class PlayState extends MusicBeatState
 	public var camGame:FlxCamera;
 	public var camOther:FlxCamera;
 	public var camLoading:FlxCamera;
+	#if mobile
+	public var luaTpadCam:FlxCamera;
+	#end
 	public var cameraSpeed:Float = 1;
 
 	var _tempDiff:Float = 0;
