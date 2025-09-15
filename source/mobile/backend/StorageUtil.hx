@@ -9,6 +9,7 @@ import sys.File;
 import sys.io.FileSystem;
 #end
 
+class StorageUtil
 {
     #if sys
 	public static function getStorageDirectory():String
