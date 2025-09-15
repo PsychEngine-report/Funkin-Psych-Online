@@ -4,6 +4,11 @@ import lime.system.System;
 import haxe.io.Path;
 import haxe.Exception;
 
+#if sys
+import sys.File;
+import sys.io.FileSystem;
+#end
+
 {
     #if sys
 	public static function getStorageDirectory():String
