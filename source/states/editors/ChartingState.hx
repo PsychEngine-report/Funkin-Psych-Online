@@ -181,6 +181,8 @@ class ChartingState extends MusicBeatState
 	private var blockPressWhileTypingOnStepper:Array<FlxUINumericStepper> = [];
 	private var blockPressWhileScrolling:Array<FlxScrollableDropDownMenu> = [];
 
+	var waveformUseInstrumental:FlxUICheckBox;
+    var waveformUseVoices:FlxUICheckBox;
 	var waveformSprite:FlxSprite;
 	var gridLayer:FlxTypedGroup<FlxSprite>;
 
