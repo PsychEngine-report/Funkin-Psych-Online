@@ -1,9 +1,9 @@
 package psychlua;
 
-#if desktop
+#if (sys && desktop)
 import sys.FileSystem;
 import sys.io.File;
-#elseif mobile
+#if (sys && mobile)
 import backend.io.PsychFileSystem as FileSystem;
 import backend.io.PsychFile as File;
 #end
