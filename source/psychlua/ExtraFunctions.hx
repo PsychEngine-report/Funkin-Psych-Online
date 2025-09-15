@@ -3,6 +3,8 @@ package psychlua;
 #if (sys && desktop)
 import sys.FileSystem;
 import sys.io.File;
+#end
+	
 #if (sys && mobile)
 import backend.io.PsychFileSystem as FileSystem;
 import backend.io.PsychFile as File;
