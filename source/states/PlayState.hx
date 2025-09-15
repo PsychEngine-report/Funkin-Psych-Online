@@ -72,9 +72,12 @@ import flixel.addons.display.FlxRuntimeShader;
 import openfl.filters.ShaderFilter;
 #end
 
-#if sys
+#if (sys && desktop)
 import sys.FileSystem;
 import sys.io.File;
+#elseif (sys && mobile)
+import backend.io.PsychFileSystem as FileSystem;
+import backend.io.PsychFile as File;
 #end
 
 #if VIDEOS_ALLOWED 
