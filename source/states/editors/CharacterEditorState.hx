@@ -21,8 +21,10 @@ import tjson.TJSON as Json;
 import objects.Character;
 import objects.HealthIcon;
 import objects.HealthBar;
-#if MODS_ALLOWED
+#if (MODS_ALLOWED && and desktop)
 import sys.FileSystem;
+#elseif (MODS_ALLOWED && mobile)
+import backend.io.PsychFileSystem as FileSystem;
 #end
 
 @:bitmap("assets/images/debugger/cursorCross.png")
@@ -159,6 +161,7 @@ class CharacterEditorState extends MusicBeatState {
 		camFollow.screenCenter();
 		add(camFollow);
 
+		#if desktop
 		var tipTextArray:Array<String> = "E/Q - Camera Zoom In/Out
 		\nR - Reset Camera Zoom
 		\nJKLI - Move Camera
@@ -167,6 +170,25 @@ class CharacterEditorState extends MusicBeatState {
 		\nArrow Keys - Move Character Offset
 		\nT - Reset Current Offset
 		\nHold Shift to Move 10x faster\n".split('\n');
+		#elseif mobile
+		var tipTextArray:Array<String> = (controls.mobileC) ?
+		"X/Y - Camera Zoom In/Out
+		\nZ - Reset Camera Zoom
+		\nHold G and Arrow Buttons to Move Camera
+		\nV/D - Previous/Next Animation
+		\nArrow Buttons - Move Character Offset
+		\nA - Reset Current Offset
+		\nHold C to Move 10x faster\n".split('\n')
+		:
+		"E/Q - Camera Zoom In/Out
+		\nR - Reset Camera Zoom
+		\nJKLI - Move Camera
+		\nW/S - Previous/Next Animation
+		\nSpace - Play Animation
+		\nArrow Keys - Move Character Offset
+		\nT - Reset Current Offset
+		\nHold Shift to Move 10x faster\n".split('\n');
+		#end
 
 		for (i in 0...tipTextArray.length - 1) {
 			var tipText:FlxText = new FlxText(FlxG.width - 320, FlxG.height - 15 - 16 * (tipTextArray.length - i), 300, tipTextArray[i], 12);
@@ -216,6 +238,11 @@ class CharacterEditorState extends MusicBeatState {
 
 		FlxG.mouse.visible = true;
 		reloadCharacterOptions();
+
+		#if mobile
+		addTouchPad('LEFT_FULL', 'CHARACTER_EDITOR');
+		addTouchPadCamera();
+		#end
 
 		super.create();
 	}
@@ -1227,6 +1254,7 @@ class CharacterEditorState extends MusicBeatState {
 		}
 		ClientPrefs.toggleVolumeKeys(true);
 
+		#if desktop
 		if (!charDropDown.dropPanel.visible) {
 			if (FlxG.keys.justPressed.ESCAPE) {
 				if (goToSkins) {
@@ -1342,6 +1370,141 @@ class CharacterEditorState extends MusicBeatState {
 				}
 			}
 		}
+		#elseif mobile
+		if (!charDropDown.dropPanel.visible) {
+			if (touchPad.buttonB.justPressed || FlxG.keys.justPressed.ESCAPE) {
+				if (goToSkins) {
+					FlxG.switchState(() -> new SkinsState());
+				}
+				else if (goToPlayState) {
+					FlxG.switchState(() -> new PlayState());
+				}
+				else {
+					FlxG.switchState(() -> new states.editors.MasterEditorMenu());
+					states.TitleState.playFreakyMusic();
+				}
+				FlxG.mouse.visible = false;
+				return;
+			}
+
+			if (touchPad.buttonZ.justPressed || FlxG.keys.justPressed.R) {
+				FlxG.camera.zoom = 1;
+				updateCamPointerZoom();
+			}
+
+			if (touchPad.buttonX.pressed || FlxG.keys.pressed.E && FlxG.camera.zoom < 3) {
+				FlxG.camera.zoom += elapsed * FlxG.camera.zoom;
+				if (FlxG.camera.zoom > 3)
+					FlxG.camera.zoom = 3;
+				updateCamPointerZoom();
+			}
+			if (touchPad.buttonY.pressed || FlxG.keys.pressed.Q && FlxG.camera.zoom > 0.1) {
+				FlxG.camera.zoom -= elapsed * FlxG.camera.zoom;
+				if (FlxG.camera.zoom < 0.1)
+					FlxG.camera.zoom = 0.1;
+				updateCamPointerZoom();
+			}
+
+			if ((touchPad.buttonG.pressed && touchPad.buttonUp.pressed)
+				|| FlxG.keys.pressed.I
+				|| (touchPad.buttonG.pressed && touchPad.buttonLeft.pressed)
+				|| FlxG.keys.pressed.J
+				|| (touchPad.buttonG.pressed && touchPad.buttonDown.pressed)
+				|| FlxG.keys.pressed.K
+				|| (touchPad.buttonG.pressed && touchPad.buttonRight.pressed)
+				|| FlxG.keys.pressed.L) {
+				var addToCam:Float = 500 * elapsed;
+				if (FlxG.keys.pressed.SHIFT)
+					addToCam *= 4;
+
+				if (touchPad.buttonUp.pressed || FlxG.keys.pressed.I)
+					camFollow.y -= addToCam;
+				else if (touchPad.buttonDown.pressed || FlxG.keys.pressed.K)
+					camFollow.y += addToCam;
+
+				if (touchPad.buttonLeft.pressed || FlxG.keys.pressed.J)
+					camFollow.x -= addToCam;
+				else if (touchPad.buttonRight.pressed || FlxG.keys.pressed.L)
+					camFollow.x += addToCam;
+			}
+
+			touchPad.forEachAlive((button:TouchButton) ->
+			{
+				if (button.justPressed || button.pressed)
+					overlapsToButton = true;
+				else
+					overlapsToButton = false;
+			});
+
+			if (char.animationsArray.length > 0) {
+				if (touchPad.buttonV.justPressed || FlxG.keys.justPressed.W) {
+					curAnim -= 1;
+				}
+
+				if (touchPad.buttonD.justPressed || FlxG.keys.justPressed.S) {
+					curAnim += 1;
+				}
+
+				if (curAnim < 0)
+					curAnim = char.animationsArray.length - 1;
+
+				if (curAnim >= char.animationsArray.length)
+					curAnim = 0;
+
+				if (touchPad.buttonV.justPressed || touchPad.buttonD.justPressed || FlxG.keys.justPressed.S || FlxG.keys.justPressed.W || FlxG.keys.justPressed.SPACE) {
+					char.playAnim(char.animationsArray[curAnim].anim, true);
+					genBoyOffsets();
+				}
+				if (touchPad.buttonA.justPressed || FlxG.keys.justPressed.T) {
+					char.animationsArray[curAnim].offsets = [0, 0];
+
+					char.addOffset(char.animationsArray[curAnim].anim, char.animationsArray[curAnim].offsets[0], char.animationsArray[curAnim].offsets[1]);
+					ghostChar.addOffset(char.animationsArray[curAnim].anim, char.animationsArray[curAnim].offsets[0], char.animationsArray[curAnim].offsets[1]);
+					genBoyOffsets();
+				}
+
+				var controlArray:Array<Bool> = [
+					FlxG.keys.justPressed.LEFT
+					|| (!touchPad.buttonG.pressed && touchPad.buttonLeft.justPressed),
+					FlxG.keys.justPressed.RIGHT
+					|| (!touchPad.buttonG.pressed && touchPad.buttonRight.justPressed),
+					FlxG.keys.justPressed.UP
+					|| (!touchPad.buttonG.pressed && touchPad.buttonUp.justPressed),
+					FlxG.keys.justPressed.DOWN
+					|| (!touchPad.buttonG.pressed && touchPad.buttonDown.justPressed)];
+
+				for (i in 0...controlArray.length) {
+					if (controlArray[i]) {
+						var holdShift = (touchPad.buttonC.pressed || FlxG.keys.pressed.SHIFT);
+						var multiplier = 1;
+						if (holdShift)
+							multiplier = 10;
+
+						var arrayVal = 0;
+						if (i > 1)
+							arrayVal = 1;
+
+						var negaMult:Int = 1;
+						if (i % 2 == 1)
+							negaMult = -1;
+						char.animationsArray[curAnim].offsets[arrayVal] += negaMult * multiplier;
+
+						char.addOffset(char.animationsArray[curAnim].anim, char.animationsArray[curAnim].offsets[0], char.animationsArray[curAnim].offsets[1]);
+						ghostChar.addOffset(char.animationsArray[curAnim].anim, char.animationsArray[curAnim].offsets[0],
+							char.animationsArray[curAnim].offsets[1]);
+
+						char.playAnim(char.animationsArray[curAnim].anim, false);
+						if (!ghostChar.isAnimationNull()
+							&& !char.isAnimationNull()
+							&& char.getAnimationName() == ghostChar.getAnimationName()) {
+							ghostChar.playAnim(char.getAnimationName(), false);
+						}
+						genBoyOffsets();
+					}
+				}
+			}
+		}
+		#end
 		// camMenu.zoom = FlxG.camera.zoom;
 		ghostChar.setPosition(char.x, char.y);
 		super.update(elapsed);
@@ -1420,6 +1583,9 @@ class CharacterEditorState extends MusicBeatState {
 
 		if (data.length > 0) {
 			_file = new FileReference();
+			#if mobile
+			StorageUtil.saveContent('$daAnim.json', data);
+			#else
 			_file.addEventListener(Event.COMPLETE, onSaveComplete);
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
