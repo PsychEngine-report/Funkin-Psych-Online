@@ -6,9 +6,7 @@ import flixel.FlxState;
 
 class MusicBeatState extends FlxUIState
 {
-	#if mobile
 	public static var instance:MusicBeatState;
-	#end
 	
 	private var theWorld:Bool = false;
 
