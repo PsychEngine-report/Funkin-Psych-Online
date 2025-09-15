@@ -32,6 +32,11 @@ import mobile.backend.TouchUtil;
 import lumod.Lumod;
 #end
 
+#if sys
+import sys.*;
+import sys.io.*;
+#end
+
 import backend.Paths;
 import backend.Controls;
 import backend.CoolUtil;
