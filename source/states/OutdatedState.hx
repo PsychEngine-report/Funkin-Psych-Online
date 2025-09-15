@@ -9,6 +9,11 @@ class OutdatedState extends MusicBeatState
 	{
 		super.create();
 
+		#if mobile
+		final accept:String = (controls.mobileC) ? 'A' : 'ACCEPT';
+		final back:String = (controls.mobileC) ? 'B' : 'BACK';
+		#end
+
 		leftState = false;
 
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
@@ -24,6 +29,10 @@ class OutdatedState extends MusicBeatState
 		warnText.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
 		warnText.screenCenter(Y);
 		add(warnText);
+
+		#if mobile
+		addTouchPad('NONE', 'A_B');
+		#end
 	}
 
 	override function update(elapsed:Float)
