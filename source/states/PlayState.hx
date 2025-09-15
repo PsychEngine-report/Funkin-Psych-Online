@@ -1423,25 +1423,6 @@ class PlayState extends MusicBeatState
 			}
 		}, 1);
 		loaderGroup.add(asyncLoop);
-
-		#if mobile
-		addMobileControls();
-		addTouchPad((replayData != null) ? 'LEFT_RIGHT' : 'NONE', (GameClient.isConnected()) ? 'P_C_T' : (replayData != null) ? #if android 'X_Y' : 'T' #else 'P_X_Y' : 'P_T' #end);
-		addTouchPadCamera();
-		mobileControls.onButtonDown.add(onButtonPress);
-		mobileControls.onButtonUp.add(onButtonRelease);
-		if (replayData == null)
-			mobileControls.instance.visible = true;
-		mobileControls.instance.forEachAlive((button) ->
-		{
-			if (touchPad.buttonT != null)
-    				button.deadZones.push(touchPad.buttonT);
-			if (touchPad.buttonC != null)
-    				button.deadZones.push(touchPad.buttonC);
-			if (touchPad.buttonP != null)			
-					button.deadZones.push(touchPad.buttonP);
-		});
-		#end
 			
 		orderOffset = 2;
 
@@ -3987,7 +3968,7 @@ class PlayState extends MusicBeatState
 	public function endSong()
 	{
 		#if mobile
-		mobileControls.instance.visible = #if !android touchPad.visible = #end false;
+		hitbox.visible = #if !android touchPad.visible = #end false;
 		#end
 		if (redditMod) {
 			health = 0;
@@ -6360,7 +6341,7 @@ class PlayState extends MusicBeatState
 		if(!variables.exists("luaTouchPad"))
 			variables.set("luaTouchPad", luaTouchPad);
 
-		luaTouchPad = new TouchPad(DPadMode, ActionMode, NONE);
+		luaTouchPad = new TouchPad(DPadMode, ActionMode);
 		luaTouchPad.alpha = ClientPrefs.data.controlsAlpha;
 	}
 	
