@@ -20,7 +20,7 @@ import shaders.ColorSwap;
 import states.StoryMenuState;
 import states.MainMenuState;
 
-#if (MODS_ALLOWED && and desktop)
+#if (MODS_ALLOWED && desktop)
 import sys.FileSystem;
 import sys.io.File;
 #elseif (MODS_ALLOWED && mobile)
