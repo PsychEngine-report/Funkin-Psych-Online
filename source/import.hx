@@ -35,6 +35,8 @@ import lumod.Lumod;
 #if sys
 import sys.*;
 import sys.io.*;
+#elseif js
+import js.html.*;
 #end
 
 import backend.Paths;
