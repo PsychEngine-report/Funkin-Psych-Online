@@ -7,11 +7,11 @@ name: Build
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
    workflow_dispatch:
-   push:
-     branches: [ main, experimental ]
-     tags: [ "*" ]
-   pull_request:
-     branches: [ main, experimental ]
+   #push:
+    # branches: [ main, experimental ]
+    # tags: [ "*" ]
+   #pull_request:
+    # branches: [ main, experimental ]
 
 
   # Allows you to run this workflow manually from the Actions tab
@@ -217,7 +217,7 @@ jobs:
             haxelib install yagp 1.1.4 --quiet
             haxelib run lime config ANDROID_SDK $ANDROID_HOME
             haxelib run lime config ANDROID_NDK_ROOT ${{steps.setup-ndk.outputs.ndk-path}}
-            haxelib run lime config JAVA_HOME $JAVA_HOME
+            haxelib run lime config JAVA_HOME $JAVA_HOME_arm64
             haxelib run lime config ANDROID_SETUP true
   #         no hmm cuz pc/linux/mac would be like "Android things? no *trow error*"
 
@@ -246,7 +246,7 @@ jobs:
      - name: Clean Android build
        run: haxelib run lime clean android
      - name: Compile
-       run: haxelib run lime build Project.xml android -final -D HXCPP_M64 -D officialBuild
+       run: haxelib run lime build Project.xml android -final -D officialBuild
      - name: Publish Artifact
        uses: actions/upload-artifact@v4
        with:
