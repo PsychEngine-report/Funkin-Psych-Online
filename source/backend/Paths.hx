@@ -122,8 +122,10 @@ class Paths
 		}
 		#end
 
+		#if mobile
 		if(library == "mobile")
 			return getPreloadPath('mobile/$file');
+		#end
 
 		if (library != null)
 			return getLibraryPath(file, library);
@@ -471,9 +473,8 @@ class Paths
 	}
     #elseif mobile
 	inline static public function mods(key:String = '') {
-		return #if mobile Sys.getCwd() + #end 'mods/' + key;
+		return #if android StorageUtil.getExternalStorageDirectory() + #else Sys.getCwd() + #end 'mods/' + key;
 	}
-    #end
 
 	inline static public function modsFont(key:String) {
 		return modFolders('fonts/' + key);
@@ -533,7 +534,7 @@ class Paths
 		#if desktop
 		return 'mods/' + key;
 		#elseif mobile
-		return #if mobile Sys.getCwd() + #end 'mods/' + key;
+		return #if android StorageUtil.getExternalStorageDirectory() + #else Sys.getCwd() + #end 'mods/' + key;
 		#end
 	}
 	#end
