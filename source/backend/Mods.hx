@@ -1,11 +1,8 @@
 package backend;
 
-#if desktop
+#if sys
 import sys.FileSystem;
 import sys.io.File;
-#elseif mobile
-import backend.io.PsychFileSystem as FileSystem;
-import backend.io.PsychFile as File;
 #else
 import lime.utils.Assets;
 #end
