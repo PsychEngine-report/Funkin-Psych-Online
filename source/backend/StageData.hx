@@ -5,9 +5,6 @@ import json2object.JsonParser;
 #if sys
 import sys.io.File;
 import sys.FileSystem;
-#elseif mobile
-import backend.io.PsychFile as File;
-import backend.io.PsychFileSystem as FileSystem;
 #else
 import openfl.utils.Assets;
 #end
