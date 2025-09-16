@@ -16,13 +16,11 @@ import openfl.geom.Rectangle;
 import lime.utils.Assets;
 import tjson.TJSON as Json;
 
-#if (sys && desktop)
-import sys.FileSystem;
+#if sys
 import sys.io.File;
-#elseif (sys && mobile)
-import backend.io.PsychFileSystem as FileSystem;
-import backend.io.PsychFile as File;
+import sys.FileSystem;
 #end
+
 
 import objects.AttachedSprite;
 
