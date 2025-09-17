@@ -609,8 +609,10 @@ class Paths
 			frames.addAtlas(spritemapFrames);
 		return spritemapFrames;
 
+	}
 
-	public static function readDirectory(directory:String):Array<String>
+
+	public static function readDirectory(directory:String):Array<String> 
 	{
 		#if MODS_ALLOWED
 		return FileSystem.readDirectory(directory);
