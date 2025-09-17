@@ -31,9 +31,7 @@ import mobile.backend.MobileScaleMode;
 import lime.graphics.Image;
 #end
 
-#if sys
 import sys.FileSystem;
-#end
 
 //crash handler stuff
 import openfl.events.UncaughtErrorEvent;
