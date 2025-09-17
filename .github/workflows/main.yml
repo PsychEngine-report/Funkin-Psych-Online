@@ -142,14 +142,6 @@ jobs:
     steps:
   #     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
      - uses: actions/checkout@v2
-      
-     - name: Retrieve Cache
-       uses: actions/cache@v4
-       with:
-          path: |
-              export/release/android/haxe
-              export/release/android/obj
-          key: ${{ runner.os }}-cache
 
      - uses: krdlab/setup-haxe@master
        with:
@@ -247,6 +239,11 @@ jobs:
        run: haxelib run lime clean android
      - name: Compile
        run: haxelib run lime build Project.xml android -final -D officialBuild
+     - name: Show generated AndroidManifest.xml
+       if: always()
+       run: |
+         echo "=== AndroidManifest.xml ==="
+         cat export/release/android/bin/app/src/main/AndroidManifest.xml || true
      - name: Publish Artifact
        uses: actions/upload-artifact@v4
        with:
@@ -272,14 +269,6 @@ jobs:
     steps:
   #     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
      - uses: actions/checkout@v2
-
-     - name: Retrieve Cache
-       uses: actions/cache@v4
-       with:
-            path: |
-              export/release/ios/haxe
-              export/release/ios/obj
-            key: ${{ runner.os }}-cache
 
      - uses: krdlab/setup-haxe@master
        with:
