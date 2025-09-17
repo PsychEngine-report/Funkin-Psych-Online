@@ -1,6 +1,10 @@
 package;
 
 import online.GameClient;
+import lumod.Lumod;
+#if AWAY_TEST
+import states.stages.AwayStage;
+#end
 import states.MainMenuState;
 import externs.WinAPI;
 import haxe.Exception;
@@ -67,7 +71,7 @@ class Main extends Sprite
 
 	public static var fpsVar:FPS;
 
-	public static final platform:String = #if mobile "Phones" #else "PCs" #end;
+    public static final platform:String = #if mobile "Phones" #else "PCs" #end;
 
 	public static final PSYCH_ONLINE_VERSION:String = "0.12.4";
 	public static final CLIENT_PROTOCOL:Float = 9;
@@ -104,7 +108,7 @@ class Main extends Sprite
 			"Invalid Runtime Path!");
 			Sys.exit(1);
 		}
-		#else
+		#elseif desktop
 	        if (Path.normalize(Sys.getCwd()) != Path.normalize(lime.system.System.applicationDirectory)) {
 			Sys.setCwd(lime.system.System.applicationDirectory);
 
@@ -217,7 +221,7 @@ class Main extends Sprite
 
 		#if android FlxG.android.preventDefaultKeys = [BACK]; #end
 
-		#if !mobile
+		#if mobile
 		fpsVar = new FPS(10, 3, 0xFFFFFF);
 		addChild(fpsVar);
 		Lib.current.stage.align = "tl";
@@ -371,6 +375,23 @@ class Main extends Sprite
 			online.network.Auth.saveClose();
 		});
 
+        #if !mobile
+		Lib.application.window.onDropFile.add(path -> {
+			if (FileSystem.isDirectory(path))
+				return;
+
+			if (path.endsWith(".json") && (path.contains("-chart") || path.contains("-metadata"))) {
+				online.util.vslice.VUtil.convertVSlice(path);
+			}
+			else {
+				online.backend.Thread.run(() -> {
+					online.gui.LoadingScreen.toggle(true);
+					online.mods.OnlineMods.installMod(path);
+					online.gui.LoadingScreen.toggle(false);
+				});
+			}
+		});
+		#elseif desktop
 		Lib.application.window.onDropFile.add(path -> {
 			if (FileSystem.isDirectory(path))
 				return;
@@ -386,6 +407,7 @@ class Main extends Sprite
 		         });
 		     }
 		});
+		#end
 			
 		// clear messages before the current state gets destroyed and replaced with another
 		FlxG.signals.preStateSwitch.add(() -> {
