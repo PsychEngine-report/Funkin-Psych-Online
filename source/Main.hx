@@ -213,7 +213,7 @@ class Main extends Sprite
 		#if LUA_ALLOWED Lua.set_callbacks_function(cpp.Callable.fromStaticFunction(psychlua.CallbackHandler.call)); #end
 		Controls.instance = new Controls();
 		ClientPrefs.loadDefaultKeys();
-		addChild(new FlxGame(game.width, game.height, game.initialState, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate, game.skipSplash, game.startFullscreen));
+		addChild(new FlxGame(game.width, game.height, #if COPYSTATE_ALLOWED !CopyState.checkExistingFiles() ? CopyState : #end game.initialState, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate, game.skipSplash, game.startFullscreen));
 
 		#if android FlxG.android.preventDefaultKeys = [BACK]; #end
 
@@ -371,7 +371,6 @@ class Main extends Sprite
 			online.network.Auth.saveClose();
 		});
 
-        #if !mobile
 		Lib.application.window.onDropFile.add(path -> {
 			if (FileSystem.isDirectory(path))
 				return;
@@ -387,23 +386,6 @@ class Main extends Sprite
 		         });
 		     }
 		});
-		#else
-		Lib.application.window.onDropFile.add(path -> {
-			if (FileSystem.isDirectory(path))
-				return;
-
-			if (path.endsWith(".json") && (path.contains("-chart") || path.contains("-metadata"))) {
-				online.util.vslice.VUtil.convertVSlice(path);
-			}
-			else {
-				online.backend.Thread.run(() -> {
-					online.gui.LoadingScreen.toggle(true);
-					online.mods.OnlineMods.installMod(path);
-					online.gui.LoadingScreen.toggle(false);
-				});
-			}
-		});
-		#end
 			
 		// clear messages before the current state gets destroyed and replaced with another
 		FlxG.signals.preStateSwitch.add(() -> {
