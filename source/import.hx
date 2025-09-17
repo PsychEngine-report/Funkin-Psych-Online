@@ -32,7 +32,12 @@ import mobile.backend.TouchUtil;
 import lumod.Lumod;
 #end
 
-import sys.FileSystem;
+#if sys
+import sys.*;
+import sys.io.*;
+#elseif js
+import js.html.*;
+#end
 
 import backend.Paths;
 import backend.Controls;
