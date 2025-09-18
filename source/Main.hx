@@ -63,7 +63,7 @@ class Main extends Sprite
 		initialState: TitleState, // initial game state
 		zoom: -1.0, // game state bounds
 		framerate: 60, // default framerate
-		skipSplash: true, // if the default flixel splash screen should be skipped
+		skipSplash: false, // if the default flixel splash screen should be skipped (it's false just to annoy plaer :))
 		startFullscreen: false // if the game should start at fullscreen mode
 	};
 
