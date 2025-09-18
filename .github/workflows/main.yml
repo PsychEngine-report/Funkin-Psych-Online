@@ -146,18 +146,6 @@ jobs:
      - uses: krdlab/setup-haxe@master
        with:
            haxe-version: 4.3.7
-
-     - name: Restore existing build cache for faster compilation
-       uses: actions/cache@v4
-       with:
-          # not caching the bin folder to prevent asset duplication and stuff like that
-          key: cache-build-android
-          path: |
-            .haxelib/
-            export/release/android/haxe/
-            export/release/android/obj/
-          restore-keys: |
-            cache-build-android
       
      - name: Setup Java JDK
        uses: actions/setup-java@v2
@@ -170,6 +158,18 @@ jobs:
        id: setup-ndk
        with:
            ndk-version: r27c
+
+     - name: Restore existing build cache for faster compilation
+       uses: actions/cache@v4
+       with:
+          # not caching the bin folder to prevent asset duplication and stuff like that
+          key: cache-build-android
+          path: |
+            .haxelib/
+            export/release/android/haxe/
+            export/release/android/obj/
+          restore-keys: |
+            cache-build-android 
       
   #     # Runs a set of commands using the runners shell
      - name: Install Haxelib
@@ -179,6 +179,8 @@ jobs:
             haxelib setup ~/haxelib
             haxelib git hxcpp https://github.com/kittycathy233/hxcpp --quiet
             haxelib git lime https://github.com/kittycathy233/lime --quiet
+            haxelib set hxcpp git
+            haxelib set lime git
             haxelib install openfl 9.4.1 --quiet
             haxelib install flixel 5.8.0 --quiet
             haxelib set flixel 5.8.0
@@ -192,6 +194,7 @@ jobs:
             haxelib set SScript git
             haxelib git flxanimate https://github.com/Dot-Stuff/flxanimate 768740a56b26aa0c072720e0d1236b94afe68e3e --quiet
             haxelib git linc_luajit https://github.com/kittycathy233/linc_luajit --quiet
+            haxelib set linc_luajit git
             haxelib install colyseus 0.15.2 --quiet
             haxelib install HtmlParser 3.4.0 --quiet
             haxelib install UnRAR 1.0.0 --quiet
@@ -207,10 +210,6 @@ jobs:
             haxelib git funkin.vis https://github.com/FunkinCrew/funkVis 22b1ce089dd924f15cdc4632397ef3504d464e90 --quiet --skip-dependencies
             haxelib git grig.audio https://github.com/Snirozu/grig.audio 162f924bdde427fc84af5b51961d2faef51f6955 --quiet
             haxelib install yagp 1.1.4 --quiet
-            haxelib run lime config ANDROID_SDK $ANDROID_HOME
-            haxelib run lime config ANDROID_NDK_ROOT ${{steps.setup-ndk.outputs.ndk-path}}
-            haxelib run lime config JAVA_HOME $JAVA_HOME
-            haxelib run lime config ANDROID_SETUP true
   #         no hmm cuz pc/linux/mac would be like "Android things? no *trow error*"
 
      - name: Clearing already existing cache
@@ -232,6 +231,23 @@ jobs:
                 console.log("Cache cleared.")
               }
             }
+     - name: Uploading new cache
+       uses: actions/cache@v4
+       with:
+          # caching again since for some reason it doesnt work with the first post cache shit
+          key: cache-build-android
+          path: |
+            .haxelib/
+            export/release/android/haxe/
+            export/release/android/obj/
+          restore-keys: |
+            cache-build-android
+     - name: config android ig
+       run: |
+            haxelib run lime config ANDROID_SDK $ANDROID_HOME
+            haxelib run lime config ANDROID_NDK_ROOT ${{steps.setup-ndk.outputs.ndk-path}}
+            haxelib run lime config JAVA_HOME $JAVA_HOME
+            haxelib run lime config ANDROID_SETUP true
 
      - name: Create Version Tag
        run: echo "${{github.run_id}}" > VERSION
@@ -249,18 +265,6 @@ jobs:
        with:
          name: androidBuild
          path: 'export/release/android/bin/app/build/outputs/*.apk'
-
-     - name: Uploading new cache
-       uses: actions/cache@v4
-       with:
-          # caching again since for some reason it doesnt work with the first post cache shit
-          key: cache-build-android
-          path: |
-            .haxelib/
-            export/release/android/haxe/
-            export/release/android/obj/
-          restore-keys: |
-            cache-build-android
   # smh: code signing shit
   buildiOS:
     runs-on: macos-13
@@ -289,6 +293,8 @@ jobs:
             haxelib setup ~/haxelib
             haxelib git hxcpp https://github.com/kittycathy233/hxcpp --quiet
             haxelib git lime https://github.com/kittycathy233/lime --quiet
+            haxelib set hxcpp git
+            haxelib set lime git
             haxelib install openfl 9.4.1 --quiet
             haxelib install flixel 5.8.0 --quiet
             haxelib set flixel 5.8.0
@@ -302,6 +308,7 @@ jobs:
             haxelib set SScript git
             haxelib git flxanimate https://github.com/Dot-Stuff/flxanimate 768740a56b26aa0c072720e0d1236b94afe68e3e --quiet
             haxelib git linc_luajit https://github.com/kittycathy233/linc_luajit --quiet
+            haxelib set linc_luajit git
             haxelib install colyseus 0.15.2 --quiet
             haxelib install HtmlParser 3.4.0 --quiet
             haxelib install UnRAR 1.0.0 --quiet
@@ -358,7 +365,7 @@ jobs:
      - name: Uploading new cache
        uses: actions/cache@v4
        with:
-          # caching again since for some reason it doesnt work with the first post cache shit
+          # caching again since for some reason it doesnt work with the first post cache shit ?????????
           key: cache-build-ios
           path: |
             .haxelib/
@@ -396,7 +403,9 @@ jobs:
         zip -r windowsBuild.zip windowsBuild/
         zip -r linuxBuild.zip linuxBuild/
         zip -r macBuild.zip macBuild/
+        mv /home/runner/PsychEngine-release.apk /home/runner/PsychEngine-Android.apk
         zip -r androidBuild.zip androidBuild/
+        mv ${{ github.workspace }}/PsychEngine.ipa /home/runner/PsychEngine.ipa
         zip -r iosBuild.zip iosBuild/
 
     - name: Upload Windows build to the release
