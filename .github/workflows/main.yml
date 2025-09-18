@@ -252,7 +252,7 @@ jobs:
      - name: Clean Android build
        run: haxelib run lime clean android
      - name: Compile
-       run: haxelib run lime build Project.xml android -final -D officialBuild
+       run: haxelib run lime build android -final -D officialBuild
      - name: Show generated AndroidManifest.xml
        if: always()
        run: |
@@ -262,7 +262,7 @@ jobs:
        uses: actions/upload-artifact@v4
        with:
          name: androidBuild
-         path: 'export/release/android/bin/app/build/outputs/*.apk'
+         path: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
   # smh: code signing shit
   buildiOS:
     runs-on: macos-13
