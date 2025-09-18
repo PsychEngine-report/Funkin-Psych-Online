@@ -71,7 +71,7 @@ class Main extends Sprite
 
     public static final platform:String = #if mobile "Phones" #else "PCs" #end;
 
-	public static final PSYCH_ONLINE_VERSION:String = "0.12.4";
+	public static final PSYCH_ONLINE_VERSION:String = "0.12.4 (unnoficial mobile port)";
 	public static final CLIENT_PROTOCOL:Float = 9;
 	public static final NETWORK_PROTOCOL:Float = 8;
 	public static final GIT_COMMIT:String = online.backend.Macros.getGitCommitHash();
@@ -219,7 +219,6 @@ class Main extends Sprite
 
 		#if android FlxG.android.preventDefaultKeys = [BACK]; #end
 
-		#if mobile
 		fpsVar = new FPS(10, 3, 0xFFFFFF);
 		addChild(fpsVar);
 		Lib.current.stage.align = "tl";
@@ -227,7 +226,6 @@ class Main extends Sprite
 		if(fpsVar != null) {
 			fpsVar.visible = ClientPrefs.data.showFPS;
 		}
-		#end
 
 		#if mobile
 		lime.system.System.allowScreenTimeout = ClientPrefs.data.screensaver; 		
