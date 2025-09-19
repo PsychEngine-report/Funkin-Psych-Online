@@ -154,11 +154,6 @@ class CoolUtil
 		//#end
 	}
 
-	#if cpp
-    @:functionCode('
-        return std::thread::hardware_concurrency();
-    ')
-	#end
     public static function getCPUThreadsCount():Int
     {
         return 1;
