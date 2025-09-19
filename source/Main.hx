@@ -246,8 +246,6 @@ class Main extends Sprite
 		FlxG.autoPause = false;
 		FlxG.mouse.visible = false;
 		#end
-
-		Application.current.window.vsync = ClientPrefs.data.vsync;
 		
 		//haxe errors caught by openfl
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, (e) -> {
