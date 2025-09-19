@@ -41,17 +41,17 @@
 	
 	<!-- ______________________ PSYCH ENGINE CUSTOMIZATION ______________________ -->
 
+	<define name="mobile" if="android || ios" />
 	<define name="MODS_ALLOWED" />
 	<define name="HSCRIPT_ALLOWED" />
 	<define name="LUA_ALLOWED" if="cpp" />
 	<define name="ACHIEVEMENTS_ALLOWED" />
-	<define name="COPYSTATE_ALLOWED" if="mobile" />
+	<define name="COPYSTATE_ALLOWED" unless="desktop" />
 	<define name="DISCORD_ALLOWED" if="desktop" unless="hl" />
 	<define name="VIDEOS_ALLOWED" if="desktop || mobile" />
 	<define name="PSYCH_WATERMARKS" /> <!-- DELETE THIS TO REMOVE WATERMARKS/DEV NAMES ON TITLE SCREEN -->
 	<define name="TITLE_SCREEN_EASTER_EGG" /> <!-- DELETE THE if="officialBuild" for enabling this on an unofficial build -->
 	<define name="RAR_SUPPORTED" if="windows" unless="hl" />
-	<define name="mobile" if="android || ios" />
 
 	<!-- ____________________________ Window Settings ___________________________ -->
 
