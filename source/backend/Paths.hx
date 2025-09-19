@@ -476,8 +476,7 @@ class Paths
 	}
     #elseif mobile
 	inline static public function mods(key:String = '') {
-		return #if android StorageUtil.getExternalStorageDirectory() + #else Sys.getCwd() + #end 'mods/' + key;
-	}
+		return  #if mobile Sys.getCwd() + #end 'mods/' + key;
     #end
 
 	inline static public function modsFont(key:String) {
