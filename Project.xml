@@ -14,7 +14,7 @@
 </section>
 
 <!-- Mobile app -->
-<section if="mobile">
+<section if="android || ios">
     <app title="Psych Online"
          file="PsychEngine"
          main="Main"
