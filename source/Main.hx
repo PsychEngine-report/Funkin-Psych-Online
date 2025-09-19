@@ -233,6 +233,8 @@ class Main extends Sprite
 			fpsVar.visible = ClientPrefs.data.showFPS;
 		}
 
+		#if android FlxG.android.preventDefaultKeys = [BACK]; #end
+			
 		#if mobile
 		lime.system.System.allowScreenTimeout = ClientPrefs.data.screensaver; 		
 		FlxG.scaleMode = new MobileScaleMode();
