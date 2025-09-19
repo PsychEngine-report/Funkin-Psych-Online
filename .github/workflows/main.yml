@@ -225,6 +225,16 @@ jobs:
             haxelib run lime config ANDROID_SETUP true
      - name: Clean Android build
        run: haxelib run lime clean android
+     - name: Patch AndroidManifest.xml
+       run: |
+         MANIFEST="export/release/android/bin/app/src/main/AndroidManifest.xml"
+         if [ -f "$MANIFEST" ]; then
+           echo "Patching manifest to remove invalid if= attributes..."
+           sed -i 's/ if="lime[^"]*"//g' "$MANIFEST"
+           echo "Manifest patched"
+         else
+           echo "AndroidManifest.xml not found.. Skipping patch."
+         fi
      - name: Compile
        run: haxelib run lime build android -final -release -D officialBuild
      - name: Uploading new cache
