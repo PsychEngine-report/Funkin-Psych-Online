@@ -146,19 +146,6 @@ jobs:
      - uses: krdlab/setup-haxe@master
        with:
            haxe-version: 4.3.7
-      
-     - name: Setup Java JDK
-       uses: actions/setup-java@v2
-       with:
-           distribution: 'temurin'
-           java-version: '17'
-
-     - name: Setup Android NDK
-       id: setup-ndk
-       uses: nttld/setup-ndk@main
-       with:
-          ndk-version: r27c
-          add-to-path: false
 
      - name: Restore existing build cache for faster compilation
        uses: actions/cache@v4
@@ -236,9 +223,6 @@ jobs:
             haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_LATEST_HOME
             haxelib run lime config JAVA_HOME $JAVA_HOME_17_arm64
             haxelib run lime config ANDROID_SETUP true
-
-     - name: Create Version Tag
-       run: echo "${{github.run_id}}" > VERSION
      - name: Clean Android build
        run: haxelib run lime clean android
      - name: Compile
@@ -342,12 +326,9 @@ jobs:
                 console.log("Cache cleared.")
               }
             }
-     - name: Create Version Tag
-       run: echo "${{github.run_id}}" > VERSION
      - name: Compile
        run: haxelib run lime build ios -final -nosign -D officialBuild
      - name: Make IPA
-       if: runner.os == 'macos'
        run: |
           brew install ldid
           cd export/release/ios/build/Release-iphoneos/PsychEngine.app
