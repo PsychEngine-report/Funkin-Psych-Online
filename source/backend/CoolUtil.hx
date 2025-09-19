@@ -116,6 +116,19 @@ class CoolUtil
 		#end
 	}
 
+	inline public static function openFolder(folder:String, absolute:Bool = false) {
+		#if sys
+			if(!absolute) folder =  Sys.getCwd() + '$folder';
+
+			folder = folder.replace('/', '\\');
+			if(folder.endsWith('/')) folder.substr(0, folder.length - 1);
+			Sys.command(command, [folder]);
+			trace('$command $folder');
+		#else
+			FlxG.error("Platform is not supported for CoolUtil.openFolder");
+		#end
+	}
+
 	/** Quick Function to Fix Save Files for Flixel 5
 		if you are making a mod, you are gonna wanna change "ShadowMario" to something else
 		so Base Psych saves won't conflict with yours
@@ -153,7 +166,12 @@ class CoolUtil
 		FlxG.stage.window.alert(message, title);
 		//#end
 	}
-	
+
+	#if cpp
+    @:functionCode('
+        return std::thread::hardware_concurrency();
+    ')
+	#end
     public static function getCPUThreadsCount():Int
     {
         return 1;
