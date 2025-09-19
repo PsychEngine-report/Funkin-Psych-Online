@@ -141,7 +141,7 @@ jobs:
   #   # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
   #     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-     - uses: actions/checkout@v2
+     - uses: actions/checkout@main
 
      - uses: krdlab/setup-haxe@master
        with:
@@ -229,17 +229,6 @@ jobs:
                 console.log("Cache cleared.")
               }
             }
-     - name: Uploading new cache
-       uses: actions/cache@v4
-       with:
-          # caching again since for some reason it doesnt work with the first post cache shit
-          key: cache-build-android
-          path: |
-            .haxelib/
-            export/release/android/haxe/
-            export/release/android/obj/
-          restore-keys: |
-            cache-build-android
      - name: config android ig
        run: |
             haxelib run lime config ANDROID_SDK $ANDROID_HOME
@@ -253,6 +242,17 @@ jobs:
        run: haxelib run lime clean android
      - name: Compile
        run: haxelib run lime build android -final -D officialBuild
+     - name: Uploading new cache
+       uses: actions/cache@v4
+       with:
+          # caching again since for some reason it doesnt work with the first post cache shit
+          key: cache-build-android
+          path: |
+            .haxelib/
+            export/release/android/haxe/
+            export/release/android/obj/
+          restore-keys: |
+            cache-build-android
      - name: Show generated AndroidManifest.xml
        if: always()
        run: |
@@ -270,7 +270,7 @@ jobs:
 
     steps:
   #     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-     - uses: actions/checkout@v2
+     - uses: actions/checkout@main
 
      - uses: krdlab/setup-haxe@master
        with:
