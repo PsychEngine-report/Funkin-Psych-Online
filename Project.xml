@@ -122,7 +122,7 @@
 	<section if="MODS_ALLOWED">
 		<assets path='example_mods' rename='mods' embed='false' />
 	</section>
-	<assets path='art/readme.txt' rename='do NOT readme.txt' />
+	<assets path='art/readme.txt' rename='do NOT readme.txt' unless="mobile" />
 	<assets path='art/run-server.bat' rename='run-server.bat' if="windows" />
 
 	<!-- _______________________________ Libraries ______________________________ -->
@@ -130,6 +130,7 @@
 	<haxelib name="flixel" />
 	<haxelib name="flixel-ui" />
 	<haxelib name="flixel-addons" />
+	<haxelib name="actuate" />
 
 	<!--Psych stuff needed-->
 	<haxelib name="linc_luajit" if="LUA_ALLOWED" />
@@ -206,8 +207,8 @@
 	<haxedef name="HXCPP_CATCH_SEGV" />
 	<haxedef name="HXCPP_DEBUG_LINK" />
 
-	<!-- <certificate path="key.keystore" password="psychonline" alias="psychonlineport" alias-password="psychonline" if="android" unless="debug" /> -->
-
+	<certificate path="key.keystore" password="psychonline" alias="psychonlineport" alias-password="psychonline" if="android" unless="debug" />
+		
 	<!-- Category Type for Apple Systems -->
 	<config:ios category_type="public.app-category.music-games" />
 	<config:mac category_type="public.app-category.music-games" />
