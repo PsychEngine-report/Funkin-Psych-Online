@@ -63,7 +63,7 @@ class Main extends Sprite
 		initialState: TitleState, // initial game state
 		zoom: -1.0, // game state bounds
 		framerate: 60, // default framerate
-		skipSplash: false, // if the default flixel splash screen should be skipped (it's false just to annoy plaer :))
+		skipSplash: true, // if the default flixel splash screen should be skipped Ethantobot 11 : hi :)
 		startFullscreen: false // if the game should start at fullscreen mode
 	};
 
@@ -71,7 +71,11 @@ class Main extends Sprite
 
     public static final platform:String = #if mobile "Phones" #else "PCs" #end;
 
+	#if desktop
+	public static final PSYCH_ONLINE_VERSION:String = "0.12.4";
+	#elseif mobile
 	public static final PSYCH_ONLINE_VERSION:String = "0.12.4 (unnoficial mobile port)";
+	#end
 	public static final CLIENT_PROTOCOL:Float = 9;
 	public static final NETWORK_PROTOCOL:Float = 8;
 	public static final GIT_COMMIT:String = online.backend.Macros.getGitCommitHash();
@@ -85,7 +89,11 @@ class Main extends Sprite
 	 * 
 	 * ! ! ! ! ! !
 	 */
+	#if mobile
 	public static var UNOFFICIAL_BUILD:Bool = true;
+	#elseif desktop
+	public static var UNOFFICIAL_BUILD:Bool = false;
+	#end
 
 	public static var wankyUpdate:String = null;
 	public static var updatePageURL:String = '';
@@ -98,7 +106,7 @@ class Main extends Sprite
     
 	public static function main():Void
 	{
-		#if !mobile // would crash the game
+		#if mobile // would crash the game
 		if (Path.normalize(Sys.getCwd()) != Path.normalize(lime.system.System.applicationDirectory)) {
 			Lib.application.window.alert("Your path is either not run from the game directory,\nor contains illegal UTF-8 characters!\n\nRun from: "
 				+ Sys.getCwd()
@@ -217,9 +225,7 @@ class Main extends Sprite
 		ClientPrefs.loadDefaultKeys();
 		addChild(new FlxGame(game.width, game.height, #if COPYSTATE_ALLOWED !CopyState.checkExistingFiles() ? CopyState : #end game.initialState, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate, game.skipSplash, game.startFullscreen));
 
-		#if android FlxG.android.preventDefaultKeys = [BACK]; #end
-
-		fpsVar = new FPS(10, 3, 0xFFFFFF);
+		fpsVar = new FPS(10, 3, 0xFFFFFF
 		addChild(fpsVar);
 		Lib.current.stage.align = "tl";
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
