@@ -107,7 +107,7 @@ class Main extends Sprite
     
 	public static function main():Void
 	{
-		#if mobile // would crash the game
+		#if !mobile // would crash the game
 		if (Path.normalize(Sys.getCwd()) != Path.normalize(lime.system.System.applicationDirectory)) {
 			Lib.application.window.alert("Your path is either not run from the game directory,\nor contains illegal UTF-8 characters!\n\nRun from: "
 				+ Sys.getCwd()
@@ -199,6 +199,11 @@ class Main extends Sprite
 			game.height = Math.ceil(stageHeight / game.zoom);
 		}
 
+		#if LUA_ALLOWED
+		Mods.pushGlobalMods();
+		#end
+		Mods.loadTopMod();
+
 		CoolUtil.setDarkMode(true);
 
 		#if lumod
@@ -249,6 +254,8 @@ class Main extends Sprite
 		FlxG.autoPause = false;
 		FlxG.mouse.visible = false;
 		#end
+
+		Application.current.window.vsync = ClientPrefs.data.vsync;
 		
 		//haxe errors caught by openfl
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, (e) -> {
