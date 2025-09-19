@@ -107,15 +107,7 @@ class Main extends Sprite
     
 	public static function main():Void
 	{
-		#if !mobile // would crash the game
-		if (Path.normalize(Sys.getCwd()) != Path.normalize(lime.system.System.applicationDirectory)) {
-			Lib.application.window.alert("Your path is either not run from the game directory,\nor contains illegal UTF-8 characters!\n\nRun from: "
-				+ Sys.getCwd()
-				+ "\nExpected path: " + lime.system.System.applicationDirectory, 
-			"Invalid Runtime Path!");
-			Sys.exit(1);
-		}
-		#elseif desktop
+		#if !mobile
 	        if (Path.normalize(Sys.getCwd()) != Path.normalize(lime.system.System.applicationDirectory)) {
 			Sys.setCwd(lime.system.System.applicationDirectory);
 
@@ -387,23 +379,7 @@ class Main extends Sprite
 			online.network.Auth.saveClose();
 		});
 
-        #if !mobile
-		Lib.application.window.onDropFile.add(path -> {
-			if (FileSystem.isDirectory(path))
-				return;
-
-			if (path.endsWith(".json") && (path.contains("-chart") || path.contains("-metadata"))) {
-				online.util.vslice.VUtil.convertVSlice(path);
-			}
-			else {
-				online.backend.Thread.run(() -> {
-					online.gui.LoadingScreen.toggle(true);
-					online.mods.OnlineMods.installMod(path);
-					online.gui.LoadingScreen.toggle(false);
-				});
-			}
-		});
-		#elseif desktop
+	    #if !mobile
 		Lib.application.window.onDropFile.add(path -> {
 			if (FileSystem.isDirectory(path))
 				return;
