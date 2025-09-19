@@ -2,15 +2,8 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-<!-- Desktop app -->
-<section if="desktop">
-    <app title="Friday Night Funkin': Psych Online" file="PsychEngine" main="Main" version="0.6.0" packageName="com.shadowmario.psychengine" package="com.shadowmario.psychengine" company="ShadowMario" />
-</section>
+	<app title="Psych Online" file="PsychEngine" main="Main" version="0.6.0" packageName="com.snirozu.psychonline" package="com.snirozu.psychonline" company="Snirozu" />
 
-<!-- Mobile app -->
-<section if="android || ios">
-    <app title="Psych Online" file="PsychEngine" main="Main" version="0.6.0" packageName="com.snirozu.psychonline" package="com.snirozu.psychonline" company="Snirozu" />
-</section>
 
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
