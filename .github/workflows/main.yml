@@ -164,9 +164,10 @@ jobs:
        run: |
             haxelib setup ~/haxelib
             haxelib git hxcpp https://github.com/kittycathy233/hxcpp --quiet
-            haxelib git lime https://github.com/kittycathy233/lime --quiet
+            haxelib git lime https://github.com/Ethantobot11/lime2 --quiet
             haxelib set hxcpp git
             haxelib set lime git
+            haxelib git extension-androidtools "https://github.com/MAJigsaw77/extension-androidtools" --quiet
             haxelib install openfl 9.3.3 --quiet
             haxelib set openfl 9.3.3
             haxelib install flixel 5.8.0 --quiet
@@ -286,7 +287,7 @@ jobs:
        run: |
             haxelib setup ~/haxelib
             haxelib git hxcpp https://github.com/kittycathy233/hxcpp --quiet
-            haxelib git lime https://github.com/kittycathy233/lime --quiet
+            haxelib git lime https://github.com/Ethantobot11/lime2 --quiet
             haxelib set hxcpp git
             haxelib set lime git
             haxelib install openfl 9.4.1 --quiet
