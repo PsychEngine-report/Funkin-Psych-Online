@@ -41,21 +41,6 @@ import haxe.io.Path;
 import sys.io.File;
 import sys.io.Process;
 
-#if windows
-@:buildXml('
-<target id="haxe">
-	<lib name="wininet.lib" if="windows" />
-	<lib name="dwmapi.lib" if="windows" />
-</target>
-')
-@:cppFileCode('
-#include <windows.h>
-#include <winuser.h>
-#pragma comment(lib, "Shell32.lib")
-extern "C" HRESULT WINAPI SetCurrentProcessExplicitAppUserModelID(PCWSTR AppID);
-')
-#end
-
 class Main extends Sprite
 {
 	var game = {
@@ -119,14 +104,13 @@ class Main extends Sprite
 					"Invalid Runtime Path!");
 				Sys.exit(1);
 			}
-		}
-		#end
-		
-		Lib.current.addChild(view3D = new online.away.View3DHandler());
+		    #end
+
 		Lib.current.addChild(new Main());
 		Lib.current.addChild(new online.gui.sidebar.SideUI());
 		Lib.current.addChild(new online.gui.Alert());
 		Lib.current.addChild(new online.gui.LoadingScreen());
+		Lib.current.addChild(view3D = new online.away.View3DHandler());
 	}
 
 	public function new()
