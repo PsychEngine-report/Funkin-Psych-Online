@@ -164,7 +164,7 @@ jobs:
        run: |
             haxelib setup ~/haxelib
             haxelib git hxcpp https://github.com/kittycathy233/hxcpp --quiet
-            haxelib git lime https://github.com/Ethantobot11/lime2 --quiet
+            haxelib git lime https://github.com/Ethantobot11/lime-for-psych-online-android --quiet
             haxelib set hxcpp git
             haxelib set lime git
             haxelib git extension-androidtools "https://github.com/MAJigsaw77/extension-androidtools" --quiet
