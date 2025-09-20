@@ -102,11 +102,11 @@ class Main extends Sprite
 		}
 		#end
 
+		Lib.current.addChild(view3D = new online.away.View3DHandler());
 		Lib.current.addChild(new Main());
 		Lib.current.addChild(new online.gui.sidebar.SideUI());
 		Lib.current.addChild(new online.gui.Alert());
 		Lib.current.addChild(new online.gui.LoadingScreen());
-		Lib.current.addChild(view3D = new online.away.View3DHandler());
 	}
 
 	public function new()
@@ -370,8 +370,8 @@ class Main extends Sprite
 					online.gui.LoadingScreen.toggle(true);
 					online.mods.OnlineMods.installMod(path);
 					online.gui.LoadingScreen.toggle(false);
-		         });
-		     }
+				});
+			}
 		});
 		#end
 			
