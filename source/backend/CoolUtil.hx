@@ -142,22 +142,12 @@ class CoolUtil
 		so Base Psych saves won't conflict with yours
 		@BeastlyGabi
 	**/
-	#if desktop
 	inline public static function getSavePath(folder:String = 'ShadowMario'):String {
 		@:privateAccess
 		return #if (flixel < "5.0.0") folder #else FlxG.stage.application.meta.get('company')
 			+ '/'
 			+ FlxSave.validate(FlxG.stage.application.meta.get('file')) #end;
 	}
-	#elseif mobile
-	@:access(flixel.util.FlxSave.validate)
-	inline public static function getSavePath():String {
-		final company:String = FlxG.stage.application.meta.get('company');
-		// #if (flixel < "5.0.0") return company; #else
-		return '${company}/${flixel.util.FlxSave.validate(FlxG.stage.application.meta.get('file'))}';
-		// #end
-	}
-	#end
 
 	public static function setDarkMode(enabled:Bool) {
 		WinAPI.setDarkMode(getWindowTitle(), enabled);
