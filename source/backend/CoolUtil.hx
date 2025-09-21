@@ -116,17 +116,48 @@ class CoolUtil
 		#end
 	}
 
+	#if mobile
+	inline public static function openFolder(folder:String, absolute:Bool = false) {
+		#if sys
+			if(!absolute) folder =  Sys.getCwd() + '$folder';
+
+			folder = folder.replace('/', '\\');
+			if(folder.endsWith('/')) folder.substr(0, folder.length - 1);
+
+			#if linux
+			var command:String = '/usr/bin/xdg-open';
+			#else
+			var command:String = 'explorer.exe';
+			#end
+			Sys.command(command, [folder]);
+			trace('$command $folder');
+		#else
+			FlxG.error("Platform is not supported for CoolUtil.openFolder");
+		#end
+	}
+	#end
+
 	/** Quick Function to Fix Save Files for Flixel 5
 		if you are making a mod, you are gonna wanna change "ShadowMario" to something else
 		so Base Psych saves won't conflict with yours
 		@BeastlyGabi
 	**/
+	#if desktop
 	inline public static function getSavePath(folder:String = 'ShadowMario'):String {
 		@:privateAccess
 		return #if (flixel < "5.0.0") folder #else FlxG.stage.application.meta.get('company')
 			+ '/'
 			+ FlxSave.validate(FlxG.stage.application.meta.get('file')) #end;
 	}
+	#elseif mobile
+	@:access(flixel.util.FlxSave.validate)
+	inline public static function getSavePath():String {
+		final company:String = FlxG.stage.application.meta.get('company');
+		// #if (flixel < "5.0.0") return company; #else
+		return '${company}/${flixel.util.FlxSave.validate(FlxG.stage.application.meta.get('file'))}';
+		// #end
+	}
+	#end
 
 	public static function setDarkMode(enabled:Bool) {
 		WinAPI.setDarkMode(getWindowTitle(), enabled);
