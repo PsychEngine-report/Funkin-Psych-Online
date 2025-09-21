@@ -40,14 +40,10 @@ import objects.Character;
 import substates.Prompt;
 
 
-#if (sys && desktop)
+#if sys
 import openfl.media.Sound;
 import sys.FileSystem;
 import sys.io.File;
-#elseif (sys && mobile)
-import openfl.media.Sound;
-import backend.io.PsychFileSystem as FileSystem;
-import backend.io.PsychFile as File;
 #end
 
 @:access(flixel.sound.FlxSound._sound)
