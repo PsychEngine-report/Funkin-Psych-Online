@@ -21,10 +21,8 @@ import tjson.TJSON as Json;
 import objects.Character;
 import objects.HealthIcon;
 import objects.HealthBar;
-#if (MODS_ALLOWED && desktop)
+#if MODS_ALLOWED
 import sys.FileSystem;
-#elseif (MODS_ALLOWED && mobile)
-import backend.io.PsychFileSystem as FileSystem;
 #end
 
 @:bitmap("assets/images/debugger/cursorCross.png")
