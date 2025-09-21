@@ -5,14 +5,10 @@ import haxe.io.Path;
 import haxe.Exception;
 
 #if sys
-import sys.io.File
-import sys.FileSystem
+import sys.FileSystem;
+import sys.io.File;
 #end
 
-/**
- * A storage class for mobile.
- * @author Karim Akra and Homura Akemi (HomuHomu833)
- */
 class StorageUtil
 {
     #if sys
