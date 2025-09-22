@@ -19,28 +19,6 @@ on:
   
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  get-commit-hash:
-    runs-on: ubuntu-latest
-    outputs:
-      commit_hash: ${{ steps.get_commit_hash.outputs.COMMIT_HASH }}
-    steps:
-      - name: Check Repository
-        run: |
-          echo "GITHUB_REPOSITORY: $GITHUB_REPOSITORY"
-          echo "REPO_PATH: ${{ env.REPO_PATH }}"
-          if [[ "$GITHUB_REPOSITORY" != "${{ env.REPO_PATH }}" ]]; then
-            echo "Doesn't seem to be correct, returning SIGABRT..."
-            exit 6
-          else
-            echo "Seems to be correct..."
-          fi
-
-      - name: Get latest commit hash
-        id: get_commit_hash
-        run: |
-          commit_hash=${GITHUB_SHA::7}
-          echo "Latest commit hash is $commit_hash"
-          echo "::set-output name=COMMIT_HASH::$commit_hash"
   # This workflow contains a single job called "build"
   buildLinux:
     # The type of runner that the job will run on
@@ -174,26 +152,20 @@ jobs:
        with:
          distribution: 'temurin'
          java-version: '17'
-         add-to-path: false
 
      - name: Setup Android NDK
        uses: nttld/setup-ndk@v1
        id: setup-ndk
        with:
-         ndk-version: r27c
-         add-to-path: false
+         ndk-version: r21e
 
-     - name: Restore existing build cache for faster compilation
+     - name: Retrieve Cache
        uses: actions/cache@v4
        with:
-          # not caching the bin folder to prevent asset duplication and stuff like that
-          key: cache-build-android
-          path: |
-            .haxelib/
-            export/release/android/haxe/
-            export/release/android/obj/
-          restore-keys: |
-            cache-build-android 
+           path: |
+             export/release/android/haxe
+             export/release/android/obj
+           key: ${{ runner.os }}-cache
       
   #     # Runs a set of commands using the runners shell
      - name: Install Haxelib
@@ -236,6 +208,7 @@ jobs:
             haxelib install yagp 1.1.4 --quiet
   #         no hmm cuz pc/linux/mac would be like "Android things? no *trow error*"
      - name: config android ig
+       if: runner.os == 'macos'
        run: |
             haxelib run lime config ANDROID_SDK $ANDROID_HOME
             haxelib run lime config ANDROID_NDK_ROOT ${{steps.setup-ndk.outputs.ndk-path}}
@@ -244,7 +217,7 @@ jobs:
      - name: Clean Android build
        run: haxelib run lime clean android
      - name: Compile
-       run: haxelib run lime build android -final -release -D officialBuild
+       run: haxelib run lime build Project.xml android -final -clean
      - name: Show generated AndroidManifest.xml
        if: always()
        run: |
@@ -254,19 +227,7 @@ jobs:
        uses: actions/upload-artifact@v4
        with:
          name: androidBuild
-         path: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
-
-     - name: Uploading new cache
-       uses: actions/cache@v4
-       with:
-          # caching again since for some reason it doesnt work with the first post cache shit
-          key: cache-build-android
-          path: |
-            .haxelib/
-            export/release/android/haxe/
-            export/release/android/obj/
-          restore-keys: |
-            cache-build-android
+         path: 'export/release/android/bin/app/build/outputs/apk'
   # smh: code signing shit
   buildiOS:
     runs-on: macos-13
@@ -279,16 +240,13 @@ jobs:
      - uses: krdlab/setup-haxe@master
        with:
             haxe-version: 4.3.7
-     - name: Restore existing build cache for faster compilation
+     - name: Retrieve Cache
        uses: actions/cache@v4
        with:
-          # not caching the bin folder to prevent asset duplication and stuff like that
-          key: cache-build-ios
-          path: |
-            .haxelib/
-            export/release/ios/PsychEngine/haxe/
-          restore-keys: |
-            cache-build-ios
+         path: |
+              export/release/ios/haxe
+              export/release/ios/obj
+         key: ${{ runner.os }}-cache
   #     # Runs a set of commands using the runners shell
      - name: Install Haxelib
        run: |
@@ -327,8 +285,9 @@ jobs:
             haxelib git grig.audio https://github.com/Snirozu/grig.audio 162f924bdde427fc84af5b51961d2faef51f6955 --quiet
             haxelib install yagp 1.1.4 --quiet
      - name: Compile
-       run: haxelib run lime build ios -final -nosign -D officialBuild
+       run: haxelib run lime build Project.xml ios -final -nosign
      - name: Make IPA
+       if: runner.os == 'macOS'
        run: |
           brew install ldid
           cd export/release/ios/build/Release-iphoneos/PsychEngine.app
