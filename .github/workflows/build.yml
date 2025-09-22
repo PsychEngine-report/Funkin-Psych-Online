@@ -23,7 +23,7 @@ permissions: write-all
 
 env:
   HAXE_VERSION: 4.3.7
-  PROJECT_NAME: PibbyEngine
+  PROJECT_NAME: PsychEngine
 
 jobs:
   build:
@@ -46,7 +46,7 @@ jobs:
           key: cache-build-ios
           path: |
             .haxelib/
-            export/release/ios/PibbyEngine/haxe/
+            export/release/ios/PsychEngine/haxe/
           restore-keys: |
             cache-build-ios
 
@@ -69,9 +69,41 @@ jobs:
 
       - name: Install Libraries
         run: |
-          haxelib install hmm --quiet
-          haxelib run hmm install --quiet
-          haxelib install hxcpp-debug-server --quiet
+            haxelib setup ~/haxelib
+            haxelib git hxcpp https://github.com/kittycathy233/hxcpp --quiet
+            haxelib git lime https://github.com/Ethantobot11/lime2 --quiet
+            haxelib set hxcpp git
+            haxelib set lime git
+            haxelib install openfl 9.4.1 --quiet
+            haxelib install flixel 5.8.0 --quiet
+            haxelib set flixel 5.8.0
+            haxelib install flixel-addons 3.3.2 --quiet
+            haxelib install flixel-tools 1.5.1 --quiet
+            haxelib install flixel-ui 2.5.0 --quiet
+            haxelib install hscript-iris 1.1.3 --quiet
+            haxelib install hscript 2.6.0 --quiet
+            haxelib install tjson 1.4.0 --quiet
+            haxelib git SScript https://github.com/Ethantobot11/SScript --quiet
+            haxelib set SScript git
+            haxelib git flxanimate https://github.com/Dot-Stuff/flxanimate 768740a56b26aa0c072720e0d1236b94afe68e3e --quiet
+            haxelib git linc_luajit https://github.com/kittycathy233/linc_luajit --quiet
+            haxelib set linc_luajit git
+            haxelib install colyseus 0.15.2 --quiet
+            haxelib install HtmlParser 3.4.0 --quiet
+            haxelib install UnRAR 1.0.0 --quiet
+            haxelib install away3d 5.0.9 --quiet
+            haxelib git away3d https://github.com/Snirozu/away3d master --quiet
+            haxelib install json2object 3.11.0 --quiet
+            haxelib install hxjsonast 1.1.0 --quiet
+            haxelib install lumod 2.1.0 --qquiet
+            haxelib install actuate 1.9.0 --quiet
+            haxelib install compiletime 2.8.0 --quiet
+            haxelib install hxdiscord_rpc --quiet --skip-dependencies
+            haxelib install hxvlc 2.0.1 --quiet --skip-dependencies
+            haxelib git funkin.vis https://github.com/FunkinCrew/funkVis 22b1ce089dd924f15cdc4632397ef3504d464e90 --quiet --skip-dependencies
+            haxelib git grig.audio https://github.com/Snirozu/grig.audio 162f924bdde427fc84af5b51961d2faef51f6955 --quiet
+            haxelib install yagp 1.1.4 --quiet
+            haxelib install hxcpp-debug-server --quiet
 
       - name: Clearing already existing cache
         if: inputs.name == 'iOS'
@@ -142,12 +174,12 @@ jobs:
         if: inputs.name == 'iOS'
         run: |
           brew install ldid
-          cd export/release/ios/build/Release-iphoneos/PibbyEngine.app
-          ldid -S../../../PibbyEngine/PibbyEngine.entitlements PibbyEngine
+          cd export/release/ios/build/Release-iphoneos/PsychEngine.app
+          ldid -S../../../PibbyEngine/PsychEngine.entitlements PsychEngine
           cd ..
           mkdir Payload
-          mv PibbyEngine.app Payload
-          zip -r PibbyEngine.ipa Payload
+          mv PsychEngine.app Payload
+          zip -r PsychEngine.ipa Payload
 
       - name: Upload Artifact
         uses: actions/upload-artifact@main
@@ -163,6 +195,6 @@ jobs:
           key: cache-build-ios
           path: |
             .haxelib/
-            export/release/ios/PibbyEngine/haxe/
+            export/release/ios/PsychEngine/haxe/
           restore-keys: |
             cache-build-ios
