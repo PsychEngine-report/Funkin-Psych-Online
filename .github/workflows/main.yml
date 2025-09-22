@@ -156,10 +156,7 @@ jobs:
           name: macBuild
           path: export/release/macos/bin
   buildAndroid:
-  strategy:
-    matrix:
-      os: [ARMV7, ARMV8, X86_64, X86]
-  runs-on: ${{ matrix.os }}
+  runs-on: macos-15
   permissions: write-all
 
   steps:
@@ -174,7 +171,6 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '17'
-        add-to-path: false
 
     - name: Setup Android NDK
       uses: nttld/setup-ndk@v1
