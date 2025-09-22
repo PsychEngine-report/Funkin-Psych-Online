@@ -19,6 +19,28 @@ on:
   
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  get-commit-hash:
+    runs-on: ubuntu-latest
+    outputs:
+      commit_hash: ${{ steps.get_commit_hash.outputs.COMMIT_HASH }}
+    steps:
+      - name: Check Repository
+        run: |
+          echo "GITHUB_REPOSITORY: $GITHUB_REPOSITORY"
+          echo "REPO_PATH: ${{ env.REPO_PATH }}"
+          if [[ "$GITHUB_REPOSITORY" != "${{ env.REPO_PATH }}" ]]; then
+            echo "Doesn't seem to be correct, returning SIGABRT..."
+            exit 6
+          else
+            echo "Seems to be correct..."
+          fi
+
+      - name: Get latest commit hash
+        id: get_commit_hash
+        run: |
+          commit_hash=${GITHUB_SHA::7}
+          echo "Latest commit hash is $commit_hash"
+          echo "::set-output name=COMMIT_HASH::$commit_hash"
   # This workflow contains a single job called "build"
   buildLinux:
     # The type of runner that the job will run on
@@ -135,7 +157,7 @@ jobs:
           path: export/release/macos/bin
   buildAndroid:
   #   # The type of runner that the job will run on
-    runs-on: ubuntu-22.04
+    runs-on: macos-15
     permissions: write-all
 
   #   # Steps represent a sequence of tasks that will be executed as part of the job
@@ -146,14 +168,6 @@ jobs:
      - uses: krdlab/setup-haxe@master
        with:
            haxe-version: 4.3.7
-
-     - name: Setup Android SDK
-       uses: android-actions/setup-android@v2
-       with:
-         api-level: 30        
-         build-tools: 33.0.2  
-         cmake: 3.22.1    
-         add-to-path: false
          
      - name: Setup Java JDK
        uses: actions/setup-java@v2
@@ -221,46 +235,27 @@ jobs:
             haxelib git grig.audio https://github.com/Snirozu/grig.audio 162f924bdde427fc84af5b51961d2faef51f6955 --quiet
             haxelib install yagp 1.1.4 --quiet
   #         no hmm cuz pc/linux/mac would be like "Android things? no *trow error*"
-
-     - name: Clearing already existing cache
-       uses: actions/github-script@v6
-       with:
-          script: |
-            const caches = await github.rest.actions.getActionsCacheList({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-            })
-            for (const cache of caches.data.actions_caches) {
-              if (cache.key == "cache-build-android") {
-                console.log('Clearing ' + cache.key + '...')
-                await github.rest.actions.deleteActionsCacheById({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  cache_id: cache.id,
-                })
-                console.log("Cache cleared.")
-              }
-            }
      - name: config android ig
        run: |
             haxelib run lime config ANDROID_SDK $ANDROID_HOME
             haxelib run lime config ANDROID_NDK_ROOT ${{steps.setup-ndk.outputs.ndk-path}}
-            haxelib run lime config JAVA_HOME $JAVA_HOME_17_X64
+            haxelib run lime config JAVA_HOME $JAVA_HOME_17_arm64
             haxelib run lime config ANDROID_SETUP true
      - name: Clean Android build
        run: haxelib run lime clean android
-     - name: Patch AndroidManifest.xml
-       run: |
-         MANIFEST="export/release/android/bin/app/src/main/AndroidManifest.xml"
-         if [ -f "$MANIFEST" ]; then
-           echo "Patching manifest to remove invalid if= attributes..."
-           sed -i 's/ if="lime[^"]*"//g' "$MANIFEST"
-           echo "Manifest patched"
-         else
-           echo "AndroidManifest.xml not found.. Skipping patch."
-         fi
      - name: Compile
        run: haxelib run lime build android -final -release -D officialBuild
+     - name: Show generated AndroidManifest.xml
+       if: always()
+       run: |
+         echo "=== AndroidManifest.xml ==="
+         cat export/release/android/bin/app/src/main/AndroidManifest.xml || true
+     - name: Publish Artifact
+       uses: actions/upload-artifact@v4
+       with:
+         name: androidBuild
+         path: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
+
      - name: Uploading new cache
        uses: actions/cache@v4
        with:
@@ -272,16 +267,6 @@ jobs:
             export/release/android/obj/
           restore-keys: |
             cache-build-android
-     - name: Show generated AndroidManifest.xml
-       if: always()
-       run: |
-         echo "=== AndroidManifest.xml ==="
-         cat export/release/android/bin/app/src/main/AndroidManifest.xml || true
-     - name: Publish Artifact
-       uses: actions/upload-artifact@v4
-       with:
-         name: androidBuild
-         path: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
   # smh: code signing shit
   buildiOS:
     runs-on: macos-13
@@ -341,25 +326,6 @@ jobs:
             haxelib git funkin.vis https://github.com/FunkinCrew/funkVis 22b1ce089dd924f15cdc4632397ef3504d464e90 --quiet --skip-dependencies
             haxelib git grig.audio https://github.com/Snirozu/grig.audio 162f924bdde427fc84af5b51961d2faef51f6955 --quiet
             haxelib install yagp 1.1.4 --quiet
-     - name: Clearing already existing cache
-       uses: actions/github-script@v6
-       with:
-          script: |
-            const caches = await github.rest.actions.getActionsCacheList({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-            })
-            for (const cache of caches.data.actions_caches) {
-              if (cache.key == "cache-build-ios") {
-                console.log('Clearing ' + cache.key + '...')
-                await github.rest.actions.deleteActionsCacheById({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  cache_id: cache.id,
-                 })
-                console.log("Cache cleared.")
-              }
-            }
      - name: Compile
        run: haxelib run lime build ios -final -nosign -D officialBuild
      - name: Make IPA
@@ -417,9 +383,7 @@ jobs:
         zip -r windowsBuild.zip windowsBuild/
         zip -r linuxBuild.zip linuxBuild/
         zip -r macBuild.zip macBuild/
-        mv /home/runner/PsychEngine-release.apk /home/runner/PsychEngine-Android.apk
         zip -r androidBuild.zip androidBuild/
-        mv ${{ github.workspace }}/PsychEngine.ipa /home/runner/PsychEngine.ipa
         zip -r iosBuild.zip iosBuild/
 
     - name: Upload Windows build to the release
