@@ -5,7 +5,7 @@ permissions: write-all   # ✅ caller must allow write perms too
 
 env:
   PROJECT_NAME: PsychEngine
-  REPO_PATH: PsychEngine-report/Funkin-Psych-online
+  REPO_PATH: PsychEngine-report/Funkin-Psych-Online
 
 jobs:
   get-commit-hash:
