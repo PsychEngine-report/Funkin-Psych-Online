@@ -156,44 +156,50 @@ jobs:
           name: macBuild
           path: export/release/macos/bin
   buildAndroid:
-  runs-on: macos-15
-  permissions: write-all
+  #   # The type of runner that the job will run on
+    runs-on: macos-15
+    permissions: write-all
 
-  steps:
-    - uses: actions/checkout@main
+  #   # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+  #     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+     - uses: actions/checkout@main
 
-    - uses: krdlab/setup-haxe@master
-      with:
-        haxe-version: 4.3.7
+     - uses: krdlab/setup-haxe@master
+       with:
+           haxe-version: 4.3.7
+         
+     - name: Setup Java JDK
+       uses: actions/setup-java@v2
+       with:
+         distribution: 'temurin'
+         java-version: '17'
+         add-to-path: false
 
-    - name: Setup Java JDK
-      uses: actions/setup-java@v2
-      with:
-        distribution: 'temurin'
-        java-version: '17'
+     - name: Setup Android NDK
+       uses: nttld/setup-ndk@v1
+       id: setup-ndk
+       with:
+         ndk-version: r27c
+         add-to-path: false
 
-    - name: Setup Android NDK
-      uses: nttld/setup-ndk@v1
-      id: setup-ndk
-      with:
-        ndk-version: r27c
-        add-to-path: false
-
-    - name: Restore build cache
-      uses: actions/cache@v4
-      with:
-        key: cache-build-android
-        path: |
-          .haxelib/
-          export/release/android/haxe/
-          export/release/android/obj/
-        restore-keys: |
-          cache-build-android
-
-    - name: Install Haxelib
-      run: |
-        haxelib setup ~/haxelib
-        haxelib git hxcpp https://github.com/kittycathy233/hxcpp --quiet
+     - name: Restore existing build cache for faster compilation
+       uses: actions/cache@v4
+       with:
+          # not caching the bin folder to prevent asset duplication and stuff like that
+          key: cache-build-android
+          path: |
+            .haxelib/
+            export/release/android/haxe/
+            export/release/android/obj/
+          restore-keys: |
+            cache-build-android 
+      
+  #     # Runs a set of commands using the runners shell
+     - name: Install Haxelib
+       run: |
+            haxelib setup ~/haxelib
+            haxelib git hxcpp https://github.com/kittycathy233/hxcpp --quiet
             haxelib git lime https://github.com/Ethantobot11/lime-for-psych-online-android --quiet
             haxelib set hxcpp git
             haxelib set lime git
