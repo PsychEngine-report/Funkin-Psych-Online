@@ -104,6 +104,10 @@ class Main extends Sprite
 
 		Lib.current.addChild(view3D = new online.away.View3DHandler());
 		Lib.current.addChild(new Main());
+		#if cpp
+        cpp.NativeGc.enable(true);
+        cpp.NativeGc.run(true);
+        #end
 		Lib.current.addChild(new online.gui.sidebar.SideUI());
 		Lib.current.addChild(new online.gui.Alert());
 		Lib.current.addChild(new online.gui.LoadingScreen());
