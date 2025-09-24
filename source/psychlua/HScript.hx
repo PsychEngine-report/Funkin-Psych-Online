@@ -207,12 +207,13 @@ class HScript extends SScript
 		set('remove', function(obj:FlxBasic, splice:Bool = false) PlayState.instance.remove(obj, splice));
 		#end
 	}
+}
 
 	#if LUA_ALLOWED
-		set("addTouchPad", (DPadMode:String, ActionMode:String) -> {
+	    set("addTouchPad", (DPadMode:String, ActionMode:String) -> {
 			PlayState.instance.makeLuaTouchPad(DPadMode, ActionMode);
 			PlayState.instance.addLuaTouchPad();
-		  });
+		});
   
 		set("removeTouchPad", () -> {
 			PlayState.instance.removeLuaTouchPad();
