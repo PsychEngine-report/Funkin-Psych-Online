@@ -69,7 +69,6 @@
 	<section if="TITLE_SCREEN_EASTER_EGG">
 		<assets path="assets/secrets" rename="assets" exclude="*.ogg" if="web" />
 		<assets path="assets/secrets" rename="assets" exclude="*.mp3" unless="web" />
-	</section>
 
 	<define name="CHECK_FOR_UPDATES" unless="LOCAL" />
 
@@ -78,7 +77,6 @@
 		<library name="songs" preload="true" />
 		<library name="shared" preload="true" />
 		<library name="week_assets" preload="true" />
-	</section>
 
 	<assets path="assets/videos" library="videos" if="VIDEOS_ALLOWED" />
 	<assets path="assets/songs" library="songs" exclude="*.ogg" if="web" />
