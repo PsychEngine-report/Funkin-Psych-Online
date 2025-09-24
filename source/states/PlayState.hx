@@ -863,6 +863,11 @@ class PlayState extends MusicBeatState
 		});
 		#end
 
+		addMobileControls();
+		mobileControls.instance.visible = true;
+		mobileControls.onButtonDown.add(onButtonPress);
+		mobileControls.onButtonUp.add(onButtonRelease);
+
 		// STAGE SCRIPTS
 		#if LUA_ALLOWED
 		preloadTasks.push(() -> {
