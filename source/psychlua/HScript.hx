@@ -207,7 +207,6 @@ class HScript extends SScript
 		set('remove', function(obj:FlxBasic, splice:Bool = false) PlayState.instance.remove(obj, splice));
 		#end
 	}
-}
 
 	public function executeCode(?funcToRun:String = null, ?funcArgs:Array<Dynamic> = null):TeaCall
 	{
