@@ -12,6 +12,8 @@ import flixel.math.FlxPoint;
 import states.StoryMenuState;
 import states.FreeplayState;
 
+import lime.ui.Haptic;
+
 // i hate how this state is coded, can we kill shadoemaryo
 
 class GameOverSubstate extends MusicBeatSubstate
