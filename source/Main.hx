@@ -18,7 +18,6 @@ import openfl.display.FPS;
 import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.display.StageScaleMode;
-import lime.system.System as LimeSystem;
 import lime.app.Application;
 import states.TitleState;
 #if COPYSTATE_ALLOWED
@@ -104,10 +103,6 @@ class Main extends Sprite
 
 		Lib.current.addChild(view3D = new online.away.View3DHandler());
 		Lib.current.addChild(new Main());
-		#if cpp
-        cpp.NativeGc.enable(true);
-        cpp.NativeGc.run(true);
-        #end
 		Lib.current.addChild(new online.gui.sidebar.SideUI());
 		Lib.current.addChild(new online.gui.Alert());
 		Lib.current.addChild(new online.gui.LoadingScreen());
@@ -146,6 +141,7 @@ class Main extends Sprite
 
 	private function setupGame():Void
 	{
+		#if (openfl <= "9.2.0")
 		var stageWidth:Int = Lib.current.stage.stageWidth;
 		var stageHeight:Int = Lib.current.stage.stageHeight;
 
@@ -157,6 +153,10 @@ class Main extends Sprite
 			game.width = Math.ceil(stageWidth / game.zoom);
 			game.height = Math.ceil(stageHeight / game.zoom);
 		}
+		#else
+		if (game.zoom == -1.0)
+			game.zoom = 1.0;
+		#end
 
 		#if LUA_ALLOWED
 		Mods.pushGlobalMods();
@@ -185,25 +185,25 @@ class Main extends Sprite
 		sys.ssl.Socket.DEFAULT_VERIFY_CERT = false;
 		#end
 	
-		#if LUA_ALLOWED Lua.set_callbacks_function(cpp.Callable.fromStaticFunction(psychlua.CallbackHandler.call)); #end
+        #if LUA_ALLOWED Lua.set_callbacks_function(cpp.Callable.fromStaticFunction(psychlua.CallbackHandler.call)); #end
 		Controls.instance = new Controls();
 		ClientPrefs.loadDefaultKeys();
 		addChild(new FlxGame(game.width, game.height, #if COPYSTATE_ALLOWED !CopyState.checkExistingFiles() ? CopyState : #end game.initialState, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate, game.skipSplash, game.startFullscreen));
 
-		#if !mobile
-		fpsVar = new FPS(10, 3, 0xFFFFFF);
+		fpsVar = new FPSCounter(10, 3, 0xFFFFFF);
 		addChild(fpsVar);
 		Lib.current.stage.align = "tl";
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
 		if(fpsVar != null) {
 			fpsVar.visible = ClientPrefs.data.showFPS;
 		}
+
+		#if android
+		FlxG.android.preventDefaultKeys = [BACK];
 		#end
 
-		#if android FlxG.android.preventDefaultKeys = [BACK]; #end
-			
 		#if mobile
-		lime.system.System.allowScreenTimeout = ClientPrefs.data.screensaver; 		
+		LimeSystem.allowScreenTimeout = ClientPrefs.data.screensaver;
 		FlxG.scaleMode = new MobileScaleMode();
 		#end
 
