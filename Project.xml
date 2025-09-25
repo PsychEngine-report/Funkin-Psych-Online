@@ -221,6 +221,7 @@
 		<haxeflag name="--macro" value="addGlobalMetadata('objects', '@:build(online.backend.MonitorMacro.build())')" />
 		<haxeflag name="--macro" value="addGlobalMetadata('psychlua', '@:build(online.backend.MonitorMacro.build())')" />
 		<haxeflag name="--macro" value="addGlobalMetadata('llua', '@:build(online.backend.MonitorMacro.build())')" />
+		<haxeflag name="--macro" value="addGlobalMetadata('mobile', '@:build(online.backend.MonitorMacro.build())')" if="mobile" />
 	</section>
 
 
