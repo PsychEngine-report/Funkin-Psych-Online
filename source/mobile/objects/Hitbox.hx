@@ -6,12 +6,6 @@ import flixel.graphics.FlxGraphic;
 import flixel.util.FlxSignal.FlxTypedSignal;
 import openfl.geom.Matrix;
 
-/**
- * A zone with 4 hint's (A hitbox).
- * It's really easy to customize the layout.
- *
- * @author: Karim Akra and Lily Ross (mcagabe19)
- */
 class Hitbox extends MobileInputManager implements IMobileControls
 {
 	final offsetFir:Int = (ClientPrefs.data.hitboxPos ? Std.int(FlxG.height / 4) * 3 : 0);
