@@ -1,4 +1,4 @@
-,#if !macro
+#if !macro
 //Discord API
 #if DISCORD_ALLOWED
 import backend.Discord;
