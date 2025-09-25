@@ -6,7 +6,9 @@ import lumod.Lumod;
 import states.stages.AwayStage;
 #end
 import states.MainMenuState;
+#if desktop
 import externs.WinAPI;
+#end
 import haxe.Exception;
 import flixel.graphics.FlxGraphic;
 import haxe.io.Path;
@@ -19,6 +21,7 @@ import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.display.StageScaleMode;
 import lime.app.Application;
+import lime.system.System as LimeSystem;
 import states.TitleState;
 #if COPYSTATE_ALLOWED
 import states.CopyState;
