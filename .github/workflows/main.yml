@@ -143,22 +143,6 @@ jobs:
   #     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
      - uses: actions/checkout@main
 
-     - uses: krdlab/setup-haxe@master
-       with:
-           haxe-version: 4.3.7
-         
-     - name: Setup Java JDK
-       uses: actions/setup-java@v2
-       with:
-         distribution: 'temurin'
-         java-version: '11'
-
-     - name: Setup Android NDK
-       uses: nttld/setup-ndk@v1
-       id: setup-ndk
-       with:
-         ndk-version: r21e
-
      - name: Retrieve Cache
        uses: actions/cache@v4
        with:
@@ -208,7 +192,6 @@ jobs:
             haxelib install yagp 1.1.4 --quiet
   #         no hmm cuz pc/linux/mac would be like "Android things? no *trow error*"
      - name: config android ig
-       if: runner.os == 'Ubuntu'
        run: |
             haxelib run lime config ANDROID_SDK $ANDROID_HOME
             haxelib run lime config ANDROID_NDK_ROOT ${{steps.setup-ndk.outputs.ndk-path}}
