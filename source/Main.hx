@@ -104,6 +104,10 @@ class Main extends Sprite
 
 		Lib.current.addChild(view3D = new online.away.View3DHandler());
 		Lib.current.addChild(new Main());
+		#if cpp
+        cpp.NativeGc.enable(true);
+        cpp.NativeGc.run(true);
+        #end
 		Lib.current.addChild(new online.gui.sidebar.SideUI());
 		Lib.current.addChild(new online.gui.Alert());
 		Lib.current.addChild(new online.gui.LoadingScreen());
@@ -190,16 +194,6 @@ class Main extends Sprite
 		Controls.instance = new Controls();
 		ClientPrefs.loadDefaultKeys();
 		addChild(new FlxGame(game.width, game.height, #if COPYSTATE_ALLOWED !CopyState.checkExistingFiles() ? CopyState : #end game.initialState, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate, game.skipSplash, game.startFullscreen));
-
-		#if !mobile
-		fpsVar = new FPSCounter(10, 3, 0xFFFFFF);
-		addChild(fpsVar);
-		Lib.current.stage.align = "tl";
-		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
-		if(fpsVar != null) {
-			fpsVar.visible = ClientPrefs.data.showFPS;
-		}
-		#end
 
 		#if android
 		FlxG.android.preventDefaultKeys = [BACK];
