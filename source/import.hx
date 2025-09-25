@@ -19,8 +19,6 @@ import flxanimate.FlxAnimate;
 #end
 
 #if mobile
-import mobile.objects.MobileControls;
-import mobile.objects.IMobileControls;
 import mobile.objects.Hitbox;
 import mobile.objects.TouchPad;
 import mobile.objects.TouchButton;
