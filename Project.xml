@@ -199,8 +199,6 @@
 	<!-- Allow Access to Engine Files in mobile -->
 	<haxedef name="SHARE_MOBILE_FILES" if="mobile" />
 
-	<config:android minimum-sdk-version="27" />
-
 	<!-- <haxedef name="message.reporting" value="pretty" /> -->
 	<haxedef name='no-deprecation-warnings' />
 
@@ -221,7 +219,6 @@
 		<haxeflag name="--macro" value="addGlobalMetadata('objects', '@:build(online.backend.MonitorMacro.build())')" />
 		<haxeflag name="--macro" value="addGlobalMetadata('psychlua', '@:build(online.backend.MonitorMacro.build())')" />
 		<haxeflag name="--macro" value="addGlobalMetadata('llua', '@:build(online.backend.MonitorMacro.build())')" />
-		<haxeflag name="--macro" value="addGlobalMetadata('mobile', '@:build(online.backend.MonitorMacro.build())')" if="mobile" />
 	</section>
 
 
