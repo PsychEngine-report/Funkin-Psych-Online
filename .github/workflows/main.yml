@@ -154,14 +154,13 @@ jobs:
   #     # Runs a set of commands using the runners shell
      - name: Install Haxelib
        run: |
+            haxelib git extension-androidtools "https://github.com/MAJigsaw77/extension-androidtools" --quiet
             haxelib setup ~/haxelib
             haxelib git hxcpp https://github.com/kittycathy233/hxcpp --quiet
             haxelib git lime https://github.com/Ethantobot11/lime2 --quiet
             haxelib set hxcpp git
             haxelib set lime git
-            haxelib git extension-androidtools "https://github.com/MAJigsaw77/extension-androidtools" --quiet
             haxelib install openfl 9.3.3 --quiet
-            haxelib set openfl 9.3.3
             haxelib install flixel 5.8.0 --quiet
             haxelib set flixel 5.8.0
             haxelib install flixel-addons 3.3.2 --quiet
@@ -195,7 +194,7 @@ jobs:
        run: |
             haxelib run lime config ANDROID_SDK $ANDROID_HOME
             haxelib run lime config ANDROID_NDK_ROOT ${{steps.setup-ndk.outputs.ndk-path}}
-            haxelib run lime config JAVA_HOME $JAVA_HOME_17_arm64
+            haxelib run lime config JAVA_HOME $JAVA_HOME
             haxelib run lime config ANDROID_SETUP true
      - name: Clean Android build
        run: haxelib run lime clean android
