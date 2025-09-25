@@ -135,7 +135,7 @@ jobs:
           path: export/release/macos/bin
   buildAndroid:
   #   # The type of runner that the job will run on
-    runs-on: macos-15
+    runs-on: ubuntu-22.04
     permissions: write-all
 
   #   # Steps represent a sequence of tasks that will be executed as part of the job
@@ -151,7 +151,7 @@ jobs:
        uses: actions/setup-java@v2
        with:
          distribution: 'temurin'
-         java-version: '17'
+         java-version: '11'
 
      - name: Setup Android NDK
        uses: nttld/setup-ndk@v1
@@ -172,10 +172,10 @@ jobs:
        run: |
             haxelib setup ~/haxelib
             haxelib git hxcpp https://github.com/kittycathy233/hxcpp --quiet
-            haxelib git lime https://github.com/Ethantobot11/lime-for-psych-online-android --quiet
+            haxelib git lime https://github.com/Ethantobot11/lime2 --quiet
             haxelib set hxcpp git
             haxelib set lime git
-            haxelib git extension-androidtools "https://github.com/MAJigsaw77/extension-androidtools" --quiet
+            haxelib git extension-androidtools "https://github.com/MAJigsaw77/extension-androidtools" --quiet --skip-dependencies
             haxelib install openfl 9.3.3 --quiet
             haxelib set openfl 9.3.3
             haxelib install flixel 5.8.0 --quiet
@@ -208,7 +208,7 @@ jobs:
             haxelib install yagp 1.1.4 --quiet
   #         no hmm cuz pc/linux/mac would be like "Android things? no *trow error*"
      - name: config android ig
-       if: runner.os == 'macos'
+       if: runner.os == 'Ubuntu'
        run: |
             haxelib run lime config ANDROID_SDK $ANDROID_HOME
             haxelib run lime config ANDROID_NDK_ROOT ${{steps.setup-ndk.outputs.ndk-path}}
@@ -255,7 +255,7 @@ jobs:
             haxelib git lime https://github.com/Ethantobot11/lime2 --quiet
             haxelib set hxcpp git
             haxelib set lime git
-            haxelib install openfl 9.4.1 --quiet
+            haxelib install openfl 9.3.3 --quiet
             haxelib install flixel 5.8.0 --quiet
             haxelib set flixel 5.8.0
             haxelib install flixel-addons 3.3.2 --quiet
@@ -301,16 +301,6 @@ jobs:
        with:
             name: iOSBuild
             path: "export/release/ios/build/Release-iphoneos/PsychEngine.ipa"
-     - name: Uploading new cache
-       uses: actions/cache@v4
-       with:
-          # caching again since for some reason it doesnt work with the first post cache shit ?????????
-          key: cache-build-ios
-          path: |
-            .haxelib/
-            export/release/ios/PsychEngine/haxe/
-          restore-keys: |
-            cache-build-ios
   release:
     if: github.ref_type == 'tag'
     needs:
