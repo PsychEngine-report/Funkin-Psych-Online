@@ -863,13 +863,6 @@ class PlayState extends MusicBeatState
 		});
 		#end
 
-		#if mobile
-		addMobileControls();
-		mobileControls.instance.visible = true;
-		mobileControls.onButtonDown.add(onButtonPress);
-		mobileControls.onButtonUp.add(onButtonRelease);
-        #end
-
 		// STAGE SCRIPTS
 		#if LUA_ALLOWED
 		preloadTasks.push(() -> {
@@ -6345,7 +6338,7 @@ class PlayState extends MusicBeatState
 		if(!variables.exists("luaTouchPad"))
 			variables.set("luaTouchPad", luaTouchPad);
 
-		luaTouchPad = new TouchPad(DPadMode, ActionMode, NONE);
+		luaTouchPad = new TouchPad(DPadMode, ActionMode);
 		luaTouchPad.alpha = ClientPrefs.data.controlsAlpha;
 	}
 	
@@ -6375,7 +6368,7 @@ class PlayState extends MusicBeatState
 			if(Std.isOfType(button, String))
 				return luaTouchPad.buttonPressed(MobileInputID.fromString(button));
 			else if(Std.isOfType(button, Array)){
-				var FUCK:Array<String> = button; // haxe said "You Can't Iterate On A Dyanmic Value Please Specificy Iterator or Iterable *insert nerd emoji*" so that's the only i foud to fix
+				var FUCK:Array<String> = button;
 				var idArray:Array<MobileInputID> = [];
 				for(strId in FUCK)
 					idArray.push(MobileInputID.fromString(strId));
@@ -6421,7 +6414,7 @@ class PlayState extends MusicBeatState
 	public function luaTouchPadReleased(button:Dynamic):Bool {
 		if(luaTouchPad != null) {
 			if(Std.isOfType(button, String))
-				return luaTouchPad.buttonJustReleased(MobileInputID.fromString(button));
+				return luaTouchPad.buttonReleased(MobileInputID.fromString(button));
 			else if(Std.isOfType(button, Array)){
 				var FUCK:Array<String> = button;
 				var idArray:Array<MobileInputID> = [];
