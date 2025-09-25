@@ -84,7 +84,7 @@ class MobileFunctions
 		Lua_helper.add_callback(lua, "vibrate", (?duration:Int, ?period:Int) ->
 		{
 			if (duration == null)
-				return FunkinLua.luaTrace('vibrate: No duration specified.');
+				return funk.luaTrace('vibrate: No duration specified.');
 			else if (period == null)
 				period = 0;
 			return Haptic.vibrate(period, duration);
@@ -163,7 +163,7 @@ class MobileFunctions
 			var cam:FlxCamera = LuaUtils.cameraFromString(camera);
 			if (obj == null)
 			{
-				FunkinLua.luaTrace('touchPressedObject: $object does not exist.');
+				funk.luaTrace('touchPressedObject: $object does not exist.');
 				return false;
 			}
 			return TouchUtil.overlaps(obj, cam) && TouchUtil.pressed;
@@ -175,7 +175,7 @@ class MobileFunctions
 			var cam:FlxCamera = LuaUtils.cameraFromString(camera);
 			if (obj == null)
 			{
-				FunkinLua.luaTrace('touchJustPressedObject: $object does not exist.');
+				funk.luaTrace('touchJustPressedObject: $object does not exist.');
 				return false;
 			}
 			return TouchUtil.overlaps(obj, cam) && TouchUtil.justPressed;
@@ -187,7 +187,7 @@ class MobileFunctions
 			var cam:FlxCamera = LuaUtils.cameraFromString(camera);
 			if (obj == null)
 			{
-				FunkinLua.luaTrace('touchJustReleasedObject: $object does not exist.');
+				funk.luaTrace('touchJustReleasedObject: $object does not exist.');
 				return false;
 			}
 			return TouchUtil.overlaps(obj, cam) && TouchUtil.justReleased;
@@ -199,7 +199,7 @@ class MobileFunctions
 			var cam:FlxCamera = LuaUtils.cameraFromString(camera);
 			if (obj == null)
 			{
-				FunkinLua.luaTrace('touchReleasedObject: $object does not exist.');
+				funk.luaTrace('touchReleasedObject: $object does not exist.');
 				return false;
 			}
 			return TouchUtil.overlaps(obj, cam) && TouchUtil.released;
@@ -211,7 +211,7 @@ class MobileFunctions
 			var cam:FlxCamera = LuaUtils.cameraFromString(camera);
 			if (obj == null)
 			{
-				FunkinLua.luaTrace('touchPressedObjectComplex: $object does not exist.');
+				funk.luaTrace('touchPressedObjectComplex: $object does not exist.');
 				return false;
 			}
 			return TouchUtil.overlapsComplex(obj, cam) && TouchUtil.pressed;
@@ -223,7 +223,7 @@ class MobileFunctions
 			var cam:FlxCamera = LuaUtils.cameraFromString(camera);
 			if (obj == null)
 			{
-				FunkinLua.luaTrace('touchJustPressedObjectComplex: $object does not exist.');
+				funk.luaTrace('touchJustPressedObjectComplex: $object does not exist.');
 				return false;
 			}
 			return TouchUtil.overlapsComplex(obj, cam) && TouchUtil.justPressed;
@@ -235,7 +235,7 @@ class MobileFunctions
 			var cam:FlxCamera = LuaUtils.cameraFromString(camera);
 			if (obj == null)
 			{
-				FunkinLua.luaTrace('touchJustReleasedObjectComplex: $object does not exist.');
+				funk.luaTrace('touchJustReleasedObjectComplex: $object does not exist.');
 				return false;
 			}
 			return TouchUtil.overlapsComplex(obj, cam) && TouchUtil.justReleased;
@@ -247,7 +247,7 @@ class MobileFunctions
 			var cam:FlxCamera = LuaUtils.cameraFromString(camera);
 			if (obj == null)
 			{
-				FunkinLua.luaTrace('touchReleasedObjectComplex: $object does not exist.');
+				funk.luaTrace('touchReleasedObjectComplex: $object does not exist.');
 				return false;
 			}
 			return TouchUtil.overlapsComplex(obj, cam) && TouchUtil.released;
@@ -259,7 +259,7 @@ class MobileFunctions
 			var cam:FlxCamera = LuaUtils.cameraFromString(camera);
 			if (obj == null)
 			{
-				FunkinLua.luaTrace('touchOverlapsObject: $object does not exist.');
+				funk.luaTrace('touchOverlapsObject: $object does not exist.');
 				return false;
 			}
 			return TouchUtil.overlaps(obj, cam);
@@ -271,7 +271,7 @@ class MobileFunctions
 			var cam:FlxCamera = LuaUtils.cameraFromString(camera);
 			if (obj == null)
 			{
-				FunkinLua.luaTrace('touchOverlapsObjectComplex: $object does not exist.');
+				funk.luaTrace('touchOverlapsObjectComplex: $object does not exist.');
 				return false;
 			}
 			return TouchUtil.overlapsComplex(obj, cam);
@@ -345,9 +345,9 @@ class AndroidFunctions
 		Lua_helper.add_callback(lua, "showToast", function(text:String, ?duration:Int, ?xOffset:Int, ?yOffset:Int) /* , ?gravity:Int*/
 		{
 			if (text == null)
-				return FunkinLua.luaTrace('showToast: No text specified.');
+				return funk.luaTrace('showToast: No text specified.');
 			else if (duration == null)
-				return FunkinLua.luaTrace('showToast: No duration specified.');
+				return funk.luaTrace('showToast: No duration specified.');
 
 			if (xOffset == null)
 				xOffset = 0;
@@ -364,7 +364,7 @@ class AndroidFunctions
 		Lua_helper.add_callback(lua, "clipboardSetText", function(?text:String):Void
 		{
 			if (text != null)
-				return FunkinLua.luaTrace('clipboardSetText: No text specified.');
+				return funk.luaTrace('clipboardSetText: No text specified.');
 			PsychJNI.clipboardSetText(text);
 		});
 
