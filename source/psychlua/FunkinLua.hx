@@ -1506,11 +1506,11 @@ class FunkinLua {
 			if(resultStr != null && result != 0) {
 				if (ClientPrefs.isDebug()) {
 					Sys.println('Lua (${scriptName}): ' + resultStr);
-					#if desktop
-					lime.app.Application.current.window.alert(resultStr, 'Error on lua script!');
-					#else
-					luaTrace('$scriptName\n$resultStr', true, false, FlxColor.RED);
-					#end
+					#if (windows || mobile || js || wasm)
+				    CoolUtil.showPopUp(resultStr, 'Error on lua script!');
+				    #else
+				    luaTrace('$scriptName\n$resultStr', true, false, FlxColor.RED);
+				    #end
 				}
 				lua = null;
 				return;
@@ -1631,8 +1631,6 @@ class FunkinLua {
 		return 'ios';
 		#elseif switch
 		return 'switch';
-		#elseif mobile
-		return 'android,ios';
 		#else
 		return 'unknown';
 		#end
