@@ -28,24 +28,23 @@ package mobile.backend;
  */
 class StorageUtil
 {
-	#if sys
+    #if sys
 	public static function getStorageDirectory():String
 		return #if android haxe.io.Path.addTrailingSlash(AndroidContext.getExternalFilesDir()) #elseif ios lime.system.System.documentsDirectory #else Sys.getCwd() #end;
-
+			
 	public static function saveContent(fileName:String, fileData:String, ?alert:Bool = true):Void
 	{
 		final folder:String = #if android StorageUtil.getExternalStorageDirectory() + #else Sys.getCwd() + #end 'saves/';
-
 		try
 		{
-			if (!FileSystem.exists(folder))
-				FileSystem.createDirectory(folder);
+			if (!FileSystem.exists('saves'))
+				FileSystem.createDirectory('saves');
 
-			File.saveContent('$folder$fileName', fileData);
+			File.saveContent('saves/$fileName', fileData);
 			if (alert)
 				CoolUtil.showPopUp('$fileName has been saved.', "Success!");
 		}
-		catch (e:Dynamic)
+		catch (e:Exception)
 			if (alert)
 				CoolUtil.showPopUp('$fileName couldn\'t be saved.\n(${e.message})', "Error!")
 			else
@@ -55,7 +54,7 @@ class StorageUtil
 	#if android
 	// always force path due to haxe
 	public static function getExternalStorageDirectory():String
-		return '/sdcard/.PsychOnline/';
+		return '/storage/emulated/0/.PsychOnline/';
 
 	public static function requestPermissions():Void
 	{
