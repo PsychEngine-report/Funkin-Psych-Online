@@ -291,7 +291,6 @@ jobs:
             name: iOSBuild
             path: "export/release/ios/build/Release-iphoneos/PsychEngine.ipa"
   release:
-    if: github.ref_type == 'tag'
     needs:
       - buildLinux
       - buildMac
