@@ -44,7 +44,6 @@ class StorageUtil
 			if (alert)
 				CoolUtil.showPopUp('$fileName has been saved.', "Success!");
 		}
-		catch (e:Exception)
 			if (alert)
 				CoolUtil.showPopUp('$fileName couldn\'t be saved.\n(${e.message})', "Error!")
 			else
