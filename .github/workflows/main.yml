@@ -321,7 +321,7 @@ jobs:
         zip -r linuxBuild.zip linuxBuild/
         zip -r macBuild.zip macBuild/
         zip -r androidBuild.zip androidBuild/
-        zip -r iosBuild.zip . -i iosBuild/
+        zip -r /home/runner/PsychEngine-iOS.zip ${{ github.workspace }}/PsychEngine.ipa
 
     - name: Upload Windows build to the release
       uses: actions/upload-release-asset@v1.0.1
