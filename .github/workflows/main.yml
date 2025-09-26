@@ -299,6 +299,7 @@ jobs:
       - buildiOS
     
     runs-on: ubuntu-latest
+    permissions: write-all
 
     steps:
     - name: Create Draft Release
