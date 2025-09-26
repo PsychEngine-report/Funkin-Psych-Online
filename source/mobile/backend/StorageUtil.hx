@@ -1,33 +1,51 @@
+/*
+ * Copyright (C) 2025 Mobile Porting Team
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+
 package mobile.backend;
 
-import lime.system.System;
-import haxe.io.Path;
-import haxe.Exception;
-
-#if sys
-import sys.FileSystem;
-import sys.io.File;
-#end
-
+/**
+ * A storage class for mobile.
+ * @author Karim Akra and Homura Akemi (HomuHomu833)
+ */
 class StorageUtil
 {
-    #if sys
+	#if sys
 	public static function getStorageDirectory():String
 		return #if android haxe.io.Path.addTrailingSlash(AndroidContext.getExternalFilesDir()) #elseif ios lime.system.System.documentsDirectory #else Sys.getCwd() #end;
-			
+
 	public static function saveContent(fileName:String, fileData:String, ?alert:Bool = true):Void
 	{
 		final folder:String = #if android StorageUtil.getExternalStorageDirectory() + #else Sys.getCwd() + #end 'saves/';
+
 		try
 		{
-			if (!FileSystem.exists('saves'))
-				FileSystem.createDirectory('saves');
+			if (!FileSystem.exists(folder))
+				FileSystem.createDirectory(folder);
 
-			File.saveContent('saves/$fileName', fileData);
+			File.saveContent('$folder$fileName', fileData);
 			if (alert)
 				CoolUtil.showPopUp('$fileName has been saved.', "Success!");
 		}
-		catch (e:Exception)
+		catch (e:Dynamic)
 			if (alert)
 				CoolUtil.showPopUp('$fileName couldn\'t be saved.\n(${e.message})', "Error!")
 			else
@@ -37,7 +55,7 @@ class StorageUtil
 	#if android
 	// always force path due to haxe
 	public static function getExternalStorageDirectory():String
-		return '/storage/emulated/0/.PsychOnline/';
+		return '/sdcard/.PsychOnline/';
 
 	public static function requestPermissions():Void
 	{
