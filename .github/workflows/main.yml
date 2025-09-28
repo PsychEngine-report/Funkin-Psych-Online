@@ -33,17 +33,14 @@ jobs:
         with:
           haxe-version: 4.3.7
 
-      - name: Restore existing build cache for faster compilation
+      - name: Retrieve Cache
+        id: cache-linux
         uses: actions/cache@v4
         with:
-          # not caching the bin folder to prevent asset duplication and stuff like that
-          key: cache-build-linux
           path: |
-            .haxelib/
+            !export/release/linux/bin/**
             export/release/linux/haxe/
-            export/release/linux/obj/
-          restore-keys: |
-            cache-build-linux
+          key: ${{ runner.os }}-build-cache
 
       # Runs a set of commands using the runners shell
       - name: Install Haxelib
@@ -86,17 +83,14 @@ jobs:
         with:
           haxe-version: 4.3.7
 
-      - name: Restore existing build cache for faster compilation
+      - name: Retrieve Cache
+        id: cache-linux
         uses: actions/cache@v4
         with:
-          # not caching the bin folder to prevent asset duplication and stuff like that
-          key: cache-build-windows
           path: |
-            .haxelib/
+            !export/release/windows/bin/**
             export/release/windows/haxe/
-            export/release/windows/obj/
-          restore-keys: |
-            cache-build-windows
+          key: ${{ runner.os }}-build-cache
 
       # Runs a set of commands using the runners shell
       - name: Install Haxelib
@@ -137,17 +131,14 @@ jobs:
         with:
           haxe-version: 4.3.7
 
-      - name: Restore existing build cache for faster compilation
+      - name: Retrieve Cache
+        id: cache-linux
         uses: actions/cache@v4
         with:
-          # not caching the bin folder to prevent asset duplication and stuff like that
-          key: cache-build-macos
           path: |
-            .haxelib/
+            !export/release/macos/bin/**
             export/release/macos/haxe/
-            export/release/macos/obj/
-          restore-keys: |
-            cache-build-macos
+          key: ${{ runner.os }}-build-cache
 
       # Runs a set of commands using the runners shell
       - name: Install Haxelib
