@@ -33,14 +33,17 @@ jobs:
         with:
           haxe-version: 4.3.7
 
-      - name: Retrieve Cache
-        id: cache-linux
+      - name: Restore existing build cache for faster compilation
         uses: actions/cache@v4
         with:
+          # not caching the bin folder to prevent asset duplication and stuff like that
+          key: cache-build-linux
           path: |
-            export/release/linux/**
-            !export/release/linux/bin/**
-          key: ${{ runner.os }}-build-cache
+            .haxelib/
+            export/release/linux/haxe/
+            export/release/linux/obj/
+          restore-keys: |
+            cache-build-linux
 
       # Runs a set of commands using the runners shell
       - name: Install Haxelib
@@ -71,14 +74,17 @@ jobs:
         with:
           haxe-version: 4.3.7
 
-      - name: Retrieve Cache
-        id: cache-windows
+      - name: Restore existing build cache for faster compilation
         uses: actions/cache@v4
         with:
+          # not caching the bin folder to prevent asset duplication and stuff like that
+          key: cache-build-windows
           path: |
-            export/release/windows/**
-            !export/release/windows/bin/**
-          key: ${{ runner.os }}-build-cache
+            .haxelib/
+            export/release/windows/haxe/
+            export/release/windows/obj/
+          restore-keys: |
+            cache-build-windows
 
       # Runs a set of commands using the runners shell
       - name: Install Haxelib
@@ -108,14 +114,17 @@ jobs:
         with:
           haxe-version: 4.3.7
 
-      - name: Retrieve Cache
-        id: cache-macos
+      - name: Restore existing build cache for faster compilation
         uses: actions/cache@v4
         with:
+          # not caching the bin folder to prevent asset duplication and stuff like that
+          key: cache-build-macos
           path: |
-            export/release/macos/**
-            !export/release/macos/bin/**
-          key: ${{ runner.os }}-build-cache
+            .haxelib/
+            export/release/macos/haxe/
+            export/release/macos/obj/
+          restore-keys: |
+            cache-build-macos
 
       # Runs a set of commands using the runners shell
       - name: Install Haxelib
@@ -147,13 +156,17 @@ jobs:
        with:
           haxe-version: 4.3.7
 
-     - name: Retrieve Cache
+     - name: Restore existing build cache for faster compilation
        uses: actions/cache@v4
        with:
-           path: |
-             export/release/android/haxe
-             export/release/android/obj
-           key: ${{ runner.os }}-cache
+          # not caching the bin folder to prevent asset duplication and stuff like that
+          key: cache-build-android
+          path: |
+            .haxelib/
+            export/release/android/haxe/
+            export/release/android/obj/
+          restore-keys: |
+            cache-build-android
       
   #     # Runs a set of commands using the runners shell
      - name: Install Haxelib
@@ -227,13 +240,17 @@ jobs:
      - uses: krdlab/setup-haxe@master
        with:
             haxe-version: 4.3.7
-     - name: Retrieve Cache
+     - name: Restore existing build cache for faster compilation
        uses: actions/cache@v4
        with:
-         path: |
-              export/release/ios/PsychEngine/haxe
-              export/release/ios/PsychEngine/obj
-         key: ${{ runner.os }}-cache
+          # not caching the bin folder to prevent asset duplication and stuff like that
+          key: cache-build-ios
+          path: |
+            .haxelib/
+            export/release/ios/PsychEngine/haxe/
+            export/release/ios/PsychEngine/obj/
+          restore-keys: |
+            cache-build-ios
   #     # Runs a set of commands using the runners shell
      - name: Install Haxelib
        run: |
