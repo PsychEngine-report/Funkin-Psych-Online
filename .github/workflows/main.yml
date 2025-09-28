@@ -370,7 +370,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: iosBuild.zip
-        asset_name: iosBuild.zip
+        asset_path: iOSBuild.zip
+        asset_name: iOSBuild.zip
         asset_content_type: application/zip
         
