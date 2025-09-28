@@ -54,25 +54,6 @@ jobs:
           haxelib install hxcpp > /dev/null --quiet
           haxelib install hmm --quiet
           haxelib run hmm install
-      - name: Clearing already existing cache
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const caches = await github.rest.actions.getActionsCacheList({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-            })
-            for (const cache of caches.data.actions_caches) {
-              if (cache.key == "cache-build-linux") {
-                console.log('Clearing ' + cache.key + '...')
-                await github.rest.actions.deleteActionsCacheById({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  cache_id: cache.id,
-                })
-                console.log("Cache cleared.")
-              }
-            }
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
       - name: Compile
@@ -125,25 +106,6 @@ jobs:
           haxelib install hmm --quiet
           haxelib run hmm install
         shell: cmd
-      - name: Clearing already existing cache
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const caches = await github.rest.actions.getActionsCacheList({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-            })
-            for (const cache of caches.data.actions_caches) {
-              if (cache.key == "cache-build-windows") {
-                console.log('Clearing ' + cache.key + '...')
-                await github.rest.actions.deleteActionsCacheById({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  cache_id: cache.id,
-                })
-                console.log("Cache cleared.")
-              }
-            }
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
       - name: Compile
@@ -194,25 +156,6 @@ jobs:
           haxelib install hxcpp > /dev/null --quiet
           haxelib install hmm --quiet
           haxelib run hmm install
-      - name: Clearing already existing cache
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const caches = await github.rest.actions.getActionsCacheList({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-            })
-            for (const cache of caches.data.actions_caches) {
-              if (cache.key == "cache-build-macos") {
-                console.log('Clearing ' + cache.key + '...')
-                await github.rest.actions.deleteActionsCacheById({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  cache_id: cache.id,
-                })
-                console.log("Cache cleared.")
-              }
-            }
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
       - name: Compile
