@@ -430,7 +430,7 @@ jobs:
       with:
         name: "Psych Online Mobile test)"
         tag_name: "release-${{ needs.get-commit-hash.outputs.commit_hash }}"
-        prelatest: true
+        prerelease: true
         files: |
          windowsBuild.zip
          linuxBuild.zip
