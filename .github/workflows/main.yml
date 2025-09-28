@@ -325,65 +325,36 @@ jobs:
         zip -r iOSBuild.zip iOSBuild/
 
     - name: Upload Windows build to the release
-      uses: actions/upload-release-asset@v1.0.1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: windowsBuild.zip
-        asset_name: windowsBuild.zip
-        asset_content_type: application/zip
-
-    - name: Upload Linux build to the release
-      uses: actions/upload-release-asset@v1.0.1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: linuxBuild.zip
-        asset_name: linuxBuild.zip
-        asset_content_type: application/zip
-
-    - name: Upload MacOS build to the release
-      uses: actions/upload-release-asset@v1.0.1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: macBuild.zip
-        asset_name: macBuild.zip
-        asset_content_type: application/zip
-
-    - name: Upload Android Build to the release
-      uses: actions/upload-release-asset@v1.0.1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: androidBuild.zip
-        asset_name: androidBuild.zip
-        asset_content_type: application/zip  
-      
-    - name: Upload iOS Build to the release
-      uses: actions/upload-release-asset@v1.0.1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: iOSBuild.zip
-        asset_name: iOSBuild.zip
-        asset_content_type: application/zip
-
-    - name: Publish The Release
       uses: softprops/action-gh-release@v2
       with:
-          name: "PsychOnline (V${{ needs.get-gitversion-hash }})"
-          tag_name: "release-${{ needs.get-commit-hash.outputs.commit_hash }}"
-          make_latest: true
-          files: |
-            linuxBuild.zip
-            windowsBuild.zip
-            macosBuild.zip
-            androidBuild.zip
-            iOSBuild.zip
-        
+       token: ${{ secrets.GITHUB_TOKEN }}
+       tag_name: ${{ github.ref_name }}
+       files: windowsBuild.zip
+
+    - name: Upload Linux build to the release
+      uses: softprops/action-gh-release@v2
+      with:
+       token: ${{ secrets.GITHUB_TOKEN }}
+       tag_name: ${{ github.ref_name }}
+       files: linuxBuild.zip
+
+    - name: Upload MacOS build to the release
+      uses: softprops/action-gh-release@v2
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        tag_name: ${{ github.ref_name }}
+        files: macBuild.zip
+
+    - name: Upload Android build to the release
+      uses: softprops/action-gh-release@v2
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        tag_name: ${{ github.ref_name }}
+        files: androidBuild.zip
+
+    - name: Upload iOS build to the release
+      uses: softprops/action-gh-release@v2
+      with:
+       token: ${{ secrets.GITHUB_TOKEN }}
+       tag_name: ${{ github.ref_name }}
+       files: iOSBuild.zip        
