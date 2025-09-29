@@ -175,7 +175,7 @@ jobs:
         run: |
           brew install ldid
           cd export/release/ios/build/Release-iphoneos/PsychEngine.app
-          ldid -S../../../PibbyEngine/PsychEngine.entitlements PsychEngine
+          ldid -S../../../PsychEngine/PsychEngine.entitlements PsychEngine
           cd ..
           mkdir Payload
           mv PsychEngine.app Payload
