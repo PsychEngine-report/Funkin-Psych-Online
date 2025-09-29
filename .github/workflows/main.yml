@@ -312,6 +312,11 @@ jobs:
          path: 'export/release/android/bin/app/build/outputs/apk/release/*.apk'
   # smh: code signing shit
   buildiOS:
+    name: ${{ matrix.name }}
+    strategy:
+      matrix:
+        include:
+          - name: iOS
     runs-on: macos-15
     permissions: write-all
 
