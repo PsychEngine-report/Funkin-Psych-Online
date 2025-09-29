@@ -9,7 +9,6 @@ import states.MainMenuState;
 import externs.WinAPI;
 import haxe.Exception;
 import flixel.graphics.FlxGraphic;
-import haxe.io.Path;
 import flixel.FlxGame;
 import flixel.FlxState;
 import openfl.Assets;
@@ -19,7 +18,6 @@ import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.display.StageScaleMode;
 import lime.app.Application;
-import lime.system.System as LimeSystem;
 import states.TitleState;
 #if COPYSTATE_ALLOWED
 import states.CopyState;
@@ -195,6 +193,7 @@ class Main extends Sprite
 		ClientPrefs.loadDefaultKeys();
 		addChild(new FlxGame(game.width, game.height, #if COPYSTATE_ALLOWED !CopyState.checkExistingFiles() ? CopyState : #end game.initialState, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate, game.skipSplash, game.startFullscreen));
 
+		#if !mobile
 		fpsVar = new FPS(10, 3, 0xFFFFFF);
 		addChild(fpsVar);
 		Lib.current.stage.align = "tl";
@@ -202,13 +201,14 @@ class Main extends Sprite
 		if(fpsVar != null) {
 			fpsVar.visible = ClientPrefs.data.showFPS;
 		}
+		#end
 		
 		#if android
 		FlxG.android.preventDefaultKeys = [BACK];
 		#end
 
 		#if mobile
-		LimeSystem.allowScreenTimeout = ClientPrefs.data.screensaver;
+		lime.system.System.allowScreenTimeout = ClientPrefs.data.screensaver; 		
 		FlxG.scaleMode = new MobileScaleMode();
 		#end
 
