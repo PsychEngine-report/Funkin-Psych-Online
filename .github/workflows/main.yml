@@ -317,7 +317,7 @@ jobs:
       matrix:
         include:
           - name: iOS
-    runs-on: macos-15
+    runs-on: macos-13
     permissions: write-all
 
     steps:
