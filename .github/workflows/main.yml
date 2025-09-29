@@ -27,8 +27,8 @@ jobs:
       - name: Check Repository
         run: |
           echo "GITHUB_REPOSITORY: $GITHUB_REPOSITORY"
-          echo "REPO_PATH: https://github.com/PsychEngine-report/Funkin-Psych-Online"
-          if [[ "$GITHUB_REPOSITORY" != "https://github.com/PsychEngine-report/Funkin-Psych-Online" ]]; then
+          echo "REPO_PATH: PsychEngine-report/Funkin-Psych-Online"
+          if [[ "$GITHUB_REPOSITORY" != "PsychEngine-report/Funkin-Psych-Online" ]]; then
             echo "Doesn't seem to be correct, returning SIGABRT..."
             exit 6
           else
