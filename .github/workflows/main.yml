@@ -437,12 +437,17 @@ jobs:
         zip -r macBuild.zip macBuild/
         zip -r androidBuild.zip androidBuild/
         zip -r iOSBuild.zip iOSBuild/
+    - name: Create temporary tag
+      run: git tag release-${GITHUB_RUN_NUMBER}
+  
+    - name: Push tag
+      run: git push origin release-${GITHUB_RUN_NUMBER}
 
     - name: Upload all builds to the release
       uses: softprops/action-gh-release@v2
       with:
-        name: "Psych Online Mobile test)"
-        tag_name: "release-${{ needs.get-commit-hash.outputs.commit_hash }}"
+        name: "Psych Online Mobile test"
+        tag_name: "release-${GITHUB_RUN_NUMBER}"
         prerelease: true
         files: |
          windowsBuild.zip
