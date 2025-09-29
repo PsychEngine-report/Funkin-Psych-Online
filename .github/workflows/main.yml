@@ -83,10 +83,10 @@ jobs:
           name: linuxBuild
           path: 'export/release/linux/bin'
 
-      - name: Restore existing build cache for faster compilation
+      - name: Uploading new cache
         uses: actions/cache@v4
         with:
-          # not caching the bin folder to prevent asset duplication and stuff like that
+          # caching again since for some reason it doesnt work with the first post cache shit
           key: cache-build-linux
           path: |
             .haxelib/
@@ -131,10 +131,10 @@ jobs:
         with:
           name: windowsBuild
           path: export/release/windows/bin
-      - name: I
+      - name: Uploading new cache
         uses: actions/cache@v4
         with:
-          # not caching the bin folder to prevent asset duplication and stuff like that
+          # caching again since for some reason it doesnt work with the first post cache shit
           key: cache-build-windows
           path: |
             .haxelib/
@@ -178,10 +178,10 @@ jobs:
         with:
           name: macBuild
           path: export/release/macos/bin
-      - name: Restore existing build cache for faster compilation
+      - name: Uploading new cache
         uses: actions/cache@v4
         with:
-          # not caching the bin folder to prevent asset duplication and stuff like that
+          # caching again since for some reason it doesnt work with the first post cache shit
           key: cache-build-macos
           path: |
             .haxelib/
@@ -272,10 +272,10 @@ jobs:
                 console.log("Cache cleared.")
               }
             }
-     - name: Restore existing build cache for faster compilation
+     - name: Uploading new cache
        uses: actions/cache@v4
        with:
-          # not caching the bin folder to prevent asset duplication and stuff like that
+          # caching again since for some reason it doesnt work with the first post cache shit
           key: cache-build-android
           path: |
             .haxelib/
@@ -403,15 +403,15 @@ jobs:
        with:
             name: iOSBuild
             path: "export/release/ios/build/Release-iphoneos/PsychEngine.ipa"
-     - name: Restore existing build cache for faster compilation
+     - name: Uploading new cache
+       if: inputs.name == 'iOS'
        uses: actions/cache@v4
        with:
-          # not caching the bin folder to prevent asset duplication and stuff like that
+          # caching again since for some reason it doesnt work with the first post cache shit
           key: cache-build-ios
           path: |
             .haxelib/
             export/release/ios/PsychEngine/haxe/
-            export/release/ios/PsychEngine/obj/
           restore-keys: |
             cache-build-ios
   release:
