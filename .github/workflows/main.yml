@@ -190,6 +190,11 @@ jobs:
           restore-keys: |
             cache-build-macos
   buildAndroid:
+    name: ${{ matrix.name }}
+    strategy:
+      matrix:
+        include:
+          - name: Android
   #   # The type of runner that the job will run on
     runs-on: ubuntu-22.04
     permissions: write-all
@@ -244,7 +249,7 @@ jobs:
             haxelib git away3d https://github.com/Snirozu/away3d master --quiet
             haxelib install json2object 3.11.0 --quiet
             haxelib install hxjsonast 1.1.0 --quiet
-            haxelib install lumod 2.1.0 --qquiet
+            haxelib install lumod 2.1.0 --quiet
             haxelib install actuate 1.9.0 --quiet
             haxelib install compiletime 2.8.0 --quiet
             haxelib install hxdiscord_rpc --quiet --skip-dependencies
@@ -294,7 +299,7 @@ jobs:
      - name: Create Version Tag
        run: echo "${{github.run_id}}" > VERSION
      - name: Supposed Compile android
-       run: haxelib run lime build Project.xml android -final -clean -Dofficialbuild --app-version="4.0.0-${{ github.run_id}}"
+       run: haxelib run lime build Project.xml android -final -D officialBuild --app-version="4.0.0-${{ github.run_id}}"
      - name: Show generated AndroidManifest.xml
        if: always()
        run: |
@@ -304,10 +309,10 @@ jobs:
        uses: actions/upload-artifact@v4
        with:
          name: androidBuild
-         path: 'export/release/android/bin/app/build/outputs/apk'
+         path: 'export/release/android/bin/app/build/outputs/apk/release/*.apk'
   # smh: code signing shit
   buildiOS:
-    runs-on: macos-13
+    runs-on: macos-15
     permissions: write-all
 
     steps:
@@ -357,7 +362,7 @@ jobs:
             haxelib git away3d https://github.com/Snirozu/away3d master --quiet
             haxelib install json2object 3.11.0 --quiet
             haxelib install hxjsonast 1.1.0 --quiet
-            haxelib install lumod 2.1.0 --qquiet
+            haxelib install lumod 2.1.0 --quiet
             haxelib install actuate 1.9.0 --quiet
             haxelib install compiletime 2.8.0 --quiet
             haxelib install hxdiscord_rpc --quiet --skip-dependencies
@@ -387,9 +392,8 @@ jobs:
      - name: Create Version Tag
        run: echo "${{github.run_id}}" > VERSION
      - name: Compile
-       run: haxelib run lime build Project.xml ios -final -nosign --app-version="4.0.0-${{ github.run_id}}"
+       run: haxelib run lime build Project.xml ios -final -nosign -D officialBuild --app-version="4.0.0-${{ github.run_id}}"
      - name: Make IPA
-       if: runner.os == 'macOS'
        run: |
           brew install ldid
           cd export/release/ios/build/Release-iphoneos/PsychEngine.app
