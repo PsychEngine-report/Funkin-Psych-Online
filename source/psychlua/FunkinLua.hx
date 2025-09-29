@@ -1498,8 +1498,17 @@ class FunkinLua {
 		#if mobile
 		MobileFunctions.implement(this);
 		#if android AndroidFunctions.implement(this); #end
-		#end
 		
+
+		try{
+			var isString:Bool = !FileSystem.exists(scriptName);
+			var result:Dynamic = null;
+			if(!isString)
+				result = LuaL.dofile(lua, scriptName);
+			else
+				result = LuaL.dostring(lua, scriptName);
+		#end
+			
 		try{
 			var result:Dynamic = LuaL.dofile(lua, scriptName);
 			var resultStr:String = Lua.tostring(lua, result);
