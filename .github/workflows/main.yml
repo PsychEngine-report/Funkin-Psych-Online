@@ -19,28 +19,6 @@ on:
   
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  get-commit-hash:
-    runs-on: ubuntu-latest
-    outputs:
-      commit_hash: ${{ steps.get_commit_hash.outputs.COMMIT_HASH }}
-    steps:
-      - name: Check Repository
-        run: |
-          echo "GITHUB_REPOSITORY: $GITHUB_REPOSITORY"
-          echo "REPO_PATH: PsychEngine-report/Funkin-Psych-Online"
-          if [[ "$GITHUB_REPOSITORY" != "PsychEngine-report/Funkin-Psych-Online" ]]; then
-            echo "Doesn't seem to be correct, returning SIGABRT..."
-            exit 6
-          else
-            echo "Seems to be correct..."
-          fi
-
-      - name: Get latest commit hash
-        id: get_commit_hash
-        run: |
-          commit_hash=${GITHUB_SHA::7}
-          echo "Latest commit hash is $commit_hash"
-          echo "::set-output name=COMMIT_HASH::$commit_hash"
   # This workflow contains a single job called "build"
   buildLinux:
     # The type of runner that the job will run on
@@ -120,7 +98,7 @@ jobs:
           name: windowsBuild
           path: export/release/windows/bin
   buildMac:
-    runs-on: macos-14
+    runs-on: macos-latest
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
