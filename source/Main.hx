@@ -524,6 +524,7 @@ class Main extends Sprite
 		online.network.Auth.saveClose();
 		Sys.exit(1);
 	}
+	#end
 
 	public static function getTime():Float {
 		#if flash
@@ -539,7 +540,6 @@ class Main extends Sprite
 		return untyped __global__.__time_stamp() * 1000;
 		#else
 		return 0;
-		#end
 		#end
 	}
 }
