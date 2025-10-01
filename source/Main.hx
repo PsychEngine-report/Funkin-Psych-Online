@@ -102,12 +102,8 @@ class Main extends Sprite
 		}
 		#end
 
-		Lib.current.addChild(view3D = new online.away.View3DHandler());
 		Lib.current.addChild(new Main());
-		#if cpp
-        cpp.NativeGc.enable(true);
-        cpp.NativeGc.run(true);
-        #end
+		Lib.current.addChild(view3D = new online.away.View3DHandler());
 		Lib.current.addChild(new online.gui.sidebar.SideUI());
 		Lib.current.addChild(new online.gui.Alert());
 		Lib.current.addChild(new online.gui.LoadingScreen());
@@ -228,13 +224,15 @@ class Main extends Sprite
 		#else
 		FlxG.keys.preventDefaultKeys = [TAB];
 		#end
-		
+
+		#if desktop
 		//haxe errors caught by openfl
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, (e) -> {
 			onCrash(e.error);
 		});
 		//internal c++ exceptions
 		untyped __global__.__hxcpp_set_critical_error_handler(onCrash);
+		#end
 
 		#if DISCORD_ALLOWED
 		DiscordClient.initialize();
