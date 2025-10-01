@@ -29,15 +29,20 @@ import mobile.backend.MobileScaleMode;
 #if linux
 import lime.graphics.Image;
 #end
+#if mobile
+import haxe.io.Path;
+#end
 
 import sys.FileSystem;
 
 //crash handler stuff
+#if desktop
 import openfl.events.UncaughtErrorEvent;
 import haxe.CallStack;
 import haxe.io.Path;
 import sys.io.File;
 import sys.io.Process;
+#end
 
 class Main extends Sprite
 {
@@ -415,6 +420,7 @@ class Main extends Sprite
 		}
 	}
 
+	#if desktop
 	static function onCrash(exc:Dynamic):Void
 	{
 		trace(" . CRASHED . ");
@@ -533,6 +539,7 @@ class Main extends Sprite
 		return untyped __global__.__time_stamp() * 1000;
 		#else
 		return 0;
+		#end
 		#end
 	}
 }
