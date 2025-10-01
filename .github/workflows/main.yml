@@ -373,7 +373,7 @@ jobs:
       uses: softprops/action-gh-release@v2
       with:
         name: "Psych Online Mobile test"
-        tag_name: "release-BETA 2"
+        tag_name: "release-BETA"
         prerelease: true
         files: |
          windowsBuild.zip
