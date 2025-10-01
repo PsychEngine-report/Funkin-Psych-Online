@@ -29,20 +29,17 @@ import mobile.backend.MobileScaleMode;
 #if linux
 import lime.graphics.Image;
 #end
-#if mobile
-import haxe.io.Path;
-#end
 
 import sys.FileSystem;
 
 //crash handler stuff
-#if desktop
+
 import openfl.events.UncaughtErrorEvent;
 import haxe.CallStack;
 import haxe.io.Path;
 import sys.io.File;
 import sys.io.Process;
-#end
+
 
 class Main extends Sprite
 {
