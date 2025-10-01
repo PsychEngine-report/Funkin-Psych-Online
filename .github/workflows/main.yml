@@ -82,18 +82,6 @@ jobs:
         with:
           name: linuxBuild
           path: 'export/release/linux/bin'
-
-      - name: Uploading new cache
-        uses: actions/cache@v4
-        with:
-          # caching again since for some reason it doesnt work with the first post cache shit
-          key: cache-build-linux
-          path: |
-            .haxelib/
-            export/release/linux/haxe/
-            export/release/linux/obj/
-          restore-keys: |
-            cache-build-linux
   buildWindows:
     runs-on: windows-2022
 
@@ -131,19 +119,8 @@ jobs:
         with:
           name: windowsBuild
           path: export/release/windows/bin
-      - name: Uploading new cache
-        uses: actions/cache@v4
-        with:
-          # caching again since for some reason it doesnt work with the first post cache shit
-          key: cache-build-windows
-          path: |
-            .haxelib/
-            export/release/windows/haxe/
-            export/release/windows/obj/
-          restore-keys: |
-            cache-build-windows
   buildMac:
-    runs-on: macos-15
+    runs-on: macos-14
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -178,17 +155,6 @@ jobs:
         with:
           name: macBuild
           path: export/release/macos/bin
-      - name: Uploading new cache
-        uses: actions/cache@v4
-        with:
-          # caching again since for some reason it doesnt work with the first post cache shit
-          key: cache-build-macos
-          path: |
-            .haxelib/
-            export/release/macos/haxe/
-            export/release/macos/obj/
-          restore-keys: |
-            cache-build-macos
   buildAndroid:
     name: ${{ matrix.name }}
     strategy:
@@ -277,17 +243,6 @@ jobs:
                 console.log("Cache cleared.")
               }
             }
-     - name: Uploading new cache
-       uses: actions/cache@v4
-       with:
-          # caching again since for some reason it doesnt work with the first post cache shit
-          key: cache-build-android
-          path: |
-            .haxelib/
-            export/release/android/haxe/
-            export/release/android/obj/
-          restore-keys: |
-            cache-build-android
      - name: config android ig
        run: |
           haxelib run lime config ANDROID_SDK $ANDROID_HOME
@@ -412,17 +367,6 @@ jobs:
        with:
             name: iOSBuild
             path: "export/release/ios/build/Release-iphoneos/PsychEngine.ipa"
-     - name: Uploading new cache
-       if: inputs.name == 'iOS'
-       uses: actions/cache@v4
-       with:
-          # caching again since for some reason it doesnt work with the first post cache shit
-          key: cache-build-ios
-          path: |
-            .haxelib/
-            export/release/ios/PsychEngine/haxe/
-          restore-keys: |
-            cache-build-ios
   release:
     needs:
       - buildLinux
@@ -451,7 +395,7 @@ jobs:
       uses: softprops/action-gh-release@v2
       with:
         name: "Psych Online Mobile test"
-        tag_name: "release-BETA"
+        tag_name: "release-BETA 2"
         prerelease: true
         files: |
          windowsBuild.zip
