@@ -41,6 +41,7 @@ class Option
 		this.type = type;
 		this.options = options;
 
+		#if desktop
 		if(this.type != 'keybind') this.defaultValue = Reflect.getProperty(ClientPrefs.defaultData, variable);
 		switch(type)
 		{
@@ -85,6 +86,47 @@ class Option
 		}
 		catch(e) {}
 	}
+    #elseif mobile
+	if(defaultValue == 'null variable value')
+		{
+			switch(type)
+			{
+				case 'bool':
+					defaultValue = false;
+				case 'int' | 'float':
+					defaultValue = 0;
+				case 'percent':
+					defaultValue = 1;
+				case 'string':
+					defaultValue = '';
+					if(options.length > 0) {
+						defaultValue = options[0];
+					}
+			}
+		}
+
+		if(getValue() == null) {
+			setValue(defaultValue);
+		}
+
+		switch(type)
+		{
+			case 'string':
+				var num:Int = options.indexOf(getValue());
+				if(num > -1) {
+					curOption = num;
+				}
+	
+			case 'percent':
+				displayFormat = '%v%';
+				changeValue = 0.01;
+				minValue = 0;
+				maxValue = 1;
+				scrollSpeed = 0.5;
+				decimals = 2;
+		}
+	}
+	#end
 
 	public function change()
 	{
@@ -133,7 +175,9 @@ class Option
 		switch(type.toLowerCase().trim())
 		{
 			case 'key', 'keybind': newValue = 'keybind';
+			#if desktop
 			case 'int', 'float', 'percent', 'string': newValue = type;
+			#end
 			case 'integer': newValue = 'int';
 			case 'str': newValue = 'string';
 			case 'fl': newValue = 'float';
