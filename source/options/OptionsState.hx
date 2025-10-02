@@ -118,14 +118,6 @@ class OptionsState extends MusicBeatState
 		if (controls.UI_DOWN_P) {
 			changeSelection(1);
 		}
-
-		#if mobile
-		if (touchPad.buttonC.justPressed || FlxG.keys.justPressed.CONTROL && controls.mobileC)
-		{
-			persistentUpdate = false;
-			openSubState(new mobile.substates.MobileControlSelectSubState());
-		}
-		#end
 		
 		if (FlxG.mouse.deltaScreenY != 0) {
 			for (i => spr in grpOptions) {
