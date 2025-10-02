@@ -30,8 +30,10 @@ class Option
 	public var description:String = '';
 	public var name:String = 'Unknown';
 
+	#if desktop
 	public var defaultKeys:Keybind = null; //Only used in keybind type
 	public var keys:Keybind = null; //Only used in keybind type
+	#end
 
 	public function new(name:String, description:String = '', variable:String, type:String = 'bool', ?options:Array<String> = null)
 	{
@@ -39,6 +41,9 @@ class Option
 		this.description = description;
 		this.variable = variable;
 		this.type = type;
+		#if mobile
+		this.defaultValue = Reflect.getProperty(ClientPrefs.defaultData, variable);
+		#end
 		this.options = options;
 
 		#if desktop
@@ -138,7 +143,9 @@ class Option
 	dynamic public function getValue():Dynamic
 	{
 		var value = Reflect.getProperty(ClientPrefs.data, variable);
+		#if desktop
 		if(type == 'keybind') return !Controls.instance.controllerMode ? value.keyboard : value.gamepad;
+		#end
 		return value;
 	}
 
@@ -147,8 +154,10 @@ class Option
 		if(type == 'keybind')
 		{
 			var keys = Reflect.getProperty(ClientPrefs.data, variable);
+			#if desktop
 			if(!Controls.instance.controllerMode) keys.keyboard = value;
 			else keys.gamepad = value;
+			#end
 			return value;
 		}
 		return Reflect.setProperty(ClientPrefs.data, variable, value);
