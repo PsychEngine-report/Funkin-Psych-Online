@@ -29,6 +29,10 @@ class OptionsState extends MusicBeatState
 				openSubState(new options.GameplaySettingsSubState());
 			case 'Adjust Delay and Combo':
 				FlxG.switchState(() -> new options.NoteOffsetState());
+			#if mobile
+			case 'Mobile Options':
+				openSubState(new mobile.options.MobileOptionsSubState());
+			#end
 		}
 	}
 
@@ -53,6 +57,18 @@ class OptionsState extends MusicBeatState
 		bg.screenCenter();
 		add(bg);
 
+		#if mobile
+		if (controls.mobileC)
+		{
+			var tipText:FlxText = new FlxText(150, FlxG.height - 24, 0, 'Press ' + (FlxG.onMobile ? 'C' : 'CTRL or C') + ' to Go Mobile Controls Menu', 16);
+			tipText.setFormat("VCR OSD Mono", 17, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			tipText.borderSize = 1.25;
+			tipText.scrollFactor.set();
+			tipText.antialiasing = ClientPrefs.data.antialiasing;
+			add(tipText);
+		}
+		#end
+			
 		grpOptions = new FlxTypedGroup<Alphabet>();
 		add(grpOptions);
 
@@ -85,6 +101,12 @@ class OptionsState extends MusicBeatState
 		super.closeSubState();
 		FlxG.mouse.visible = true;
 		ClientPrefs.saveSettings();
+		#if mobile
+		controls.isInSubstate = false;
+		removeTouchPad();
+		addTouchPad('UP_DOWN', 'A_B_C');
+		persistentUpdate = true;
+		#end
 	}
 
 	override function update(elapsed:Float) {
@@ -96,6 +118,14 @@ class OptionsState extends MusicBeatState
 		if (controls.UI_DOWN_P) {
 			changeSelection(1);
 		}
+
+		#if mobile
+		if (touchPad.buttonC.justPressed || FlxG.keys.justPressed.CONTROL && controls.mobileC)
+		{
+			persistentUpdate = false;
+			openSubState(new mobile.substates.MobileControlSelectSubState());
+		}
+		#end
 		
 		if (FlxG.mouse.deltaScreenY != 0) {
 			for (i => spr in grpOptions) {
