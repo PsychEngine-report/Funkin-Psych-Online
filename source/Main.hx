@@ -2,15 +2,13 @@ package;
 
 import online.GameClient;
 import lumod.Lumod;
-#if AWAY_TEST
-import states.stages.AwayStage;
-#end
 import states.MainMenuState;
 import externs.WinAPI;
 import haxe.Exception;
 import flixel.graphics.FlxGraphic;
 import flixel.FlxGame;
 import flixel.FlxState;
+import haxe.io.Path;
 import openfl.Assets;
 import openfl.Lib;
 import openfl.display.FPS;
@@ -33,11 +31,9 @@ import lime.graphics.Image;
 import sys.FileSystem;
 
 //crash handler stuff
-
+#if desktop
 import openfl.events.UncaughtErrorEvent;
 import haxe.CallStack;
-import haxe.io.Path;
-#if desktop
 import sys.io.File;
 import sys.io.Process;
 #end
