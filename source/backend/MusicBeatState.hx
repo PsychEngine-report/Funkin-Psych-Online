@@ -220,19 +220,6 @@ class MusicBeatState extends FlxUIState
 		onOutroComplete();
 	}
 
-	// Custom made Trans in
-	public static function startTransition(nextState:FlxState = null)
-	{
-		if(nextState == null)
-			nextState = FlxG.state;
-
-		FlxG.state.openSubState(new CustomFadeTransition(0.6, false));
-		if(nextState == FlxG.state)
-			CustomFadeTransition.finishCallback = function() FlxG.resetState();
-		else
-			CustomFadeTransition.finishCallback = function() FlxG.switchState(nextState);
-	}
-
 	public static function getState():MusicBeatState {
 		return cast (FlxG.state, MusicBeatState);
 	}
