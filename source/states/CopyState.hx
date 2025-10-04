@@ -10,6 +10,10 @@ import flixel.ui.FlxBar;
 import flixel.ui.FlxBar.FlxBarFillDirection;
 import lime.system.ThreadPool;
 
+/**
+ * ...
+ * @author: Karim Akra
+ */
 class CopyState extends MusicBeatState
 {
 	private static final textFilesExtensions:Array<String> = ['ini', 'txt', 'xml', 'hxs', 'hx', 'lua', 'json', 'frag', 'vert'];
@@ -36,7 +40,7 @@ class CopyState extends MusicBeatState
 		checkExistingFiles();
 		if (maxLoopTimes <= 0)
 		{
-			MusicBeatState.switchState(new TitleState());
+			FlxG.switchState(() -> new TitleState());
 			return;
 		}
 
@@ -94,7 +98,7 @@ class CopyState extends MusicBeatState
 				
 				FlxG.sound.play(Paths.sound('confirmMenu')).onComplete = () ->
 				{
-					MusicBeatState.switchState(new TitleState());
+					FlxG.switchState(() -> new TitleState());
 				};
 		
 				canUpdate = false;
