@@ -30,10 +30,8 @@ class Option
 	public var description:String = '';
 	public var name:String = 'Unknown';
 
-	#if desktop
 	public var defaultKeys:Keybind = null; //Only used in keybind type
 	public var keys:Keybind = null; //Only used in keybind type
-	#end
 
 	public function new(name:String, description:String = '', variable:String, type:String = 'bool', ?options:Array<String> = null)
 	{
@@ -41,12 +39,8 @@ class Option
 		this.description = description;
 		this.variable = variable;
 		this.type = type;
-		#if mobile
-		this.defaultValue = Reflect.getProperty(ClientPrefs.defaultData, variable);
-		#end
 		this.options = options;
 
-		#if desktop
 		if(this.type != 'keybind') this.defaultValue = Reflect.getProperty(ClientPrefs.defaultData, variable);
 		switch(type)
 		{
@@ -91,47 +85,6 @@ class Option
 		}
 		catch(e) {}
 	}
-    #elseif mobile
-	if(defaultValue == 'null variable value')
-		{
-			switch(type)
-			{
-				case 'bool':
-					defaultValue = false;
-				case 'int' | 'float':
-					defaultValue = 0;
-				case 'percent':
-					defaultValue = 1;
-				case 'string':
-					defaultValue = '';
-					if(options.length > 0) {
-						defaultValue = options[0];
-					}
-			}
-		}
-
-		if(getValue() == null) {
-			setValue(defaultValue);
-		}
-
-		switch(type)
-		{
-			case 'string':
-				var num:Int = options.indexOf(getValue());
-				if(num > -1) {
-					curOption = num;
-				}
-	
-			case 'percent':
-				displayFormat = '%v%';
-				changeValue = 0.01;
-				minValue = 0;
-				maxValue = 1;
-				scrollSpeed = 0.5;
-				decimals = 2;
-		}
-	}
-	#end
 
 	public function change()
 	{
