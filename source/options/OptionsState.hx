@@ -6,7 +6,7 @@ import backend.StageData;
 
 class OptionsState extends MusicBeatState
 {
-	var options:Array<String> = ['Note Colors', 'Controls', 'Adjust Delay and Combo', 'Graphics and Performance', 'Visuals and UI', 'Gameplay', 'Mobile Options'];
+	var options:Array<String> = ['Note Colors', 'Controls', 'Adjust Delay and Combo', 'Graphics and Performance', 'Visuals and UI', 'Gameplay'];
 	private var grpOptions:FlxTypedGroup<Alphabet>;
 	private static var curSelected:Int = 0;
 	public static var menuBG:FlxSprite;
@@ -29,10 +29,6 @@ class OptionsState extends MusicBeatState
 				openSubState(new options.GameplaySettingsSubState());
 			case 'Adjust Delay and Combo':
 				FlxG.switchState(() -> new options.NoteOffsetState());
-			#if mobile
-			case 'Mobile Options':
-				openSubState(new mobile.options.MobileOptionsSubState());
-			#end
 		}
 	}
 
