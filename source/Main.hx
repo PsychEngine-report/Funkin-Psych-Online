@@ -28,14 +28,15 @@ import mobile.backend.MobileScaleMode;
 import lime.graphics.Image;
 #end
 
+import haxe.CallStack;
+import sys.io.File;
+import sys.io.Process;
+
 import sys.FileSystem;
 
 //crash handler stuff
 #if desktop
 import openfl.events.UncaughtErrorEvent;
-import haxe.CallStack;
-import sys.io.File;
-import sys.io.Process;
 #end
 
 
