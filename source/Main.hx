@@ -201,11 +201,6 @@ class Main extends Sprite
 		FlxG.android.preventDefaultKeys = [BACK];
 		#end
 
-		#if mobile
-		lime.system.System.allowScreenTimeout = ClientPrefs.data.screensaver; 		
-		FlxG.scaleMode = new MobileScaleMode();
-		#end
-
 		#if linux
 		Lib.current.stage.window.setIcon(Image.fromFile("icon.png"));
 		#end
@@ -234,6 +229,12 @@ class Main extends Sprite
 
 		#if DISCORD_ALLOWED
 		DiscordClient.initialize();
+		#end
+
+
+		#if mobile
+		lime.system.System.allowScreenTimeout = ClientPrefs.data.screensaver; 		
+		FlxG.scaleMode = new MobileScaleMode();
 		#end
 
 		// shader coords fix
@@ -399,11 +400,6 @@ class Main extends Sprite
 		online.backend.SyncScript.resyncScript(false, () -> {
 			online.backend.SyncScript.dispatch("init");
 		});
-
-		#if interpret
-		online.backend.InterpretLiveReload.init();
-		#end
-		#end
 	}
 
 	static function resetSpriteCache(sprite:Sprite):Void {
@@ -471,8 +467,61 @@ class Main extends Sprite
 			case 'codeberg':
 				cookUrl = 'https://codeberg.org/Snirozu/Funkin-Psych-Online/src/commit/$GIT_COMMIT/source/$daFile#L$daLine';
 		}
+        #else
+		static function onCrash(exc:Dynamic):Void
+	    {
+		trace(" . CRASHED . ");
 
-		#if (windows && cpp)
+		if (exc == null)
+			exc = new Exception("Empty Uncaught Exception");
+
+		var alertMsg:String = "";
+		var daError:String = "";
+		var path:String;
+		var callStack:Array<StackItem> = CallStack.exceptionStack(true);
+		var dateNow:String = Date.now().toString();
+
+		dateNow = dateNow.replace(" ", "_");
+		dateNow = dateNow.replace(":", "'");
+
+		path = "./crash/" + "PsychEngine_" + dateNow + ".txt";
+
+		alertMsg += exc + "\n";
+		daError += CallStack.toString(callStack) + "\n";
+		if (exc is Exception)
+			daError += "\n" + cast(exc, Exception).stack.toString() + "\n";
+		alertMsg += daError;
+
+		Sys.println(alertMsg);
+
+		if (!FileSystem.exists("./crash/"))
+			FileSystem.createDirectory("./crash/");
+		File.saveContent(path, alertMsg + "\n\n === \n\nCommit: " + GIT_COMMIT + "\n");
+		Sys.println("Crash dump saved in " + Path.normalize(path));
+		
+		var daLine:Int = 0;
+		var daFile:String = '';
+
+		if (callStack.length > 0)
+			switch (callStack[0]) {
+				case FilePos(s, file, line, col):
+					daLine = line;
+					daFile = file;
+					if (s != null && daFile != null && daFile.startsWith('lumod/LuaScriptClass'))
+						switch (s) {
+							case Method(cname, meth): // haxe has meth confirm?
+								if (cname != null)
+									daFile = cname.replace('.', '/') + ".hx";
+							default:
+						}
+				default:
+			}
+
+		var cookUrl = 'https://github.com/Snirozu/Funkin-Psych-Online/blob/$GIT_COMMIT/source/$daFile#L$daLine';
+        #end
+
+
+		#if (window && cpp)
 		if (!Main.UNOFFICIAL_BUILD) {
 			switch (Main.repoHost) {
 				case 'github':
@@ -517,7 +566,7 @@ class Main extends Sprite
 		online.network.Auth.saveClose();
 		Sys.exit(1);
 	}
-	#end
+	
 
 	public static function getTime():Float {
 		#if flash
