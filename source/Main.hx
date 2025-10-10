@@ -400,6 +400,7 @@ class Main extends Sprite
 		online.backend.SyncScript.resyncScript(false, () -> {
 			online.backend.SyncScript.dispatch("init");
 		});
+		#end
 	}
 
 	static function resetSpriteCache(sprite:Sprite):Void {
